@@ -1,0 +1,14 @@
+{
+	"library": "Library",
+	"@library": {
+		"description": "A label text that will be shown in the app home page, bottom navigation bar item."
+	},
+	"saved": "Saved",
+	"@saved": {
+		"description": "A label text that will be shown in the app home page, bottom navigation bar item."
+	},
+	"settings": "Settings",
+	"@settings": {
+		"description": "A label text that will be shown in the app home page, bottom navigation bar item."
+	}
+}

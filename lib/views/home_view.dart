@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uec_textbooks/providers/navigation_providers.dart';
@@ -27,20 +28,20 @@ class HomeView extends ConsumerWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: routeIndex > 0 ? routeIndex : 0,
         onTap: (value) => router.go(routeNames.elementAt(value)),
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            label: "Library",
-            icon: Icon(
+            label: "library".tr(),
+            icon: const Icon(
               Icons.library_books,
             ),
           ),
           BottomNavigationBarItem(
-            label: "Saved",
-            icon: Icon(Icons.bookmarks),
+            label: "saved".tr(),
+            icon: const Icon(Icons.bookmarks),
           ),
           BottomNavigationBarItem(
-            label: "Settings",
-            icon: Icon(Icons.settings),
+            label: "settings".tr(),
+            icon: const Icon(Icons.settings),
           )
         ],
       ),
