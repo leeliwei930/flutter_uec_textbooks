@@ -3,8 +3,8 @@ import 'package:uec_textbooks/utils/flavor_config.dart';
 
 void main() {
   runMain(
-    flavorConfig: FlavorConfig(
-      baseEndpoint: "",
+    configInit: () => FlavorConfig(
+      baseEndpoint: "https://api.github.com/repos/melvinchia3636/textbooks",
       flavor: Flavors.staging,
     ),
   );
