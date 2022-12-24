@@ -71,15 +71,17 @@ class _LibraryViewLoading extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Flexible(
-              flex: 12,
+            Expanded(
               child: Shimmer.fromColors(
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                child: AspectRatio(
+                  aspectRatio: 3/4,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                    ),
                   ),
                 ),
               ),
@@ -87,49 +89,43 @@ class _LibraryViewLoading extends StatelessWidget {
             const SizedBox(
               height: kSpacingXSmall,
             ),
-            Flexible(
-              flex: 1,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                  ),
-                  margin: const EdgeInsets.only(bottom: kSpacingXSmall),
-                  width: halfWidth * 0.8,
+            Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
+                margin: const EdgeInsets.only(bottom: kSpacingXSmall),
+                width: halfWidth * 0.8,
+                height: kSpacingSmall,
               ),
             ),
-            Flexible(
-              flex: 1,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                  ),
-                  margin: const EdgeInsets.only(bottom: kSpacingXSmall),
-                  width: halfWidth * 0.6,
+            Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
+                margin: const EdgeInsets.only(bottom: kSpacingXSmall),
+                width: halfWidth * 0.6,
+                height: kSpacingSmall,
               ),
             ),
-            Flexible(
-              flex: 1,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                  ),
-                  margin: const EdgeInsets.only(bottom: kSpacingXSmall),
-                  width: halfWidth * 0.3,
+            Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
+                margin: const EdgeInsets.only(bottom: kSpacingXSmall),
+                width: halfWidth * 0.3,
+                height: kSpacingSmall,
               ),
             ),
           ],
@@ -156,8 +152,6 @@ class _LibraryViewLoaded extends ConsumerWidget {
       ),
       itemCount: books.length,
       itemBuilder: (context, index) {
-        final size = MediaQuery.of(context).size;
-        final halfWidth = size.width * 0.5;
         final book = books.elementAt(index);
         final bookPages = ref.watch(
           ebookPagesProvider(downloadUrl: book.downloadUrl),
@@ -166,23 +160,24 @@ class _LibraryViewLoaded extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Image.network(
-                TextBookCoverImage.url(
-                  yearGroup: ref.read(yearGroupStateProvider),
-                  filename: book.imageName,
-                ),
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
+            Image.network(
+              TextBookCoverImage.url(
+                yearGroup: ref.read(yearGroupStateProvider),
+                filename: book.imageName,
+              ),
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: AspectRatio(
+                    aspectRatio: 3/4,
                     child: Container(
                       color: Colors.white,
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
             const SizedBox(
               height: kSpacingXSmall,
