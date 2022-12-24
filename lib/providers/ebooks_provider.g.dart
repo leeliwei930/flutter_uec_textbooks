@@ -29,7 +29,7 @@ class _SystemHash {
   }
 }
 
-String $ebooksHash() => r'9020a794c6b994ea4fea1156d6d970eefe3f750c';
+String $ebooksHash() => r'89e01a7c0dff639467481459bde8e33d5eb9c2a0';
 
 /// See also [ebooks].
 final ebooksProvider = FutureProvider<List<Ebook>>(
@@ -39,14 +39,72 @@ final ebooksProvider = FutureProvider<List<Ebook>>(
       const bool.fromEnvironment('dart.vm.product') ? null : $ebooksHash,
 );
 typedef EbooksRef = FutureProviderRef<List<Ebook>>;
-String $selectedYearGroupHash() => r'2769ec77d9aa462b4757914f74e3a8bf70df448b';
+String $ebookPagesHash() => r'22bac36bf3a68758b3994e969898aadb4cbb1bce';
 
-/// See also [selectedYearGroup].
-final selectedYearGroupProvider = Provider<YearGroup>(
-  selectedYearGroup,
-  name: r'selectedYearGroupProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : $selectedYearGroupHash,
-);
-typedef SelectedYearGroupRef = ProviderRef<YearGroup>;
+/// See also [ebookPages].
+class EbookPagesProvider extends FutureProvider<int> {
+  EbookPagesProvider({
+    required this.downloadUrl,
+  }) : super(
+          (ref) => ebookPages(
+            ref,
+            downloadUrl: downloadUrl,
+          ),
+          from: ebookPagesProvider,
+          name: r'ebookPagesProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : $ebookPagesHash,
+        );
+
+  final String downloadUrl;
+
+  @override
+  bool operator ==(Object other) {
+    return other is EbookPagesProvider && other.downloadUrl == downloadUrl;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, downloadUrl.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+typedef EbookPagesRef = FutureProviderRef<int>;
+
+/// See also [ebookPages].
+final ebookPagesProvider = EbookPagesFamily();
+
+class EbookPagesFamily extends Family<AsyncValue<int>> {
+  EbookPagesFamily();
+
+  EbookPagesProvider call({
+    required String downloadUrl,
+  }) {
+    return EbookPagesProvider(
+      downloadUrl: downloadUrl,
+    );
+  }
+
+  @override
+  FutureProvider<int> getProviderOverride(
+    covariant EbookPagesProvider provider,
+  ) {
+    return call(
+      downloadUrl: provider.downloadUrl,
+    );
+  }
+
+  @override
+  List<ProviderOrFamily>? get allTransitiveDependencies => null;
+
+  @override
+  List<ProviderOrFamily>? get dependencies => null;
+
+  @override
+  String? get name => r'ebookPagesProvider';
+}

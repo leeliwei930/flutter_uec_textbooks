@@ -7,7 +7,6 @@ class TextBookCoverImage {
     required String filename,
   }) {
     final assetUrl = FlavorConfig.instance.assetUrl;
-
     return "$assetUrl/$yearGroup/$filename";
   }
 }

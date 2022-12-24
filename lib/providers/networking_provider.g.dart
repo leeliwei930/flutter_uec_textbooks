@@ -39,7 +39,7 @@ final dioProvider = AutoDisposeProvider<Dio>(
       const bool.fromEnvironment('dart.vm.product') ? null : $dioHash,
 );
 typedef DioRef = AutoDisposeProviderRef<Dio>;
-String $ebooksClientHash() => r'18904cfbb9c98839ebe3b09489d5061a7dde4037';
+String $ebooksClientHash() => r'e489f0d6f78117d730f63e1f4f7b6398877a25c2';
 
 /// See also [ebooksClient].
 final ebooksClientProvider = AutoDisposeProvider<EbooksClient>(

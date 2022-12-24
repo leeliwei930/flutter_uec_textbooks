@@ -10,5 +10,19 @@
 	"settings": "Settings",
 	"@settings": {
 		"description": "A label text that will be shown in the app home page, bottom navigation bar item."
-	}
+	},
+	"page": {
+		"zero":"page",
+		"one": "page",
+		"two": "pages",
+		"few": "pages",
+		"many": "pages",
+		"other": "pages"
+	},
+	"jm1": "Junior 1",
+	"jm2": "Junior 2",
+	"jm3": "Junior 3",
+	"sm1": "Senior 1",
+	"sm2": "Senior 2",
+	"sm3": "Senior 3"
 }
