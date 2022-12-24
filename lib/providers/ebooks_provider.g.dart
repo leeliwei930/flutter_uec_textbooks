@@ -29,7 +29,7 @@ class _SystemHash {
   }
 }
 
-String $ebooksHash() => r'0fffccc65a2e68862fb394054c46ca6689812e95';
+String $ebooksHash() => r'9020a794c6b994ea4fea1156d6d970eefe3f750c';
 
 /// See also [ebooks].
 final ebooksProvider = FutureProvider<List<Ebook>>(

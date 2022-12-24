@@ -15,7 +15,7 @@ Dio dio(_) => Dio(BaseOptions(
 @riverpod
 EbooksClient ebooksClient(EbooksClientRef ref) {
   final dio = ref.read(dioProvider);
-  final baseUrl = FlavorConfig.instance.baseEndpoint;
+  final baseUrl = FlavorConfig.instance.baseUrl;
 
   return EbooksClient(dio, baseUrl: baseUrl);
 }

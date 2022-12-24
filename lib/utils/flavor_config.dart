@@ -5,7 +5,8 @@ enum Flavors {
 
 class FlavorConfig {
   const FlavorConfig._({
-    required this.baseEndpoint,
+    required this.baseUrl,
+    required this.assetUrl,
     required this.flavor,
   });
 
@@ -13,16 +14,19 @@ class FlavorConfig {
   static FlavorConfig get instance => _instance;
 
   factory FlavorConfig({
-    required String baseEndpoint,
+    required String baseUrl,
     required Flavors flavor,
+    required String assetUrl,
   }) {
     _instance = FlavorConfig._(
-      baseEndpoint: baseEndpoint,
+      baseUrl: baseUrl,
+      assetUrl: assetUrl,
       flavor: flavor,
     );
     return _instance;
   }
 
-  final String baseEndpoint;
+  final String baseUrl;
+  final String assetUrl;
   final Flavors flavor;
 }

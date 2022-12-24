@@ -6,10 +6,12 @@ import 'package:uec_textbooks/providers/repository_provider.dart';
 part 'ebooks_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<List<Ebook>> ebooks(EbooksRef ref) {
+Future<List<Ebook>> ebooks(EbooksRef ref) async {
   final repo = ref.read(ebooksRepositoryProvider);
   final selectedYearGroup = ref.watch(selectedYearGroupProvider);
-  return repo.getEbookByYearGroup(selectedYearGroup);
+  final books = await repo.getEbookByYearGroup(selectedYearGroup);
+  // filtered out only pdf files.
+  return books.where((file) => file.name.endsWith('.pdf')).toList();
 }
 
 @Riverpod(keepAlive: true)

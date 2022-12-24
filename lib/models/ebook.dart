@@ -16,6 +16,8 @@ class Ebook extends Equatable {
   @JsonKey(name: 'download_url')
   final String downloadUrl;
 
+  String get imageName => name.replaceFirst('.pdf', '.jpg');
+
   @override
   List<Object?> get props => [name, downloadUrl];
   Map<String, dynamic> toJson() => _$EbookToJson(this);

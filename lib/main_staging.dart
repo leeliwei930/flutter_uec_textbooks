@@ -4,7 +4,8 @@ import 'package:uec_textbooks/utils/flavor_config.dart';
 void main() {
   runMain(
     configInit: () => FlavorConfig(
-      baseEndpoint: "https://api.github.com/repos/melvinchia3636/textbooks",
+      assetUrl: 'https://raw.githubusercontent.com/melvinchia3636/textbooks/main/images',
+      baseUrl: "https://api.github.com/repos/melvinchia3636/textbooks",
       flavor: Flavors.staging,
     ),
   );
