@@ -1,50 +1,41 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uec_textbooks/providers/navigation_providers.dart';
 
-class HomeView extends ConsumerWidget {
+part 'home_view.mobile.dart';
+part 'home_view.tablet.dart';
+
+abstract class HomeView extends ConsumerStatefulWidget {
   const HomeView({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
+
+  factory HomeView.mobile({Key? key, required Widget child}) => _HomeViewMobile(key: key, child: child);
+  factory HomeView.tablet({Key? key, required Widget child}) => _HomeViewTablet(key: key, child: child);
 
   final Widget child;
+}
+
+abstract class HomeViewState extends ConsumerState<HomeView> {
+  late final GoRouter _router;
+  final _routeNames = <String>[];
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
-    final routeNames = [
-      router.namedLocation('library'),
-      router.namedLocation('saved-books'),
-      router.namedLocation('settings'),
-    ];
-    final routeIndex = routeNames.indexWhere(
-      (element) => element.startsWith(router.location),
-    );
+  void initState() {
+    super.initState();
 
-    return Scaffold(
-      body: child,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: routeIndex > 0 ? routeIndex : 0,
-        onTap: (value) => router.go(routeNames.elementAt(value)),
-        items: [
-          BottomNavigationBarItem(
-            label: "library".tr(),
-            icon: const Icon(
-              Icons.library_books,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: "saved".tr(),
-            icon: const Icon(Icons.bookmarks),
-          ),
-          BottomNavigationBarItem(
-            label: "settings".tr(),
-            icon: const Icon(Icons.settings),
-          )
-        ],
-      ),
-    );
+    _router = ref.read(routerProvider);
+    _routeNames.addAll([
+      _router.namedLocation('library'),
+      _router.namedLocation('saved-books'),
+      _router.namedLocation('settings'),
+    ]);
   }
+
+  int get routeIndex => _routeNames.indexWhere(
+        (element) => element.startsWith(_router.location),
+      );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uec_textbooks/views/home_view.dart';
 import 'package:uec_textbooks/views/library_view.dart';
@@ -46,8 +47,9 @@ ShellRoute homeViewRoute(ref) {
   return ShellRoute(
     navigatorKey: ref.read(homeViewNavigatorKeyProvider),
     routes: ref.read(routesProvider),
-    builder: (context, state, child) => HomeView(
-      child: child,
+    builder: (context, state, child) => ScreenTypeLayout(
+      mobile: HomeView.mobile(child: child),
+      tablet: HomeView.tablet(child: child),
     ),
   );
 }
