@@ -22,7 +22,8 @@ class _LibraryViewMobileState extends LibraryViewState {
               slivers: [
                 SliverAppBar(
                   pinned: true,
-                  expandedHeight: constraints.maxHeight * 0.25,
+                  expandedHeight: constraints.maxHeight * 0.2,
+                  elevation: 0,
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.pin,
                     centerTitle: false,
@@ -30,15 +31,13 @@ class _LibraryViewMobileState extends LibraryViewState {
                     title: Text(selectedYearGroup.name.tr()),
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: Container(
-                    height: constraints.maxHeight * 0.10,
-                    child: YearGroupsChips(
-                      selectedYearGroup: selectedYearGroup,
-                      onYearGroupSelected: (yearGroup) {
-                        ref.read(yearGroupStateProvider.notifier).state = yearGroup;
-                      },
-                    ),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: _StickySliverPersistentYearGroupBar(
+                    selectedYearGroup: selectedYearGroup,
+                    onGroupSelected: (yearGroup) {
+                      ref.read(yearGroupStateProvider.notifier).state = yearGroup;
+                    },
                   ),
                 ),
                 books.when(
@@ -56,6 +55,38 @@ class _LibraryViewMobileState extends LibraryViewState {
         ),
       ),
     );
+  }
+}
+
+class _StickySliverPersistentYearGroupBar extends SliverPersistentHeaderDelegate {
+  const _StickySliverPersistentYearGroupBar({
+    required this.selectedYearGroup,
+    required this.onGroupSelected,
+  });
+
+  final YearGroup selectedYearGroup;
+  final Function(YearGroup) onGroupSelected;
+  @override
+  double get maxExtent => kToolbarHeight;
+
+  @override
+  double get minExtent => kToolbarHeight;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      height: maxExtent,
+      child: YearGroupsChips(
+        selectedYearGroup: selectedYearGroup,
+        onYearGroupSelected: onGroupSelected,
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return true;
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:uec_textbooks/components/year_groups_chips.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/ebook.dart';
+import 'package:uec_textbooks/models/year_group.dart';
 import 'package:uec_textbooks/providers/ebooks_provider.dart';
 import 'package:uec_textbooks/utils/textbook_cover_image.dart';
 

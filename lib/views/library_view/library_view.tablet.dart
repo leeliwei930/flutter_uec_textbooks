@@ -22,6 +22,12 @@ class _LibraryViewTabletState extends LibraryViewState {
                 pinned: true,
                 expandedHeight: constraints.maxHeight * 0.25,
                 floating: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.pin,
+                  centerTitle: false,
+                  titlePadding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingMedium),
+                  title: Text(selectedYearGroup.name.tr()),
+                ),
               ),
               books.when(
                 data: (books) => _LibraryViewTabletLoaded(
