@@ -9,8 +9,10 @@ import 'package:uec_textbooks/providers/ebooks_provider.dart';
 import 'package:uec_textbooks/utils/textbook_cover_image.dart';
 
 part 'library_view.mobile.dart';
+part 'library_view.tablet.dart';
+part 'state/loading.dart';
 
-abstract class LibraryView extends ConsumerWidget {
+abstract class LibraryView extends ConsumerStatefulWidget {
   const LibraryView({
     super.key,
   });
@@ -19,4 +21,13 @@ abstract class LibraryView extends ConsumerWidget {
     Key? key,
   }) =>
       _LibraryViewMobile(key: key);
+
+  factory LibraryView.tablet({Key? key}) => _LibraryViewTablet(key: key);
+}
+
+abstract class LibraryViewState extends ConsumerState<LibraryView> {
+  Future<void> refreshBooks() {
+    ref.invalidate(ebooksProvider);
+    return ref.read(ebooksProvider.future);
+  }
 }

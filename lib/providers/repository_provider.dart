@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uec_textbooks/models/ebook.dart';
 import 'package:uec_textbooks/providers/networking_provider.dart';
 import 'package:uec_textbooks/repositories/ebooks_repository.dart';
 

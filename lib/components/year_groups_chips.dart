@@ -5,6 +5,7 @@ import 'package:uec_textbooks/models/year_group.dart';
 
 class YearGroupsChips extends StatelessWidget {
   const YearGroupsChips({
+    super.key,
     required this.selectedYearGroup,
     this.onYearGroupSelected,
   });
@@ -18,11 +19,12 @@ class YearGroupsChips extends StatelessWidget {
       itemCount: YearGroup.values.length,
       padding: const EdgeInsets.all(kSpacingSmall),
       separatorBuilder: (context, index) {
-        if (index != YearGroup.values.length - 1)
+        if (index != YearGroup.values.length - 1) {
           return const SizedBox(
             width: kSpacingXSmall,
           );
-        return SizedBox.shrink();
+        }
+        return const SizedBox.shrink();
       },
       itemBuilder: (context, index) {
         final yearGroup = YearGroup.values.elementAt(index);

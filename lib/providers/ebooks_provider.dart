@@ -11,9 +11,12 @@ part 'ebooks_provider.g.dart';
 Future<List<Ebook>> ebooks(EbooksRef ref) async {
   final repo = ref.read(ebooksRepositoryProvider);
   final selectedYearGroup = ref.watch(yearGroupStateProvider);
-  final books = await repo.getEbookByYearGroup(selectedYearGroup);
-  // filtered out only pdf files.
-  return books.where((file) => file.name.endsWith('.pdf')).toList();
+  return Future.delayed(const Duration(seconds: 3), () async {
+    final books = await repo.getEbookByYearGroup(selectedYearGroup);
+    // filtered out only pdf files.
+    return books.where((file) => file.name.endsWith('.pdf')).toList();
+  });
+
 }
 
 @Riverpod(keepAlive: true)

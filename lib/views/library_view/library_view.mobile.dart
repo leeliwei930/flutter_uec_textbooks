@@ -4,17 +4,19 @@ class _LibraryViewMobile extends LibraryView {
   const _LibraryViewMobile({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  LibraryViewState createState() => _LibraryViewMobileState();
+}
+
+class _LibraryViewMobileState extends LibraryViewState {
+  @override
+  Widget build(BuildContext context) {
     final books = ref.watch(ebooksProvider);
     final selectedYearGroup = ref.watch(yearGroupStateProvider);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(),
       body: RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(ebooksProvider);
-          return ref.read(ebooksProvider.future);
-        },
+        onRefresh: refreshBooks,
         child: Column(
           children: [
             SizedBox(
@@ -34,7 +36,7 @@ class _LibraryViewMobile extends LibraryView {
                 error: (error, __) {
                   return Text('Something Error');
                 },
-                loading: () => _LibraryViewLoadingMobile(),
+                loading: () => _LibraryViewMobileLoading(),
               ),
             )
           ],
@@ -44,87 +46,18 @@ class _LibraryViewMobile extends LibraryView {
   }
 }
 
-class _LibraryViewLoadingMobile extends StatelessWidget {
+class _LibraryViewMobileLoading extends _LibraryViewLoadingBase {
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(kSpacingSmall),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: kSpacingXSmall,
-        mainAxisSpacing: kSpacingXSmall,
-        childAspectRatio: 1 / 2,
-      ),
-      itemCount: 6,
-      itemBuilder: (context, index) {
-        final size = MediaQuery.of(context).size;
-        final halfWidth = size.width * 0.5;
+  int get crossAxisCount => 2;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: AspectRatio(
-                  aspectRatio: 3 / 4,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: kSpacingXSmall,
-            ),
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                margin: const EdgeInsets.only(bottom: kSpacingXSmall),
-                width: halfWidth * 0.8,
-                height: kSpacingSmall,
-              ),
-            ),
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                margin: const EdgeInsets.only(bottom: kSpacingXSmall),
-                width: halfWidth * 0.6,
-                height: kSpacingSmall,
-              ),
-            ),
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                margin: const EdgeInsets.only(bottom: kSpacingXSmall),
-                width: halfWidth * 0.3,
-                height: kSpacingSmall,
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  @override
+  double get gridViewChildAspectRatio => 3 / 4;
+
+  @override
+  double get placeholderImageAspectRatio => 1;
+
+  @override
+  int get placeholderItemsCount => 6;
 }
 
 class _LibraryViewLoadedMobile extends ConsumerWidget {

@@ -15,7 +15,7 @@ final _routes = [
     path: '/library',
     pageBuilder: (context, state) => NoTransitionPage(
       child: ScreenTypeLayout(
-        mobile: LibraryView.mobile(),
+        mobile: LibraryView.mobile(),tablet: LibraryView.tablet(),
       ),
     ),
   ),
