@@ -21,16 +21,24 @@ class _LibraryViewMobileState extends LibraryViewState {
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
-                  floating: true,
-                  forceElevated: true,
-                  collapsedHeight: constraints.maxHeight * 0.10,
+                  pinned: true,
                   expandedHeight: constraints.maxHeight * 0.25,
-                  title: Text(selectedYearGroup.name.tr()),
-                  flexibleSpace: YearGroupsChips(
-                    selectedYearGroup: selectedYearGroup,
-                    onYearGroupSelected: (yearGroup) {
-                      ref.read(yearGroupStateProvider.notifier).state = yearGroup;
-                    },
+                  flexibleSpace: FlexibleSpaceBar(
+                    collapseMode: CollapseMode.pin,
+                    centerTitle: false,
+                    titlePadding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingMedium),
+                    title: Text(selectedYearGroup.name.tr()),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    height: constraints.maxHeight * 0.10,
+                    child: YearGroupsChips(
+                      selectedYearGroup: selectedYearGroup,
+                      onYearGroupSelected: (yearGroup) {
+                        ref.read(yearGroupStateProvider.notifier).state = yearGroup;
+                      },
+                    ),
                   ),
                 ),
                 books.when(

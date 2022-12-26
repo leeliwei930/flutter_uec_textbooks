@@ -19,9 +19,8 @@ class _LibraryViewTabletState extends LibraryViewState {
           return CustomScrollView(
             slivers: [
               SliverAppBar(
-                forceElevated: true,
+                pinned: true,
                 expandedHeight: constraints.maxHeight * 0.25,
-                title: Text(selectedYearGroup.name.tr()),
                 floating: true,
               ),
               books.when(
