@@ -1,15 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:uec_textbooks/components/year_groups_chips.dart';
-import 'package:uec_textbooks/constants/spacing.dart';
-import 'package:uec_textbooks/models/ebook.dart';
-import 'package:uec_textbooks/providers/ebooks_provider.dart';
-import 'package:uec_textbooks/utils/textbook_cover_image.dart';
+part of 'library_view.dart';
 
-class LibraryView extends ConsumerWidget {
-  const LibraryView({Key? key}) : super(key: key);
+class _LibraryViewMobile extends LibraryView {
+  const _LibraryViewMobile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,13 +28,13 @@ class LibraryView extends ConsumerWidget {
             ),
             Expanded(
               child: books.when(
-                data: (ebooks) => _LibraryViewLoaded(
+                data: (ebooks) => _LibraryViewLoadedMobile(
                   books: ebooks,
                 ),
                 error: (error, __) {
                   return Text('Something Error');
                 },
-                loading: () => _LibraryViewLoading(),
+                loading: () => _LibraryViewLoadingMobile(),
               ),
             )
           ],
@@ -52,7 +44,7 @@ class LibraryView extends ConsumerWidget {
   }
 }
 
-class _LibraryViewLoading extends StatelessWidget {
+class _LibraryViewLoadingMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -76,7 +68,7 @@ class _LibraryViewLoading extends StatelessWidget {
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,
                 child: AspectRatio(
-                  aspectRatio: 3/4,
+                  aspectRatio: 3 / 4,
                   child: Container(
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -135,8 +127,8 @@ class _LibraryViewLoading extends StatelessWidget {
   }
 }
 
-class _LibraryViewLoaded extends ConsumerWidget {
-  const _LibraryViewLoaded({
+class _LibraryViewLoadedMobile extends ConsumerWidget {
+  const _LibraryViewLoadedMobile({
     required this.books,
   });
   final List<Ebook> books;
@@ -171,7 +163,7 @@ class _LibraryViewLoaded extends ConsumerWidget {
                   baseColor: Colors.grey[300]!,
                   highlightColor: Colors.grey[100]!,
                   child: AspectRatio(
-                    aspectRatio: 3/4,
+                    aspectRatio: 3 / 4,
                     child: Container(
                       color: Colors.white,
                     ),

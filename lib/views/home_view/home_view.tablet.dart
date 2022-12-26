@@ -64,9 +64,10 @@ class _HomeViewTabletState extends HomeViewState with SingleTickerProviderStateM
         child: Row(
           children: [
             Flexible(
-                flex: 1,
-                child: Column(
-                  children: menuItems.map((menuItem) {
+              flex: 1,
+              child: Column(
+                children: menuItems.map(
+                  (menuItem) {
                     final index = menuItems.indexWhere((element) => element == menuItem);
                     if (menuItem.subItems.isNotEmpty) {
                       return ExpandableTheme(
@@ -110,8 +111,10 @@ class _HomeViewTabletState extends HomeViewState with SingleTickerProviderStateM
                         _router.go(_routeNames.elementAt(index));
                       },
                     );
-                  }).toList(),
-                )),
+                  },
+                ).toList(),
+              ),
+            ),
             Flexible(flex: 3, child: widget.child),
           ],
         ),
