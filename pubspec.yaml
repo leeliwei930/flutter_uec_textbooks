@@ -45,6 +45,7 @@ dependencies:
   filesize: ^2.0.1
   advance_pdf_viewer: ^2.0.1
   responsive_builder: ^0.4.3
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:
