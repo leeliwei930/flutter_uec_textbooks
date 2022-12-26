@@ -14,32 +14,37 @@ class _LibraryViewMobileState extends LibraryViewState {
     final selectedYearGroup = ref.watch(yearGroupStateProvider);
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(),
       body: RefreshIndicator(
         onRefresh: refreshBooks,
-        child: Column(
-          children: [
-            SizedBox(
-              height: size.height * 0.1,
-              child: YearGroupsChips(
-                selectedYearGroup: selectedYearGroup,
-                onYearGroupSelected: (yearGroup) {
-                  ref.read(yearGroupStateProvider.notifier).state = yearGroup;
-                },
-              ),
-            ),
-            Expanded(
-              child: books.when(
-                data: (ebooks) => _LibraryViewLoadedMobile(
-                  books: ebooks,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  floating: true,
+                  forceElevated: true,
+                  collapsedHeight: constraints.maxHeight * 0.10,
+                  expandedHeight: constraints.maxHeight * 0.25,
+                  title: Text(selectedYearGroup.name.tr()),
+                  flexibleSpace: YearGroupsChips(
+                    selectedYearGroup: selectedYearGroup,
+                    onYearGroupSelected: (yearGroup) {
+                      ref.read(yearGroupStateProvider.notifier).state = yearGroup;
+                    },
+                  ),
                 ),
-                error: (error, __) {
-                  return Text('Something Error');
-                },
-                loading: () => _LibraryViewMobileLoading(),
-              ),
-            )
-          ],
+                books.when(
+                  data: (ebooks) => _LibraryViewMobileLoaded(
+                    books: ebooks,
+                  ),
+                  error: (error, __) {
+                    return const SliverFillRemaining(child: Text('Something Error'));
+                  },
+                  loading: () => _LibraryViewMobileLoading(),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -60,62 +65,21 @@ class _LibraryViewMobileLoading extends _LibraryViewLoadingBase {
   int get placeholderItemsCount => 6;
 }
 
-class _LibraryViewLoadedMobile extends ConsumerWidget {
-  const _LibraryViewLoadedMobile({
-    required this.books,
-  });
-  final List<Ebook> books;
+class _LibraryViewMobileLoaded extends _LibraryViewLoadedBase {
+  const _LibraryViewMobileLoaded({required super.books});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(kSpacingSmall),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1 / 2,
-        crossAxisSpacing: kSpacingSmall,
-      ),
-      itemCount: books.length,
-      itemBuilder: (context, index) {
-        final book = books.elementAt(index);
-        final bookPages = ref.watch(
-          ebookPagesProvider(downloadUrl: book.downloadUrl),
-        );
+  double get childAspectRatio => 1 / 2;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(
-              TextBookCoverImage.url(
-                yearGroup: ref.read(yearGroupStateProvider),
-                filename: book.imageName,
-              ),
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
-                  child: AspectRatio(
-                    aspectRatio: 3 / 4,
-                    child: Container(
-                      color: Colors.white,
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(
-              height: kSpacingXSmall,
-            ),
-            Text(book.name),
-            Text(book.fileSizeForHuman),
-            bookPages.maybeWhen(
-              data: (pages) => Text("$pages ${plural("page", pages)}"),
-              orElse: () => const SizedBox.shrink(),
-            )
-          ],
-        );
-      },
-    );
-  }
+  @override
+  int get crossAxisCount => 2;
+
+  @override
+  double get imagePlaceholderAspectRatio => 3 / 4;
+
+  @override
+  double get crossAxisSpacing => kSpacingSmall;
+
+  @override
+  double get mainAxisSpacing => kSpacingSmall;
 }

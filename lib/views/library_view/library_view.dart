@@ -10,6 +10,7 @@ import 'package:uec_textbooks/utils/textbook_cover_image.dart';
 
 part 'library_view.mobile.dart';
 part 'library_view.tablet.dart';
+part 'state/loaded.dart';
 part 'state/loading.dart';
 
 abstract class LibraryView extends ConsumerStatefulWidget {
