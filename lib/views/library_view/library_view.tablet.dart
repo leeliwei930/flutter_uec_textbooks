@@ -26,11 +26,12 @@ class _LibraryViewTabletState extends LibraryViewState {
                   collapseMode: CollapseMode.pin,
                   centerTitle: false,
                   titlePadding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingMedium),
-                  title: Text(selectedYearGroup.name.tr()),
+                  title: Text("yearGroup.${selectedYearGroup.name}".tr()),
                 ),
               ),
               books.when(
                 data: (books) => _LibraryViewTabletLoaded(
+                  yearGroup: selectedYearGroup,
                   books: books,
                 ),
                 error: (_, __) => const SliverFillRemaining(
@@ -61,7 +62,10 @@ class _LibraryViewTabletLoading extends _LibraryViewLoadingBase {
 }
 
 class _LibraryViewTabletLoaded extends _LibraryViewLoadedBase {
-  const _LibraryViewTabletLoaded({required super.books});
+  const _LibraryViewTabletLoaded({
+    required super.books,
+    required super.yearGroup,
+  });
 
   @override
   int get crossAxisCount => 4;

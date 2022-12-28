@@ -91,7 +91,7 @@ class _HomeViewTabletState extends HomeViewState with SingleTickerProviderStateM
                                 .map(
                                   (yearGroup) => ListTile(
                                     contentPadding: const EdgeInsets.only(left: kSpacingLarge),
-                                    title: Text(yearGroup.name.tr()),
+                                    title: Text("yearGroup.${yearGroup.name}".tr()),
                                     leading: const Icon(Icons.book),
                                     onTap: () => ref.read(yearGroupStateProvider.notifier).state = yearGroup,
                                     selected: selectedYearGroup == yearGroup,

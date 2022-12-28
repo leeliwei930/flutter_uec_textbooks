@@ -8,7 +8,8 @@
             "name": "uec_textbooks",
             "request": "launch",
             "type": "dart",
-            "program": "${workspaceFolder}/lib/main_staging.dart"
+            "program": "${workspaceFolder}/lib/main_staging.dart",
+            "args": ["--flavor", "staging"]
         },
         {
             "name": "uec_textbooks (profile mode)",

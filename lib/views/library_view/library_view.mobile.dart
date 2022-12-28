@@ -28,7 +28,7 @@ class _LibraryViewMobileState extends LibraryViewState {
                     collapseMode: CollapseMode.pin,
                     centerTitle: false,
                     titlePadding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingMedium),
-                    title: Text(selectedYearGroup.name.tr()),
+                    title: Text("yearGroup.${selectedYearGroup.name}".tr()),
                   ),
                 ),
                 SliverPersistentHeader(
@@ -42,6 +42,7 @@ class _LibraryViewMobileState extends LibraryViewState {
                 ),
                 books.when(
                   data: (ebooks) => _LibraryViewMobileLoaded(
+                    yearGroup: selectedYearGroup,
                     books: ebooks,
                   ),
                   error: (error, __) {
@@ -105,7 +106,10 @@ class _LibraryViewMobileLoading extends _LibraryViewLoadingBase {
 }
 
 class _LibraryViewMobileLoaded extends _LibraryViewLoadedBase {
-  const _LibraryViewMobileLoaded({required super.books});
+  const _LibraryViewMobileLoaded({
+    required super.books,
+    required super.yearGroup,
+  });
 
   @override
   double get childAspectRatio => 1 / 2;

@@ -29,7 +29,7 @@ class YearGroupsChips extends StatelessWidget {
       itemBuilder: (context, index) {
         final yearGroup = YearGroup.values.elementAt(index);
         return ChoiceChip(
-          label: Text(yearGroup.name.tr()),
+          label: Text("yearGroup.${yearGroup.name}".tr()),
           selected: yearGroup == selectedYearGroup,
           onSelected: (_) {
             onYearGroupSelected?.call(yearGroup);
