@@ -64,7 +64,7 @@ final routesProvider = AutoDisposeProvider<List<RouteBase>>(
       const bool.fromEnvironment('dart.vm.product') ? null : $routesHash,
 );
 typedef RoutesRef = AutoDisposeProviderRef<List<RouteBase>>;
-String $homeViewRouteHash() => r'f922277b1cc5a09551cf5442ad147fe1532b4941';
+String $homeViewRouteHash() => r'59e9e00bcd64744db0cca4b2c5bc3408536492b6';
 
 /// See also [homeViewRoute].
 final homeViewRouteProvider = AutoDisposeProvider<ShellRoute>(

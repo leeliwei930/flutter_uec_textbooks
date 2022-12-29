@@ -29,7 +29,7 @@ class _SystemHash {
   }
 }
 
-String $ebooksHash() => r'89e01a7c0dff639467481459bde8e33d5eb9c2a0';
+String $ebooksHash() => r'851557a9c0771e43e83374ca8cb530984dd8b49e';
 
 /// See also [ebooks].
 final ebooksProvider = FutureProvider<List<Ebook>>(
@@ -39,16 +39,26 @@ final ebooksProvider = FutureProvider<List<Ebook>>(
       const bool.fromEnvironment('dart.vm.product') ? null : $ebooksHash,
 );
 typedef EbooksRef = FutureProviderRef<List<Ebook>>;
-String $ebookPagesHash() => r'22bac36bf3a68758b3994e969898aadb4cbb1bce';
+String $_bookPagesHash() => r'5ab27cee0462f48f9d9b0c1d6a204af11cfe1db0';
+
+/// See also [_bookPages].
+final _bookPagesProvider = Provider<YearGroupEbookPages>(
+  _bookPages,
+  name: r'_bookPagesProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : $_bookPagesHash,
+);
+typedef _BookPagesRef = ProviderRef<YearGroupEbookPages>;
+String $ebookPagesHash() => r'de3b4cbd313e408abff2ed9053497a9e1102a04a';
 
 /// See also [ebookPages].
 class EbookPagesProvider extends FutureProvider<int> {
   EbookPagesProvider({
-    required this.downloadUrl,
+    required this.book,
   }) : super(
           (ref) => ebookPages(
             ref,
-            downloadUrl: downloadUrl,
+            book: book,
           ),
           from: ebookPagesProvider,
           name: r'ebookPagesProvider',
@@ -58,17 +68,17 @@ class EbookPagesProvider extends FutureProvider<int> {
                   : $ebookPagesHash,
         );
 
-  final String downloadUrl;
+  final Ebook book;
 
   @override
   bool operator ==(Object other) {
-    return other is EbookPagesProvider && other.downloadUrl == downloadUrl;
+    return other is EbookPagesProvider && other.book == book;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, downloadUrl.hashCode);
+    hash = _SystemHash.combine(hash, book.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -83,10 +93,10 @@ class EbookPagesFamily extends Family<AsyncValue<int>> {
   EbookPagesFamily();
 
   EbookPagesProvider call({
-    required String downloadUrl,
+    required Ebook book,
   }) {
     return EbookPagesProvider(
-      downloadUrl: downloadUrl,
+      book: book,
     );
   }
 
@@ -95,7 +105,7 @@ class EbookPagesFamily extends Family<AsyncValue<int>> {
     covariant EbookPagesProvider provider,
   ) {
     return call(
-      downloadUrl: provider.downloadUrl,
+      book: provider.book,
     );
   }
 

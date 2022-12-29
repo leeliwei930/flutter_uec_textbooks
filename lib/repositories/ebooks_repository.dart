@@ -6,5 +6,15 @@ class EbooksRepository {
   const EbooksRepository({required this.client});
   final EbooksClient client;
 
-  Future<List<Ebook>> getEbookByYearGroup(YearGroup yearGroup) => client.getEbooks(yearGroup: yearGroup);
+  Future<List<Ebook>> getEbookByYearGroup(YearGroup yearGroup) async {
+    final response = await client.getEbooks(yearGroup: yearGroup);
+    return response
+        .map((Ebook book) => Ebook(
+              name: book.name,
+              downloadUrl: book.downloadUrl,
+              size: book.size,
+              yearGroup: yearGroup,
+            ))
+        .toList();
+  }
 }

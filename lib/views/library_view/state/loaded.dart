@@ -33,7 +33,7 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
         (context, index) {
           final book = books.elementAt(index);
           final bookPages = ref.watch(
-            ebookPagesProvider(downloadUrl: book.downloadUrl),
+            ebookPagesProvider(book: book),
           );
 
           return Padding(
