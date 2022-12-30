@@ -26,6 +26,10 @@ class _LibraryViewMobileState extends LibraryViewState {
                   elevation: 0,
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.pin,
+                    background: Image.asset(
+                      ImageAssets.bookPages,
+                      fit: BoxFit.cover,
+                    ),
                     centerTitle: false,
                     titlePadding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingMedium),
                     title: Text("yearGroup.${selectedYearGroup.name}".tr()),
@@ -75,12 +79,19 @@ class _StickySliverPersistentYearGroupBar extends SliverPersistentHeaderDelegate
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      height: maxExtent,
-      child: YearGroupsChips(
-        selectedYearGroup: selectedYearGroup,
-        onYearGroupSelected: onGroupSelected,
+    return Card(
+      borderOnForeground: false,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+      margin: EdgeInsets.zero,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: SizedBox(
+        height: maxExtent,
+        child: YearGroupsChips(
+          selectedYearGroup: selectedYearGroup,
+          onYearGroupSelected: onGroupSelected,
+        ),
       ),
     );
   }

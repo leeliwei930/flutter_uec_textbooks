@@ -23,6 +23,10 @@ class _LibraryViewTabletState extends LibraryViewState {
                 expandedHeight: constraints.maxHeight * 0.25,
                 floating: true,
                 flexibleSpace: FlexibleSpaceBar(
+                  background: Image.asset(
+                    ImageAssets.bookPages,
+                    fit: BoxFit.cover,
+                  ),
                   collapseMode: CollapseMode.pin,
                   centerTitle: false,
                   titlePadding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingMedium),

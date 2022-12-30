@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:uec_textbooks/components/year_groups_chips.dart';
+import 'package:uec_textbooks/constants/image_assets.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/ebook.dart';
 import 'package:uec_textbooks/models/year_group.dart';
