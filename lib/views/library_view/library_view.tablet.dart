@@ -75,7 +75,7 @@ class _LibraryViewTabletLoaded extends _LibraryViewLoadedBase {
   int get crossAxisCount => 4;
 
   @override
-  double get childAspectRatio => 1 / 2;
+  double get childAspectRatio => 0.45;
 
   @override
   double get imagePlaceholderAspectRatio => 3 / 4;

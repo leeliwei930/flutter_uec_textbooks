@@ -19,6 +19,7 @@ class BookView extends ConsumerWidget {
           if (pdfDoc != null) {
             return PDFViewer(
               document: pdfDoc,
+              panLimit: 0.25,
             );
           }
           return const SizedBox.shrink();
