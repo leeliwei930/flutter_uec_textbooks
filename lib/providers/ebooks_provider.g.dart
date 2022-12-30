@@ -118,3 +118,25 @@ class EbookPagesFamily extends Family<AsyncValue<int>> {
   @override
   String? get name => r'ebookPagesProvider';
 }
+
+String $viewBookHash() => r'a2512fb95c96359fce8de9507ea6fb6d3d830d22';
+
+/// See also [viewBook].
+final viewBookProvider = AutoDisposeProvider<Book?>(
+  viewBook,
+  name: r'viewBookProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : $viewBookHash,
+);
+typedef ViewBookRef = AutoDisposeProviderRef<Book?>;
+String $viewBookPDFViewerHash() => r'e07b8c79e11a7dcc68e481ff837b8a1ba15be538';
+
+/// See also [viewBookPDFViewer].
+final viewBookPDFViewerProvider = AutoDisposeFutureProvider<PDFDocument?>(
+  viewBookPDFViewer,
+  name: r'viewBookPDFViewerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : $viewBookPDFViewerHash,
+);
+typedef ViewBookPDFViewerRef = AutoDisposeFutureProviderRef<PDFDocument?>;

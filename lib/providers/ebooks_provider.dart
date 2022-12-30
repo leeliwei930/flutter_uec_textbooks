@@ -56,13 +56,23 @@ final yearGroupStateProvider = StateProvider(
 );
 
 // the readonly provider, which consume the selectedBookStateProvider.
-final viewBookProvider = Provider.autoDispose<Book?>((ref) {
+@riverpod
+Book? viewBook(ViewBookRef ref) {
   ref.onDispose(() {
     // when no longer watch or listen, reset the selectedBookStateProvider state
     ref.invalidate(selectedBookStateProvider);
   });
   return ref.watch(selectedBookStateProvider);
-});
+}
+
+@riverpod
+Future<PDFDocument?> viewBookPDFViewer(ViewBookPDFViewerRef ref) async {
+  final selectedBook = ref.watch(viewBookProvider);
+  if (selectedBook != null) {
+    return PDFDocument.fromURL(selectedBook.downloadUrl);
+  }
+  return null;
+}
 
 final selectedBookStateProvider = StateProvider.autoDispose<Book?>((ref) {
   return null;

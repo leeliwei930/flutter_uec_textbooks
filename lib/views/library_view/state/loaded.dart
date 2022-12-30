@@ -15,13 +15,21 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
   double get crossAxisSpacing;
   double get mainAxisSpacing;
 
+  void _pushToBookViewPage(BuildContext context, {Book? book}) {
+    if (book != null) {
+      context.pushNamed('view-book');
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<Book?>(selectedBookStateProvider, (prev, next) {
-      if (next != null) {
-        context.pushNamed('view-book');
-      }
-    });
+    ref.listen<Book?>(
+      selectedBookStateProvider,
+      (_, book) => _pushToBookViewPage(
+        context,
+        book: book,
+      ),
+    );
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,

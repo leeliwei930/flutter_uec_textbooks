@@ -43,7 +43,9 @@ dependencies:
   shimmer: ^2.0.0
   easy_localization: ^3.0.1
   filesize: ^2.0.1
-  advance_pdf_viewer: ^2.0.1
+  advance_pdf_viewer:
+    git:
+      url: https://github.com/enveraltin/pdf_viewer
   responsive_builder: ^0.4.3
   expandable: ^5.0.1
 
