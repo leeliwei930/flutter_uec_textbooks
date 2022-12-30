@@ -6,7 +6,7 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
     required this.books,
   });
 
-  final List<Ebook> books;
+  final List<Book> books;
   final YearGroup yearGroup;
 
   int get crossAxisCount;
@@ -15,12 +15,13 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
   double get crossAxisSpacing;
   double get mainAxisSpacing;
 
-  String getBookTitle({required YearGroup yearGroup, required String bookName}) {
-    return '${yearGroup.name}.$bookName'.tr();
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<Book?>(selectedBookStateProvider, (prev, next) {
+      if (next != null) {
+        context.pushNamed('view-book');
+      }
+    });
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
@@ -36,44 +37,46 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
             ebookPagesProvider(book: book),
           );
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingSmall),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.network(
-                  TextBookCoverImage.url(
-                    yearGroup: ref.read(yearGroupStateProvider),
-                    filename: book.imageName,
-                  ),
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: AspectRatio(
-                        aspectRatio: imagePlaceholderAspectRatio,
-                        child: Container(
-                          color: Colors.white,
+          return InkWell(
+            onTap: () {
+              ref.read(selectedBookStateProvider.notifier).state = book;
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingSmall),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.network(
+                    TextBookCoverImage.url(
+                      yearGroup: ref.read(yearGroupStateProvider),
+                      filename: book.imageName,
+                    ),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: AspectRatio(
+                          aspectRatio: imagePlaceholderAspectRatio,
+                          child: Container(
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(
-                  height: kSpacingXSmall,
-                ),
-                Text(getBookTitle(
-                  bookName: book.name,
-                  yearGroup: yearGroup,
-                )),
-                Text(book.fileSizeForHuman),
-                bookPages.maybeWhen(
-                  data: (pages) => Text("$pages ${plural("page", pages)}"),
-                  orElse: () => const SizedBox.shrink(),
-                )
-              ],
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: kSpacingXSmall,
+                  ),
+                  Text(book.title),
+                  Text(book.fileSizeForHuman),
+                  bookPages.maybeWhen(
+                    data: (pages) => Text("$pages ${plural("page", pages)}"),
+                    orElse: () => const SizedBox.shrink(),
+                  )
+                ],
+              ),
             ),
           );
         },

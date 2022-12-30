@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:uec_textbooks/views/book_view/book_view.dart';
 import 'package:uec_textbooks/views/home_view/home_view.dart';
 import 'package:uec_textbooks/views/library_view/library_view.dart';
 import 'package:uec_textbooks/views/saved_view.dart';
@@ -15,7 +16,8 @@ final _routes = [
     path: '/library',
     pageBuilder: (context, state) => NoTransitionPage(
       child: ScreenTypeLayout(
-        mobile: LibraryView.mobile(),tablet: LibraryView.tablet(),
+        mobile: LibraryView.mobile(),
+        tablet: LibraryView.tablet(),
       ),
     ),
   ),
@@ -63,6 +65,16 @@ GoRouter router(ref) {
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/library',
-    routes: [homeViewRoute],
+    routes: [
+      homeViewRoute,
+      GoRoute(
+        path: '/book',
+        name: 'view-book',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, state) {
+          return const BookView();
+        }
+      ),
+    ],
   );
 }

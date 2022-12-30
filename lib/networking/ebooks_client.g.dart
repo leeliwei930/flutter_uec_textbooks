@@ -19,7 +19,7 @@ class _EbooksClient implements EbooksClient {
   String? baseUrl;
 
   @override
-  Future<List<Ebook>> getEbooks({
+  Future<List<Book>> getEbooks({
     required yearGroup,
     ref = "main",
   }) async {
@@ -28,7 +28,7 @@ class _EbooksClient implements EbooksClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result =
-        await _dio.fetch<List<dynamic>>(_setStreamType<List<Ebook>>(Options(
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Book>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -41,7 +41,7 @@ class _EbooksClient implements EbooksClient {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
-        .map((dynamic i) => Ebook.fromJson(i as Map<String, dynamic>))
+        .map((dynamic i) => Book.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

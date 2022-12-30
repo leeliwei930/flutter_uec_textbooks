@@ -2,15 +2,15 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uec_textbooks/constants/books_pages.dart';
+import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/book_pages.dart';
-import 'package:uec_textbooks/models/ebook.dart';
 import 'package:uec_textbooks/models/year_group.dart';
 import 'package:uec_textbooks/providers/repository_provider.dart';
 
 part 'ebooks_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<List<Ebook>> ebooks(EbooksRef ref) async {
+Future<List<Book>> ebooks(EbooksRef ref) async {
   final repo = ref.read(ebooksRepositoryProvider);
   final selectedYearGroup = ref.watch(yearGroupStateProvider);
   return Future.delayed(const Duration(seconds: 3), () async {
@@ -37,7 +37,7 @@ YearGroupEbookPages _bookPages(_BookPagesRef ref) {
 @Riverpod(keepAlive: true)
 Future<int> ebookPages(
   EbookPagesRef ref, {
-  required Ebook book,
+  required Book book,
 }) async {
   final yearGroupEbookPages = ref.watch(_bookPagesProvider);
 
@@ -54,3 +54,16 @@ Future<int> ebookPages(
 final yearGroupStateProvider = StateProvider(
   (_) => YearGroup.jm1,
 );
+
+// the readonly provider, which consume the selectedBookStateProvider.
+final viewBookProvider = Provider.autoDispose<Book?>((ref) {
+  ref.onDispose(() {
+    // when no longer watch or listen, reset the selectedBookStateProvider state
+    ref.invalidate(selectedBookStateProvider);
+  });
+  return ref.watch(selectedBookStateProvider);
+});
+
+final selectedBookStateProvider = StateProvider.autoDispose<Book?>((ref) {
+  return null;
+});

@@ -29,17 +29,17 @@ class _SystemHash {
   }
 }
 
-String $ebooksHash() => r'851557a9c0771e43e83374ca8cb530984dd8b49e';
+String $ebooksHash() => r'ba62a6b02ea735cc0d62ce83aaf2d16304f45993';
 
 /// See also [ebooks].
-final ebooksProvider = FutureProvider<List<Ebook>>(
+final ebooksProvider = FutureProvider<List<Book>>(
   ebooks,
   name: r'ebooksProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : $ebooksHash,
 );
-typedef EbooksRef = FutureProviderRef<List<Ebook>>;
-String $_bookPagesHash() => r'5ab27cee0462f48f9d9b0c1d6a204af11cfe1db0';
+typedef EbooksRef = FutureProviderRef<List<Book>>;
+String $_bookPagesHash() => r'cb65d8eb7fd5c22e50be4f0dba4e111e9f792714';
 
 /// See also [_bookPages].
 final _bookPagesProvider = Provider<YearGroupEbookPages>(
@@ -49,7 +49,7 @@ final _bookPagesProvider = Provider<YearGroupEbookPages>(
       const bool.fromEnvironment('dart.vm.product') ? null : $_bookPagesHash,
 );
 typedef _BookPagesRef = ProviderRef<YearGroupEbookPages>;
-String $ebookPagesHash() => r'de3b4cbd313e408abff2ed9053497a9e1102a04a';
+String $ebookPagesHash() => r'77504f0de9ed529a1b7824ca2cdfd92e03bf7577';
 
 /// See also [ebookPages].
 class EbookPagesProvider extends FutureProvider<int> {
@@ -68,7 +68,7 @@ class EbookPagesProvider extends FutureProvider<int> {
                   : $ebookPagesHash,
         );
 
-  final Ebook book;
+  final Book book;
 
   @override
   bool operator ==(Object other) {
@@ -93,7 +93,7 @@ class EbookPagesFamily extends Family<AsyncValue<int>> {
   EbookPagesFamily();
 
   EbookPagesProvider call({
-    required Ebook book,
+    required Book book,
   }) {
     return EbookPagesProvider(
       book: book,

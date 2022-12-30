@@ -12,7 +12,6 @@ class _LibraryViewMobileState extends LibraryViewState {
   Widget build(BuildContext context) {
     final books = ref.watch(ebooksProvider);
     final selectedYearGroup = ref.watch(yearGroupStateProvider);
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: refreshBooks,
