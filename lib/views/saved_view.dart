@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uec_textbooks/providers/saved_library_provider.dart';
 
-class SavedView extends StatelessWidget {
+class SavedView extends ConsumerWidget {
   const SavedView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Saved View"),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final savedLibraryBox = ref.watch(savedLibraryBoxProvider);
+    return Scaffold(
+      body: savedLibraryBox.maybeWhen(
+        data: (box) {
+          if (box?.isEmpty ?? false) {
+            return Center(child: const Text('empty box'));
+          } else {
+            return Center(child: Text(box?.length.toString() ?? ''));
+          }
+          return const SizedBox.shrink();
+        },
+        error: (error, stackTrace) {
+          print(error);
+          return const SizedBox.shrink();
+        },
+        orElse: () => const SizedBox.shrink(),
+      ),
     );
   }
 }

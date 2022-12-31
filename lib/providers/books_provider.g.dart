@@ -39,7 +39,7 @@ final booksProvider = FutureProvider<List<Book>>(
       const bool.fromEnvironment('dart.vm.product') ? null : $booksHash,
 );
 typedef BooksRef = FutureProviderRef<List<Book>>;
-String $_bookPagesHash() => r'cb65d8eb7fd5c22e50be4f0dba4e111e9f792714';
+String $_bookPagesHash() => r'aa32a60ba2973558b6037c7f3d6f0c984a5918ed';
 
 /// See also [_bookPages].
 final _bookPagesProvider = Provider<YearGroupEbookPages>(
@@ -49,7 +49,7 @@ final _bookPagesProvider = Provider<YearGroupEbookPages>(
       const bool.fromEnvironment('dart.vm.product') ? null : $_bookPagesHash,
 );
 typedef _BookPagesRef = ProviderRef<YearGroupEbookPages>;
-String $bookPagesHash() => r'bdb325b8ea3732e993d7397e95638b9f1a7402f3';
+String $bookPagesHash() => r'86166db2b467452db7cb4d5a17277559e0110f62';
 
 /// See also [bookPages].
 class BookPagesProvider extends FutureProvider<int> {
