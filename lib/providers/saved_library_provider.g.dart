@@ -29,14 +29,100 @@ class _SystemHash {
   }
 }
 
-String $savedLibraryBoxHash() => r'08186ef2c278c9b94542ea7d7d02a45980040d9f';
+String $savedLibraryBoxHash() => r'd3e212940cdfd77162f68c36283d3983d8c8f701';
 
 /// See also [savedLibraryBox].
-final savedLibraryBoxProvider = AutoDisposeFutureProvider<Box<BookAdapter>?>(
+final savedLibraryBoxProvider = AutoDisposeFutureProvider<Box<Book>>(
   savedLibraryBox,
   name: r'savedLibraryBoxProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : $savedLibraryBoxHash,
 );
-typedef SavedLibraryBoxRef = AutoDisposeFutureProviderRef<Box<BookAdapter>?>;
+typedef SavedLibraryBoxRef = AutoDisposeFutureProviderRef<Box<Book>>;
+String $savedLibraryRepositoryHash() =>
+    r'a31f48d5062dd5b6b86df93652d832ca199c0523';
+
+/// See also [savedLibraryRepository].
+final savedLibraryRepositoryProvider =
+    AutoDisposeProvider<SavedLibraryRepository>(
+  savedLibraryRepository,
+  name: r'savedLibraryRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : $savedLibraryRepositoryHash,
+);
+typedef SavedLibraryRepositoryRef
+    = AutoDisposeProviderRef<SavedLibraryRepository>;
+String $savedBookOfflineAvailabilityHash() =>
+    r'eb8eb907b3b229419e6014cb5a586da687d4e315';
+
+/// See also [savedBookOfflineAvailability].
+class SavedBookOfflineAvailabilityProvider
+    extends AutoDisposeFutureProvider<bool> {
+  SavedBookOfflineAvailabilityProvider({
+    required this.book,
+  }) : super(
+          (ref) => savedBookOfflineAvailability(
+            ref,
+            book: book,
+          ),
+          from: savedBookOfflineAvailabilityProvider,
+          name: r'savedBookOfflineAvailabilityProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : $savedBookOfflineAvailabilityHash,
+        );
+
+  final Book book;
+
+  @override
+  bool operator ==(Object other) {
+    return other is SavedBookOfflineAvailabilityProvider && other.book == book;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, book.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+typedef SavedBookOfflineAvailabilityRef = AutoDisposeFutureProviderRef<bool>;
+
+/// See also [savedBookOfflineAvailability].
+final savedBookOfflineAvailabilityProvider =
+    SavedBookOfflineAvailabilityFamily();
+
+class SavedBookOfflineAvailabilityFamily extends Family<AsyncValue<bool>> {
+  SavedBookOfflineAvailabilityFamily();
+
+  SavedBookOfflineAvailabilityProvider call({
+    required Book book,
+  }) {
+    return SavedBookOfflineAvailabilityProvider(
+      book: book,
+    );
+  }
+
+  @override
+  AutoDisposeFutureProvider<bool> getProviderOverride(
+    covariant SavedBookOfflineAvailabilityProvider provider,
+  ) {
+    return call(
+      book: provider.book,
+    );
+  }
+
+  @override
+  List<ProviderOrFamily>? get allTransitiveDependencies => null;
+
+  @override
+  List<ProviderOrFamily>? get dependencies => null;
+
+  @override
+  String? get name => r'savedBookOfflineAvailabilityProvider';
+}

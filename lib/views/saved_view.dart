@@ -11,15 +11,13 @@ class SavedView extends ConsumerWidget {
     return Scaffold(
       body: savedLibraryBox.maybeWhen(
         data: (box) {
-          if (box?.isEmpty ?? false) {
+          if (box.isEmpty) {
             return Center(child: const Text('empty box'));
           } else {
-            return Center(child: Text(box?.length.toString() ?? ''));
+            return Center(child: Text(box.length.toString()));
           }
-          return const SizedBox.shrink();
         },
         error: (error, stackTrace) {
-          print(error);
           return const SizedBox.shrink();
         },
         orElse: () => const SizedBox.shrink(),

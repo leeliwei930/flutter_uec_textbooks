@@ -18,6 +18,7 @@ class BooksRepository {
     return response
         .map((Book book) => Book(
               name: book.name,
+              path: book.path,
               downloadUrl: book.downloadUrl,
               size: book.size,
               yearGroup: yearGroup,

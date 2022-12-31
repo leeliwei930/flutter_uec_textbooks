@@ -44,18 +44,19 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
           final bookPages = ref.watch(
             bookPagesProvider(book: book),
           );
+          final isBookOfflineSaved = ref.watch(savedBookOfflineAvailabilityProvider(book: book));
 
-          return InkWell(
-            onTap: () {
-              ref.read(selectedBookStateProvider.notifier).state = book;
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingSmall),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.network(
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingSmall),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    ref.read(selectedBookStateProvider.notifier).state = book;
+                  },
+                  child: Image.network(
                     TextBookCoverImage.url(
                       yearGroup: ref.read(yearGroupStateProvider),
                       filename: book.imageName,
@@ -74,17 +75,49 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
                       );
                     },
                   ),
-                  const SizedBox(
-                    height: kSpacingXSmall,
-                  ),
-                  Text(book.title),
-                  Text(book.fileSizeForHuman),
-                  bookPages.maybeWhen(
-                    data: (pages) => Text("$pages ${plural("page", pages)}"),
-                    orElse: () => const SizedBox.shrink(),
-                  )
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: kSpacingXSmall,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(book.title),
+                          Text(book.fileSizeForHuman),
+                          bookPages.maybeWhen(
+                            data: (pages) => Text("$pages ${plural("page", pages)}"),
+                            orElse: () => const SizedBox.shrink(),
+                          )
+                        ],
+                      ),
+                    ),
+                    isBookOfflineSaved.maybeWhen(
+                      orElse: () => const SizedBox.shrink(),
+                      error: (error, stackTrace) {
+                        print(error);
+                        return const SizedBox.shrink();
+                      },
+                      data: (isSaved) {
+                        return IconButton(
+                          onPressed: () {
+                            final savedLibraryRepo = ref.read(savedLibraryRepositoryProvider);
+                            if (isSaved) {
+                              savedLibraryRepo.removeFromLibrary(book);
+                            } else {
+                              savedLibraryRepo.addToLibrary(book);
+                            }
+                            ref.invalidate(savedBookOfflineAvailabilityProvider(book: book));
+                          },
+                          icon: isSaved ? const Icon(Icons.bookmark) : const Icon(Icons.bookmark_border),
+                        );
+                      },
+                    ),
+                  ],
+                )
+              ],
             ),
           );
         },

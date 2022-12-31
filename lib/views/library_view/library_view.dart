@@ -9,6 +9,7 @@ import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/year_group.dart';
 import 'package:uec_textbooks/providers/books_provider.dart';
+import 'package:uec_textbooks/providers/saved_library_provider.dart';
 import 'package:uec_textbooks/utils/textbook_cover_image.dart';
 
 part 'library_view.mobile.dart';

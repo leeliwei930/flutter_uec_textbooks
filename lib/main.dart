@@ -2,7 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:uec_textbooks/models/book_adapter.dart';
+import 'package:uec_textbooks/models/book.dart';
+import 'package:uec_textbooks/models/year_group.dart';
 import 'package:uec_textbooks/views/uec_main_app.dart';
 
 void runMain({required VoidCallback configInit}) async {
@@ -11,7 +12,8 @@ void runMain({required VoidCallback configInit}) async {
   await EasyLocalization.ensureInitialized();
   Hive
     ..initFlutter('db')
-    ..registerAdapter(BookAdapter());
+    ..registerAdapter<YearGroup>(YearGroupAdapter())
+    ..registerAdapter<Book>(BookAdapter());
   runApp(
     ProviderScope(
       child: EasyLocalization(
