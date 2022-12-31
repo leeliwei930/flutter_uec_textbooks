@@ -10,5 +10,6 @@ enum YearGroup {
 
   final String name;
 
+  @override
   String toString() => name;
 }

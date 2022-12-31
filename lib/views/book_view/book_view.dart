@@ -2,7 +2,7 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
-import 'package:uec_textbooks/providers/ebooks_provider.dart';
+import 'package:uec_textbooks/providers/books_provider.dart';
 
 class BookView extends ConsumerWidget {
   const BookView({super.key});
@@ -11,32 +11,40 @@ class BookView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final book = ref.watch(viewBookProvider);
     final pdfFile = ref.watch(viewBookPDFViewerProvider);
+    final expandedHeight = (MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.vertical) * 0.15;
+    final collapsedHeight = expandedHeight - (expandedHeight * 0.1);
+
     return Scaffold(
-      appBar: AppBar(
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(kExpandedAppBarHeight),
-          child: FlexibleSpaceBar(
+        body: CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          expandedHeight: expandedHeight,
+          collapsedHeight: collapsedHeight,
+          flexibleSpace: FlexibleSpaceBar(
             titlePadding: const EdgeInsets.all(kSpacingMedium),
             centerTitle: false,
+            expandedTitleScale: 1.25,
             title: Text(
               book?.title ?? '',
               textAlign: TextAlign.left,
             ),
           ),
         ),
-      ),
-      body: pdfFile.maybeWhen(
-        data: (pdfDoc) {
-          if (pdfDoc != null) {
-            return PDFViewer(
-              document: pdfDoc,
-              panLimit: 0.25,
-            );
-          }
-          return const SizedBox.shrink();
-        },
-        orElse: () => const SizedBox.shrink(),
-      ),
-    );
+        SliverFillRemaining(
+          child: pdfFile.maybeWhen(
+            data: (pdfDoc) {
+              if (pdfDoc != null) {
+                return PDFViewer(
+                  document: pdfDoc,
+                  panLimit: 0.25,
+                );
+              }
+              return const SizedBox.shrink();
+            },
+            orElse: () => const SizedBox.shrink(),
+          ),
+        )
+      ],
+    ));
   }
 }

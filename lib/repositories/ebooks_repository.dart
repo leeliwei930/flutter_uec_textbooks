@@ -3,8 +3,8 @@ import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/year_group.dart';
 import 'package:uec_textbooks/networking/books_client.dart';
 
-class EbooksRepository {
-  const EbooksRepository({required this.client});
+class BooksRepository {
+  const BooksRepository({required this.client});
   final BooksApiClient client;
 
   Future<List<Book>> getEbookByYearGroup({

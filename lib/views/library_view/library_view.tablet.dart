@@ -10,7 +10,7 @@ class _LibraryViewTablet extends LibraryView {
 class _LibraryViewTabletState extends LibraryViewState {
   @override
   Widget build(BuildContext context) {
-    final books = ref.watch(ebooksProvider);
+    final books = ref.watch(booksProvider);
     final selectedYearGroup = ref.watch(yearGroupStateProvider);
     return Scaffold(
       body: RefreshIndicator(

@@ -8,7 +8,7 @@ import 'package:uec_textbooks/constants/image_assets.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/year_group.dart';
-import 'package:uec_textbooks/providers/ebooks_provider.dart';
+import 'package:uec_textbooks/providers/books_provider.dart';
 import 'package:uec_textbooks/utils/textbook_cover_image.dart';
 
 part 'library_view.mobile.dart';
@@ -31,7 +31,7 @@ abstract class LibraryView extends ConsumerStatefulWidget {
 
 abstract class LibraryViewState extends ConsumerState<LibraryView> {
   Future<void> refreshBooks() {
-    ref.invalidate(ebooksProvider);
-    return ref.read(ebooksProvider.future);
+    ref.invalidate(booksProvider);
+    return ref.read(booksProvider.future);
   }
 }

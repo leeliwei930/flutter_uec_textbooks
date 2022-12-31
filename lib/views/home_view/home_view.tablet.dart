@@ -23,7 +23,7 @@ class _MenuItem {
 }
 
 class _HomeViewTabletState extends HomeViewState with SingleTickerProviderStateMixin {
-  late final expandableController;
+  late final ExpandableController expandableController;
 
   final menuItems = <_MenuItem>[];
 

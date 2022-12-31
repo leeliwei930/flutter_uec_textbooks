@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ebooks_provider.dart';
+part of 'books_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -29,16 +29,16 @@ class _SystemHash {
   }
 }
 
-String $ebooksHash() => r'9ae75e5310e62353ff48bc753c4e0e2460d7ba95';
+String $booksHash() => r'218dec9773b727a9515c3cf31cb2d335192a854f';
 
-/// See also [ebooks].
-final ebooksProvider = AutoDisposeFutureProvider<List<Book>>(
-  ebooks,
-  name: r'ebooksProvider',
+/// See also [books].
+final booksProvider = FutureProvider<List<Book>>(
+  books,
+  name: r'booksProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : $ebooksHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : $booksHash,
 );
-typedef EbooksRef = AutoDisposeFutureProviderRef<List<Book>>;
+typedef BooksRef = FutureProviderRef<List<Book>>;
 String $_bookPagesHash() => r'cb65d8eb7fd5c22e50be4f0dba4e111e9f792714';
 
 /// See also [_bookPages].
@@ -49,30 +49,30 @@ final _bookPagesProvider = Provider<YearGroupEbookPages>(
       const bool.fromEnvironment('dart.vm.product') ? null : $_bookPagesHash,
 );
 typedef _BookPagesRef = ProviderRef<YearGroupEbookPages>;
-String $ebookPagesHash() => r'77504f0de9ed529a1b7824ca2cdfd92e03bf7577';
+String $bookPagesHash() => r'bdb325b8ea3732e993d7397e95638b9f1a7402f3';
 
-/// See also [ebookPages].
-class EbookPagesProvider extends FutureProvider<int> {
-  EbookPagesProvider({
+/// See also [bookPages].
+class BookPagesProvider extends FutureProvider<int> {
+  BookPagesProvider({
     required this.book,
   }) : super(
-          (ref) => ebookPages(
+          (ref) => bookPages(
             ref,
             book: book,
           ),
-          from: ebookPagesProvider,
-          name: r'ebookPagesProvider',
+          from: bookPagesProvider,
+          name: r'bookPagesProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : $ebookPagesHash,
+                  : $bookPagesHash,
         );
 
   final Book book;
 
   @override
   bool operator ==(Object other) {
-    return other is EbookPagesProvider && other.book == book;
+    return other is BookPagesProvider && other.book == book;
   }
 
   @override
@@ -84,25 +84,25 @@ class EbookPagesProvider extends FutureProvider<int> {
   }
 }
 
-typedef EbookPagesRef = FutureProviderRef<int>;
+typedef BookPagesRef = FutureProviderRef<int>;
 
-/// See also [ebookPages].
-final ebookPagesProvider = EbookPagesFamily();
+/// See also [bookPages].
+final bookPagesProvider = BookPagesFamily();
 
-class EbookPagesFamily extends Family<AsyncValue<int>> {
-  EbookPagesFamily();
+class BookPagesFamily extends Family<AsyncValue<int>> {
+  BookPagesFamily();
 
-  EbookPagesProvider call({
+  BookPagesProvider call({
     required Book book,
   }) {
-    return EbookPagesProvider(
+    return BookPagesProvider(
       book: book,
     );
   }
 
   @override
   FutureProvider<int> getProviderOverride(
-    covariant EbookPagesProvider provider,
+    covariant BookPagesProvider provider,
   ) {
     return call(
       book: provider.book,
@@ -116,7 +116,7 @@ class EbookPagesFamily extends Family<AsyncValue<int>> {
   List<ProviderOrFamily>? get dependencies => null;
 
   @override
-  String? get name => r'ebookPagesProvider';
+  String? get name => r'bookPagesProvider';
 }
 
 String $viewBookHash() => r'a2512fb95c96359fce8de9507ea6fb6d3d830d22';

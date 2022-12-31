@@ -16,7 +16,7 @@ void runMain({required VoidCallback configInit}) async {
         ],
         fallbackLocale: const Locale('en', 'US'),
         path: 'l10n',
-        child: UECMainApp(),
+        child: const UECMainApp(),
       ),
     ),
   );

@@ -29,14 +29,14 @@ class _SystemHash {
   }
 }
 
-String $ebooksRepositoryHash() => r'fde89655119cd1cd6553a11981bbece9642294b5';
+String $ebooksRepositoryHash() => r'98c15a5e7921c6cd0bcfa054887893ae81085e9e';
 
 /// See also [ebooksRepository].
-final ebooksRepositoryProvider = AutoDisposeProvider<EbooksRepository>(
+final ebooksRepositoryProvider = AutoDisposeProvider<BooksRepository>(
   ebooksRepository,
   name: r'ebooksRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : $ebooksRepositoryHash,
 );
-typedef EbooksRepositoryRef = AutoDisposeProviderRef<EbooksRepository>;
+typedef EbooksRepositoryRef = AutoDisposeProviderRef<BooksRepository>;

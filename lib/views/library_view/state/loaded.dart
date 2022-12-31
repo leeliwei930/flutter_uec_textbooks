@@ -42,7 +42,7 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
         (context, index) {
           final book = books.elementAt(index);
           final bookPages = ref.watch(
-            ebookPagesProvider(book: book),
+            bookPagesProvider(book: book),
           );
 
           return InkWell(

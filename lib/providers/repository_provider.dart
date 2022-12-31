@@ -5,7 +5,7 @@ import 'package:uec_textbooks/repositories/ebooks_repository.dart';
 part 'repository_provider.g.dart';
 
 @riverpod
-EbooksRepository ebooksRepository(EbooksRepositoryRef ref) {
+BooksRepository ebooksRepository(EbooksRepositoryRef ref) {
   final client = ref.read(ebooksClientProvider);
-  return EbooksRepository(client: client);
+  return BooksRepository(client: client);
 }

@@ -2,16 +2,16 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uec_textbooks/constants/books_pages.dart';
+import 'package:uec_textbooks/constants/books_meta.dart';
 import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/book_pages.dart';
 import 'package:uec_textbooks/models/year_group.dart';
 import 'package:uec_textbooks/providers/repository_provider.dart';
 
-part 'ebooks_provider.g.dart';
+part 'books_provider.g.dart';
 
-@riverpod
-Future<List<Book>> ebooks(EbooksRef ref) async {
+@Riverpod(keepAlive: true)
+Future<List<Book>> books(BooksRef ref) async {
   final repo = ref.read(ebooksRepositoryProvider);
   final selectedYearGroup = ref.watch(yearGroupStateProvider);
   final cancelToken = CancelToken();
@@ -31,7 +31,7 @@ Future<List<Book>> ebooks(EbooksRef ref) async {
 YearGroupEbookPages _bookPages(_BookPagesRef ref) {
   final pageCountDatasets = <YearGroup, Map<String, int>>{};
 
-  bookPages.forEach(
+  BooksMeta.getPages().forEach(
     (key, value) {
       final yearGroup = YearGroup.values.byName(key);
       pageCountDatasets[yearGroup] = value;
@@ -42,8 +42,8 @@ YearGroupEbookPages _bookPages(_BookPagesRef ref) {
 }
 
 @Riverpod(keepAlive: true)
-Future<int> ebookPages(
-  EbookPagesRef ref, {
+Future<int> bookPages(
+  BookPagesRef ref, {
   required Book book,
 }) async {
   final yearGroupEbookPages = ref.watch(_bookPagesProvider);
