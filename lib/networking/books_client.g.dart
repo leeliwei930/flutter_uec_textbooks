@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ebooks_client.dart';
+part of 'books_client.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'ebooks_client.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _EbooksClient implements EbooksClient {
-  _EbooksClient(
+class _BooksApiClient implements BooksApiClient {
+  _BooksApiClient(
     this._dio, {
     this.baseUrl,
   });
@@ -19,7 +19,8 @@ class _EbooksClient implements EbooksClient {
   String? baseUrl;
 
   @override
-  Future<List<Book>> getEbooks({
+  Future<List<Book>> getBooks({
+    required cancelToken,
     required yearGroup,
     ref = "main",
   }) async {

@@ -1,4 +1,5 @@
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uec_textbooks/constants/books_pages.dart';
@@ -9,15 +10,21 @@ import 'package:uec_textbooks/providers/repository_provider.dart';
 
 part 'ebooks_provider.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 Future<List<Book>> ebooks(EbooksRef ref) async {
   final repo = ref.read(ebooksRepositoryProvider);
   final selectedYearGroup = ref.watch(yearGroupStateProvider);
-  return Future.delayed(const Duration(seconds: 3), () async {
-    final books = await repo.getEbookByYearGroup(selectedYearGroup);
-    // filtered out only pdf files.
-    return books.where((file) => file.name.endsWith('.pdf')).toList();
+  final cancelToken = CancelToken();
+  ref.onDispose(() {
+    cancelToken.cancel();
   });
+
+  final books = await repo.getEbookByYearGroup(
+    cancelToken: cancelToken,
+    yearGroup: selectedYearGroup,
+  );
+  // filtered out only pdf files.
+  return books.where((file) => file.name.endsWith('.pdf')).toList();
 }
 
 @Riverpod(keepAlive: true)

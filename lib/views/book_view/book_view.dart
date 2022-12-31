@@ -12,38 +12,30 @@ class BookView extends ConsumerWidget {
     final book = ref.watch(viewBookProvider);
     final pdfFile = ref.watch(viewBookPDFViewerProvider);
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                expandedHeight: constraints.maxHeight * 0.25,
-                collapsedHeight: constraints.maxHeight * 0.15,
-                pinned: true,
-                floating: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: false,
-                  titlePadding: EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingMedium),
-                  title: Text(book?.title ?? ''),
-                ),
-              ),
-              SliverFillRemaining(
-                child: pdfFile.maybeWhen(
-                  data: (pdfDoc) {
-                    if (pdfDoc != null) {
-                      return PDFViewer(
-                        document: pdfDoc,
-                        panLimit: 0.25,
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                  orElse: () => const SizedBox.shrink(),
-                ),
-              )
-            ],
-          );
+      appBar: AppBar(
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(kExpandedAppBarHeight),
+          child: FlexibleSpaceBar(
+            titlePadding: const EdgeInsets.all(kSpacingMedium),
+            centerTitle: false,
+            title: Text(
+              book?.title ?? '',
+              textAlign: TextAlign.left,
+            ),
+          ),
+        ),
+      ),
+      body: pdfFile.maybeWhen(
+        data: (pdfDoc) {
+          if (pdfDoc != null) {
+            return PDFViewer(
+              document: pdfDoc,
+              panLimit: 0.25,
+            );
+          }
+          return const SizedBox.shrink();
         },
+        orElse: () => const SizedBox.shrink(),
       ),
     );
   }

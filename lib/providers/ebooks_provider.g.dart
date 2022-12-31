@@ -29,16 +29,16 @@ class _SystemHash {
   }
 }
 
-String $ebooksHash() => r'ba62a6b02ea735cc0d62ce83aaf2d16304f45993';
+String $ebooksHash() => r'9ae75e5310e62353ff48bc753c4e0e2460d7ba95';
 
 /// See also [ebooks].
-final ebooksProvider = FutureProvider<List<Book>>(
+final ebooksProvider = AutoDisposeFutureProvider<List<Book>>(
   ebooks,
   name: r'ebooksProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : $ebooksHash,
 );
-typedef EbooksRef = FutureProviderRef<List<Book>>;
+typedef EbooksRef = AutoDisposeFutureProviderRef<List<Book>>;
 String $_bookPagesHash() => r'cb65d8eb7fd5c22e50be4f0dba4e111e9f792714';
 
 /// See also [_bookPages].

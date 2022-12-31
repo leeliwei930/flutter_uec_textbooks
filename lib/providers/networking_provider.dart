@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uec_textbooks/networking/ebooks_client.dart';
+import 'package:uec_textbooks/networking/books_client.dart';
 import 'package:uec_textbooks/utils/flavor_config.dart';
 
 part 'networking_provider.g.dart';
@@ -13,9 +13,9 @@ Dio dio(_) => Dio(BaseOptions(
     ));
 
 @riverpod
-EbooksClient ebooksClient(EbooksClientRef ref) {
+BooksApiClient ebooksClient(EbooksClientRef ref) {
   final dio = ref.read(dioProvider);
   final baseUrl = FlavorConfig.instance.baseUrl;
 
-  return EbooksClient(dio, baseUrl: baseUrl);
+  return BooksApiClient(dio, baseUrl: baseUrl);
 }
