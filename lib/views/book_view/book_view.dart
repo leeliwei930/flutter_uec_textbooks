@@ -1,6 +1,7 @@
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/providers/ebooks_provider.dart';
 
 class BookView extends ConsumerWidget {
@@ -11,20 +12,38 @@ class BookView extends ConsumerWidget {
     final book = ref.watch(viewBookProvider);
     final pdfFile = ref.watch(viewBookPDFViewerProvider);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(book?.title ?? ''),
-      ),
-      body: pdfFile.maybeWhen(
-        data: (pdfDoc) {
-          if (pdfDoc != null) {
-            return PDFViewer(
-              document: pdfDoc,
-              panLimit: 0.25,
-            );
-          }
-          return const SizedBox.shrink();
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                expandedHeight: constraints.maxHeight * 0.25,
+                collapsedHeight: constraints.maxHeight * 0.15,
+                pinned: true,
+                floating: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: false,
+                  titlePadding: EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingMedium),
+                  title: Text(book?.title ?? ''),
+                ),
+              ),
+              SliverFillRemaining(
+                child: pdfFile.maybeWhen(
+                  data: (pdfDoc) {
+                    if (pdfDoc != null) {
+                      return PDFViewer(
+                        document: pdfDoc,
+                        panLimit: 0.25,
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                  orElse: () => const SizedBox.shrink(),
+                ),
+              )
+            ],
+          );
         },
-        orElse: () => const SizedBox.shrink(),
       ),
     );
   }

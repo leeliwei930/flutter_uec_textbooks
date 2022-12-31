@@ -31,6 +31,7 @@ class YearGroupsChips extends StatelessWidget {
         return ChoiceChip(
           label: Text("yearGroup.${yearGroup.name}".tr()),
           selected: yearGroup == selectedYearGroup,
+          selectedColor: Theme.of(context).chipTheme.selectedColor,
           onSelected: (_) {
             onYearGroupSelected?.call(yearGroup);
           },
