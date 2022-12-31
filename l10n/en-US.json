@@ -20,7 +20,7 @@
 		"other": "pages"
 	},
 	"yearGroup": {
-		"jm1": "Junior 1",
+	"jm1": "Junior 1",
 	"jm2": "Junior 2",
 	"jm3": "Junior 3",
 	"sm1": "Senior 1",
@@ -136,5 +136,9 @@
 		  "geo_world": "高中《世界地理》",
 		  "his_asean_1": "高中《马来西亚及其东南亚邻国史》第一部分",
 		  "his_asean_2": "高中《马来西亚及其东南亚邻国史》第二部分"
-		}
+		},
+	"savedLibrary": {
+		"empty": "There are no books in save library.",
+		"emptySupport": "To add a book into the list please tap on the bookmark icon in the library tab"
+	}
 }

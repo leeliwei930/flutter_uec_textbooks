@@ -16,6 +16,8 @@ class Book extends Equatable {
     required this.downloadUrl,
     required this.size,
     this.yearGroup,
+    this.offlineCoverImage,
+    this.offlinePDFPath,
   });
   factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 
@@ -34,6 +36,14 @@ class Book extends Equatable {
   @HiveField(4)
   @JsonKey(ignore: true)
   final YearGroup? yearGroup;
+
+  @HiveField(5)
+  @JsonKey(ignore: true)
+  final String? offlineCoverImage;
+
+  @HiveField(6)
+  @JsonKey(ignore: true)
+  final String? offlinePDFPath;
 
   String get imageName => name.replaceFirst('.pdf', '.jpg');
   String get fileSizeForHuman => filesize(size);
