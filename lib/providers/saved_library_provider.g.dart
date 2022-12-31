@@ -54,7 +54,7 @@ final savedLibraryRepositoryProvider =
 );
 typedef SavedLibraryRepositoryRef
     = AutoDisposeProviderRef<SavedLibraryRepository>;
-String $isBookOfflineSavedHash() => r'4a6124d0fd62040f0fd8533c8d1c447573ce4c4f';
+String $isBookOfflineSavedHash() => r'a6d19c3ac34a9ea93fc36f1d182eca05176830a6';
 
 /// See also [isBookOfflineSaved].
 class IsBookOfflineSavedProvider extends AutoDisposeFutureProvider<bool> {

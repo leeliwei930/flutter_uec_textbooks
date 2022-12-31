@@ -140,3 +140,14 @@ final viewBookPDFViewerProvider = AutoDisposeFutureProvider<PDFDocument?>(
       : $viewBookPDFViewerHash,
 );
 typedef ViewBookPDFViewerRef = AutoDisposeFutureProviderRef<PDFDocument?>;
+String $offlineBookServiceHash() => r'e04ee482ee8c5d551ec537cc38d4b805aaef6e35';
+
+/// See also [offlineBookService].
+final offlineBookServiceProvider = AutoDisposeProvider<OfflineBookService>(
+  offlineBookService,
+  name: r'offlineBookServiceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : $offlineBookServiceHash,
+);
+typedef OfflineBookServiceRef = AutoDisposeProviderRef<OfflineBookService>;

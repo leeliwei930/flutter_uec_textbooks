@@ -7,6 +7,7 @@ import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/book_pages.dart';
 import 'package:uec_textbooks/models/year_group.dart';
 import 'package:uec_textbooks/providers/repository_provider.dart';
+import 'package:uec_textbooks/service/offline_file_service.dart';
 
 part 'books_provider.g.dart';
 
@@ -84,3 +85,6 @@ Future<PDFDocument?> viewBookPDFViewer(ViewBookPDFViewerRef ref) async {
 final selectedBookStateProvider = StateProvider.autoDispose<Book?>((ref) {
   return null;
 });
+
+@riverpod
+OfflineBookService offlineBookService(OfflineBookServiceRef ref) => OfflineBookService(ref);

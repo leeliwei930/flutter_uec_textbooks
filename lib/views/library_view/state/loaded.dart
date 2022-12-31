@@ -102,12 +102,12 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
                       },
                       data: (isSaved) {
                         return IconButton(
-                          onPressed: () {
+                          onPressed: () async {
                             final savedLibraryRepo = ref.read(savedLibraryRepositoryProvider);
                             if (isSaved) {
-                              savedLibraryRepo.removeFromLibrary(book);
+                              await savedLibraryRepo.removeFromLibrary(book);
                             } else {
-                              savedLibraryRepo.addToLibrary(book);
+                              await savedLibraryRepo.addToLibrary(book);
                             }
                             ref.invalidate(isBookOfflineSavedProvider(book: book));
                           },

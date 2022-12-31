@@ -78,9 +78,10 @@ class _SavedLibraryLoadedState extends ConsumerState<_SavedLibraryLoaded> {
                     onRecordDismiss: (dismissDirection) {
                       if (dismissDirection == DismissDirection.endToStart) {
                         final savedLibraryRepo = ref.read(savedLibraryRepositoryProvider);
-                        savedLibraryRepo.removeFromLibrary(book);
-                        ref.invalidate(isBookOfflineSavedProvider(book: book));
-                        ref.invalidate(savedLibraryBoxProvider);
+                        savedLibraryRepo.removeFromLibrary(book).whenComplete(() {
+                          ref.invalidate(isBookOfflineSavedProvider(book: book));
+                          ref.invalidate(savedLibraryBoxProvider);
+                        });
                       }
                     },
                   );
