@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:uec_textbooks/components/saved_book_record.dart';
 import 'package:uec_textbooks/constants/lottie_assets.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/book.dart';
@@ -36,13 +37,17 @@ class SavedView extends ConsumerWidget {
   }
 }
 
-class _SavedLibraryLoaded extends StatelessWidget {
+class _SavedLibraryLoaded extends ConsumerStatefulWidget {
   const _SavedLibraryLoaded({required this.bookCollection});
 
   final Box<Book> bookCollection;
 
-  List<Widget> _buildSliverWidgets(
-    BuildContext context, {
+  @override
+  ConsumerState<_SavedLibraryLoaded> createState() => _SavedLibraryLoadedState();
+}
+
+class _SavedLibraryLoadedState extends ConsumerState<_SavedLibraryLoaded> {
+  List<Widget> _buildSliverWidgets({
     List<BookGroup> bookGroups = const [],
   }) {
     final slivers = <Widget>[];
@@ -68,28 +73,16 @@ class _SavedLibraryLoaded extends StatelessWidget {
                 childCount: bookGroup.books.length,
                 (context, index) {
                   final book = bookGroup.books.elementAt(index);
-                  return Dismissible(
-                    key: Key(book.path),
-                    background: ColoredBox(
-                      color: colorScheme.error,
-                      child: Padding(
-                        padding: const EdgeInsets.all(kSpacingSmall),
-                        child: Text(
-                          "Slide left to remove from saved",
-                          textAlign: TextAlign.end,
-                          style: textStyle.titleMedium?.copyWith(
-                            color: colorScheme.inversePrimary,
-                          ),
-                        ),
-                      ),
-                    ),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (dismissDirection) {
-                      // TODO(leeliwei930): Remove record.
+                  return SavedBookRecord(
+                    book: book,
+                    onRecordDismiss: (dismissDirection) {
+                      if (dismissDirection == DismissDirection.endToStart) {
+                        final savedLibraryRepo = ref.read(savedLibraryRepositoryProvider);
+                        savedLibraryRepo.removeFromLibrary(book);
+                        ref.invalidate(isBookOfflineSavedProvider(book: book));
+                        ref.invalidate(savedLibraryBoxProvider);
+                      }
                     },
-                    child: ListTile(
-                      title: Text(book.title),
-                    ),
                   );
                 },
               ),
@@ -103,11 +96,10 @@ class _SavedLibraryLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bookGroups = BookGroup.fromBoxCollection(bookCollection);
+    final bookGroups = BookGroup.fromBoxCollection(widget.bookCollection);
     return CustomScrollView(
       clipBehavior: Clip.hardEdge,
       slivers: _buildSliverWidgets(
-        context,
         bookGroups: bookGroups,
       ),
     );

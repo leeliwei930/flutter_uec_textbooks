@@ -44,7 +44,7 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
           final bookPages = ref.watch(
             bookPagesProvider(book: book),
           );
-          final isBookOfflineSaved = ref.watch(savedBookOfflineAvailabilityProvider(book: book));
+          final isBookOfflineSaved = ref.watch(isBookOfflineSavedProvider(book: book));
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingSmall),
@@ -109,7 +109,7 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
                             } else {
                               savedLibraryRepo.addToLibrary(book);
                             }
-                            ref.invalidate(savedBookOfflineAvailabilityProvider(book: book));
+                            ref.invalidate(isBookOfflineSavedProvider(book: book));
                           },
                           icon: isSaved ? const Icon(Icons.bookmark) : const Icon(Icons.bookmark_border),
                         );

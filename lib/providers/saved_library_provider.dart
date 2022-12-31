@@ -17,7 +17,7 @@ SavedLibraryRepository savedLibraryRepository(SavedLibraryRepositoryRef ref) {
 }
 
 @riverpod
-Future<bool> savedBookOfflineAvailability(SavedBookOfflineAvailabilityRef ref, {required Book book}) {
+Future<bool> isBookOfflineSaved(IsBookOfflineSavedRef ref, {required Book book}) {
   final savedLibraryRepo = ref.read(savedLibraryRepositoryProvider);
   return savedLibraryRepo.isSavedInLibrary(book);
 }

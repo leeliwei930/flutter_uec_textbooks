@@ -54,32 +54,30 @@ final savedLibraryRepositoryProvider =
 );
 typedef SavedLibraryRepositoryRef
     = AutoDisposeProviderRef<SavedLibraryRepository>;
-String $savedBookOfflineAvailabilityHash() =>
-    r'eb8eb907b3b229419e6014cb5a586da687d4e315';
+String $isBookOfflineSavedHash() => r'4a6124d0fd62040f0fd8533c8d1c447573ce4c4f';
 
-/// See also [savedBookOfflineAvailability].
-class SavedBookOfflineAvailabilityProvider
-    extends AutoDisposeFutureProvider<bool> {
-  SavedBookOfflineAvailabilityProvider({
+/// See also [isBookOfflineSaved].
+class IsBookOfflineSavedProvider extends AutoDisposeFutureProvider<bool> {
+  IsBookOfflineSavedProvider({
     required this.book,
   }) : super(
-          (ref) => savedBookOfflineAvailability(
+          (ref) => isBookOfflineSaved(
             ref,
             book: book,
           ),
-          from: savedBookOfflineAvailabilityProvider,
-          name: r'savedBookOfflineAvailabilityProvider',
+          from: isBookOfflineSavedProvider,
+          name: r'isBookOfflineSavedProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : $savedBookOfflineAvailabilityHash,
+                  : $isBookOfflineSavedHash,
         );
 
   final Book book;
 
   @override
   bool operator ==(Object other) {
-    return other is SavedBookOfflineAvailabilityProvider && other.book == book;
+    return other is IsBookOfflineSavedProvider && other.book == book;
   }
 
   @override
@@ -91,26 +89,25 @@ class SavedBookOfflineAvailabilityProvider
   }
 }
 
-typedef SavedBookOfflineAvailabilityRef = AutoDisposeFutureProviderRef<bool>;
+typedef IsBookOfflineSavedRef = AutoDisposeFutureProviderRef<bool>;
 
-/// See also [savedBookOfflineAvailability].
-final savedBookOfflineAvailabilityProvider =
-    SavedBookOfflineAvailabilityFamily();
+/// See also [isBookOfflineSaved].
+final isBookOfflineSavedProvider = IsBookOfflineSavedFamily();
 
-class SavedBookOfflineAvailabilityFamily extends Family<AsyncValue<bool>> {
-  SavedBookOfflineAvailabilityFamily();
+class IsBookOfflineSavedFamily extends Family<AsyncValue<bool>> {
+  IsBookOfflineSavedFamily();
 
-  SavedBookOfflineAvailabilityProvider call({
+  IsBookOfflineSavedProvider call({
     required Book book,
   }) {
-    return SavedBookOfflineAvailabilityProvider(
+    return IsBookOfflineSavedProvider(
       book: book,
     );
   }
 
   @override
   AutoDisposeFutureProvider<bool> getProviderOverride(
-    covariant SavedBookOfflineAvailabilityProvider provider,
+    covariant IsBookOfflineSavedProvider provider,
   ) {
     return call(
       book: provider.book,
@@ -124,5 +121,5 @@ class SavedBookOfflineAvailabilityFamily extends Family<AsyncValue<bool>> {
   List<ProviderOrFamily>? get dependencies => null;
 
   @override
-  String? get name => r'savedBookOfflineAvailabilityProvider';
+  String? get name => r'isBookOfflineSavedProvider';
 }

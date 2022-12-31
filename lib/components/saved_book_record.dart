@@ -6,8 +6,11 @@ class SavedBookRecord extends StatelessWidget {
   const SavedBookRecord({
     super.key,
     required this.book,
+    this.onRecordDismiss,
   });
   final Book book;
+  final Function(DismissDirection)? onRecordDismiss;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -29,9 +32,7 @@ class SavedBookRecord extends StatelessWidget {
         ),
       ),
       direction: DismissDirection.endToStart,
-      onDismissed: (dismissDirection) {
-        // TODO(leeliwei930): Remove record.
-      },
+      onDismissed: onRecordDismiss,
       child: ListTile(
         title: Text(book.title),
       ),
