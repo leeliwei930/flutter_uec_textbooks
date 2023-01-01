@@ -102,14 +102,7 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
                       },
                       data: (isSaved) {
                         return IconButton(
-                          onPressed: () {
-                            final savedLibraryRepo = ref.read(savedLibraryRepositoryProvider);
-                            if (isSaved) {
-                              savedLibraryRepo.removeFromLibrary(book);
-                            } else {
-                              savedLibraryRepo.addToLibrary(book);
-                            }
-                          },
+                          onPressed: _saveToLibrary,
                           icon: isSaved ? const Icon(Icons.bookmark) : const Icon(Icons.bookmark_border),
                         );
                       },
@@ -122,5 +115,14 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  void _saveToLibrary() {
+      final savedLibraryRepo = ref.read(savedLibraryRepositoryProvider);
+      if (isSaved) {
+        savedLibraryRepo.removeFromLibrary(book);
+      } else {
+        savedLibraryRepo.addToLibrary(book);
+      }
   }
 }
