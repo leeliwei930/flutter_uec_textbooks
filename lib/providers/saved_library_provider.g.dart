@@ -41,11 +41,11 @@ final savedLibraryBoxProvider = AutoDisposeFutureProvider<Box<Book>>(
 );
 typedef SavedLibraryBoxRef = AutoDisposeFutureProviderRef<Box<Book>>;
 String $savedLibraryRepositoryHash() =>
-    r'a31f48d5062dd5b6b86df93652d832ca199c0523';
+    r'bb87689b24549d01681f6faa8ffdc520bfd54c09';
 
 /// See also [savedLibraryRepository].
 final savedLibraryRepositoryProvider =
-    AutoDisposeProvider<SavedLibraryRepository>(
+    AutoDisposeProvider<OfflineLibraryRepository>(
   savedLibraryRepository,
   name: r'savedLibraryRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -53,73 +53,4 @@ final savedLibraryRepositoryProvider =
       : $savedLibraryRepositoryHash,
 );
 typedef SavedLibraryRepositoryRef
-    = AutoDisposeProviderRef<SavedLibraryRepository>;
-String $isBookOfflineSavedHash() => r'a6d19c3ac34a9ea93fc36f1d182eca05176830a6';
-
-/// See also [isBookOfflineSaved].
-class IsBookOfflineSavedProvider extends AutoDisposeFutureProvider<bool> {
-  IsBookOfflineSavedProvider({
-    required this.book,
-  }) : super(
-          (ref) => isBookOfflineSaved(
-            ref,
-            book: book,
-          ),
-          from: isBookOfflineSavedProvider,
-          name: r'isBookOfflineSavedProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : $isBookOfflineSavedHash,
-        );
-
-  final Book book;
-
-  @override
-  bool operator ==(Object other) {
-    return other is IsBookOfflineSavedProvider && other.book == book;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, book.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-typedef IsBookOfflineSavedRef = AutoDisposeFutureProviderRef<bool>;
-
-/// See also [isBookOfflineSaved].
-final isBookOfflineSavedProvider = IsBookOfflineSavedFamily();
-
-class IsBookOfflineSavedFamily extends Family<AsyncValue<bool>> {
-  IsBookOfflineSavedFamily();
-
-  IsBookOfflineSavedProvider call({
-    required Book book,
-  }) {
-    return IsBookOfflineSavedProvider(
-      book: book,
-    );
-  }
-
-  @override
-  AutoDisposeFutureProvider<bool> getProviderOverride(
-    covariant IsBookOfflineSavedProvider provider,
-  ) {
-    return call(
-      book: provider.book,
-    );
-  }
-
-  @override
-  List<ProviderOrFamily>? get allTransitiveDependencies => null;
-
-  @override
-  List<ProviderOrFamily>? get dependencies => null;
-
-  @override
-  String? get name => r'isBookOfflineSavedProvider';
-}
+    = AutoDisposeProviderRef<OfflineLibraryRepository>;

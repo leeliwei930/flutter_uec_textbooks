@@ -12,12 +12,6 @@ Future<Box<Book>> savedLibraryBox(SavedLibraryBoxRef ref) async {
 }
 
 @riverpod
-SavedLibraryRepository savedLibraryRepository(SavedLibraryRepositoryRef ref) {
-  return SavedLibraryRepository(ref: ref);
-}
-
-@riverpod
-Future<bool> isBookOfflineSaved(IsBookOfflineSavedRef ref, {required Book book}) {
-  final savedLibraryRepo = ref.read(savedLibraryRepositoryProvider);
-  return savedLibraryRepo.isSavedInLibrary(book);
+OfflineLibraryRepository savedLibraryRepository(SavedLibraryRepositoryRef ref) {
+  return OfflineLibraryRepository(ref: ref);
 }

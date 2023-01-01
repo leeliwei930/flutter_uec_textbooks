@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/book.dart';
+import 'package:uec_textbooks/providers/offline_books_provider.dart';
 
-class SavedBookRecord extends StatelessWidget {
+class SavedBookRecord extends ConsumerWidget {
   const SavedBookRecord({
     super.key,
     required this.book,
@@ -12,9 +14,12 @@ class SavedBookRecord extends StatelessWidget {
   final Function(DismissDirection)? onRecordDismiss;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme;
+    final offlineBookStateNotifier = ref.watch(
+      offlineBookDownloadStateNotifierProvider(book),
+    );
 
     return Dismissible(
       key: Key(book.path),
@@ -33,8 +38,12 @@ class SavedBookRecord extends StatelessWidget {
       ),
       direction: DismissDirection.endToStart,
       onDismissed: onRecordDismiss,
-      child: ListTile(
-        title: Text(book.title),
+      child: offlineBookStateNotifier.when(
+        downloadRequired: (book) => const SizedBox.shrink(),
+        initiate: (book) => const SizedBox.shrink(),
+        downloading: (book, downloadProgress) => const SizedBox.shrink(),
+        failed: (error, stackTrace) => const SizedBox.shrink(),
+        completed: (book) => const SizedBox.shrink(),
       ),
     );
   }

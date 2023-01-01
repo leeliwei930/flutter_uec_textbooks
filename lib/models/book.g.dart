@@ -24,13 +24,15 @@ class BookAdapter extends TypeAdapter<Book> {
       yearGroup: fields[4] as YearGroup?,
       offlineCoverImage: fields[5] as String?,
       offlinePDFPath: fields[6] as String?,
+      offlineCoverImageDownloadTaskId: fields[8] as String?,
+      pdfDownloadTaskId: fields[7] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Book obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -44,7 +46,11 @@ class BookAdapter extends TypeAdapter<Book> {
       ..writeByte(5)
       ..write(obj.offlineCoverImage)
       ..writeByte(6)
-      ..write(obj.offlinePDFPath);
+      ..write(obj.offlinePDFPath)
+      ..writeByte(7)
+      ..write(obj.pdfDownloadTaskId)
+      ..writeByte(8)
+      ..write(obj.offlineCoverImageDownloadTaskId);
   }
 
   @override

@@ -18,6 +18,8 @@ class Book extends Equatable {
     this.yearGroup,
     this.offlineCoverImage,
     this.offlinePDFPath,
+    this.offlineCoverImageDownloadTaskId,
+    this.pdfDownloadTaskId,
   });
   factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 
@@ -45,11 +47,28 @@ class Book extends Equatable {
   @JsonKey(ignore: true)
   final String? offlinePDFPath;
 
+  @HiveField(7)
+  @JsonKey(ignore: true)
+  final String? pdfDownloadTaskId;
+
+  @HiveField(8)
+  @JsonKey(ignore: true)
+  final String? offlineCoverImageDownloadTaskId;
+
   String get imageName => name.replaceFirst('.pdf', '.jpg');
   String get fileSizeForHuman => filesize(size);
   String get title => '${yearGroup?.name}.$name'.tr();
 
   @override
-  List<Object?> get props => [name, downloadUrl];
+  List<Object?> get props => [
+        name,
+        downloadUrl,
+        size,
+        yearGroup,
+        offlineCoverImage,
+        offlinePDFPath,
+        pdfDownloadTaskId,
+        offlineCoverImageDownloadTaskId,
+      ];
   Map<String, dynamic> toJson() => _$BookToJson(this);
 }

@@ -44,7 +44,8 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
           final bookPages = ref.watch(
             bookPagesProvider(book: book),
           );
-          final isBookOfflineSaved = ref.watch(isBookOfflineSavedProvider(book: book));
+          final bookOfflineStatus = ref.watch(bookOfflineStatusNotifierProvider(book));
+          ref.read(bookOfflineStatusNotifierProvider(book).notifier).checkAvailability();
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingSmall),
@@ -94,16 +95,26 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    isBookOfflineSaved.maybeWhen(
+                    bookOfflineStatus.maybeWhen(
                       orElse: () => const SizedBox.shrink(),
-                      error: (error, stackTrace) {
-                        print(error);
-                        return const SizedBox.shrink();
-                      },
-                      data: (isSaved) {
+                      available: () {
                         return IconButton(
-                          onPressed: _saveToLibrary,
-                          icon: isSaved ? const Icon(Icons.bookmark) : const Icon(Icons.bookmark_border),
+                          onPressed: () {
+                            ref.read(bookOfflineStatusNotifierProvider(book).notifier).unsave();
+                          },
+                          icon: const Icon(Icons.bookmark),
+                        );
+                      },
+                      updating: (isSaving) => Opacity(
+                        opacity: 0.85,
+                        child: isSaving ? const Icon(Icons.bookmark) : const Icon(Icons.bookmark_outline),
+                      ),
+                      unavailable: () {
+                        return IconButton(
+                          onPressed: () {
+                            ref.read(bookOfflineStatusNotifierProvider(book).notifier).save();
+                          },
+                          icon: const Icon(Icons.bookmark_outline),
                         );
                       },
                     ),
@@ -115,14 +126,5 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
         },
       ),
     );
-  }
-
-  void _saveToLibrary() {
-      final savedLibraryRepo = ref.read(savedLibraryRepositoryProvider);
-      if (isSaved) {
-        savedLibraryRepo.removeFromLibrary(book);
-      } else {
-        savedLibraryRepo.addToLibrary(book);
-      }
   }
 }

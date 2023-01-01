@@ -9,6 +9,7 @@ import 'package:uec_textbooks/constants/lottie_assets.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/book_group.dart';
+import 'package:uec_textbooks/providers/offline_books_provider.dart';
 import 'package:uec_textbooks/providers/saved_library_provider.dart';
 
 class SavedView extends ConsumerWidget {
@@ -73,15 +74,13 @@ class _SavedLibraryLoadedState extends ConsumerState<_SavedLibraryLoaded> {
                 childCount: bookGroup.books.length,
                 (context, index) {
                   final book = bookGroup.books.elementAt(index);
+
                   return SavedBookRecord(
                     book: book,
-                    onRecordDismiss: (dismissDirection) {
+                    onRecordDismiss: (dismissDirection) async {
                       if (dismissDirection == DismissDirection.endToStart) {
-                        final savedLibraryRepo = ref.read(savedLibraryRepositoryProvider);
-                        savedLibraryRepo.removeFromLibrary(book).whenComplete(() {
-                          ref.invalidate(isBookOfflineSavedProvider(book: book));
-                          ref.invalidate(savedLibraryBoxProvider);
-                        });
+                        await ref.read(bookOfflineStatusNotifierProvider(book).notifier).unsave();
+                        ref.invalidate(savedLibraryBoxProvider);
                       }
                     },
                   );
