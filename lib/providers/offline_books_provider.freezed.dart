@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$OfflineBookState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Book book) initial,
+    required TResult Function(Book book) downloadRequired,
     required TResult Function(Book book) initiateDownload,
     required TResult Function(Book book, double progress) downloading,
     required TResult Function(Object? error, StackTrace? stackTrace)
@@ -28,7 +28,7 @@ mixin _$OfflineBookState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Book book)? initial,
+    TResult? Function(Book book)? downloadRequired,
     TResult? Function(Book book)? initiateDownload,
     TResult? Function(Book book, double progress)? downloading,
     TResult? Function(Object? error, StackTrace? stackTrace)? downloadFailed,
@@ -37,7 +37,7 @@ mixin _$OfflineBookState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Book book)? initial,
+    TResult Function(Book book)? downloadRequired,
     TResult Function(Book book)? initiateDownload,
     TResult Function(Book book, double progress)? downloading,
     TResult Function(Object? error, StackTrace? stackTrace)? downloadFailed,
@@ -47,7 +47,8 @@ mixin _$OfflineBookState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OfflineBookStateInitial value) initial,
+    required TResult Function(OfflineBookStateDownloadRequired value)
+        downloadRequired,
     required TResult Function(OfflineBookStateInititateDownload value)
         initiateDownload,
     required TResult Function(OfflineBookStateDownloading value) downloading,
@@ -58,7 +59,7 @@ mixin _$OfflineBookState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OfflineBookStateInitial value)? initial,
+    TResult? Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult? Function(OfflineBookStateInititateDownload value)?
         initiateDownload,
     TResult? Function(OfflineBookStateDownloading value)? downloading,
@@ -68,7 +69,7 @@ mixin _$OfflineBookState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OfflineBookStateInitial value)? initial,
+    TResult Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult Function(OfflineBookStateInititateDownload value)? initiateDownload,
     TResult Function(OfflineBookStateDownloading value)? downloading,
     TResult Function(OfflineBookStateDownloadFailed value)? downloadFailed,
@@ -97,20 +98,23 @@ class _$OfflineBookStateCopyWithImpl<$Res, $Val extends OfflineBookState>
 }
 
 /// @nodoc
-abstract class _$$OfflineBookStateInitialCopyWith<$Res> {
-  factory _$$OfflineBookStateInitialCopyWith(_$OfflineBookStateInitial value,
-          $Res Function(_$OfflineBookStateInitial) then) =
-      __$$OfflineBookStateInitialCopyWithImpl<$Res>;
+abstract class _$$OfflineBookStateDownloadRequiredCopyWith<$Res> {
+  factory _$$OfflineBookStateDownloadRequiredCopyWith(
+          _$OfflineBookStateDownloadRequired value,
+          $Res Function(_$OfflineBookStateDownloadRequired) then) =
+      __$$OfflineBookStateDownloadRequiredCopyWithImpl<$Res>;
   @useResult
   $Res call({Book book});
 }
 
 /// @nodoc
-class __$$OfflineBookStateInitialCopyWithImpl<$Res>
-    extends _$OfflineBookStateCopyWithImpl<$Res, _$OfflineBookStateInitial>
-    implements _$$OfflineBookStateInitialCopyWith<$Res> {
-  __$$OfflineBookStateInitialCopyWithImpl(_$OfflineBookStateInitial _value,
-      $Res Function(_$OfflineBookStateInitial) _then)
+class __$$OfflineBookStateDownloadRequiredCopyWithImpl<$Res>
+    extends _$OfflineBookStateCopyWithImpl<$Res,
+        _$OfflineBookStateDownloadRequired>
+    implements _$$OfflineBookStateDownloadRequiredCopyWith<$Res> {
+  __$$OfflineBookStateDownloadRequiredCopyWithImpl(
+      _$OfflineBookStateDownloadRequired _value,
+      $Res Function(_$OfflineBookStateDownloadRequired) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -118,7 +122,7 @@ class __$$OfflineBookStateInitialCopyWithImpl<$Res>
   $Res call({
     Object? book = null,
   }) {
-    return _then(_$OfflineBookStateInitial(
+    return _then(_$OfflineBookStateDownloadRequired(
       book: null == book
           ? _value.book
           : book // ignore: cast_nullable_to_non_nullable
@@ -129,22 +133,23 @@ class __$$OfflineBookStateInitialCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OfflineBookStateInitial extends OfflineBookStateInitial {
-  const _$OfflineBookStateInitial({required this.book}) : super._();
+class _$OfflineBookStateDownloadRequired
+    extends OfflineBookStateDownloadRequired {
+  const _$OfflineBookStateDownloadRequired({required this.book}) : super._();
 
   @override
   final Book book;
 
   @override
   String toString() {
-    return 'OfflineBookState.initial(book: $book)';
+    return 'OfflineBookState.downloadRequired(book: $book)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OfflineBookStateInitial &&
+            other is _$OfflineBookStateDownloadRequired &&
             (identical(other.book, book) || other.book == book));
   }
 
@@ -154,47 +159,48 @@ class _$OfflineBookStateInitial extends OfflineBookStateInitial {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OfflineBookStateInitialCopyWith<_$OfflineBookStateInitial> get copyWith =>
-      __$$OfflineBookStateInitialCopyWithImpl<_$OfflineBookStateInitial>(
-          this, _$identity);
+  _$$OfflineBookStateDownloadRequiredCopyWith<
+          _$OfflineBookStateDownloadRequired>
+      get copyWith => __$$OfflineBookStateDownloadRequiredCopyWithImpl<
+          _$OfflineBookStateDownloadRequired>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Book book) initial,
+    required TResult Function(Book book) downloadRequired,
     required TResult Function(Book book) initiateDownload,
     required TResult Function(Book book, double progress) downloading,
     required TResult Function(Object? error, StackTrace? stackTrace)
         downloadFailed,
     required TResult Function(Book book) downloaded,
   }) {
-    return initial(book);
+    return downloadRequired(book);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Book book)? initial,
+    TResult? Function(Book book)? downloadRequired,
     TResult? Function(Book book)? initiateDownload,
     TResult? Function(Book book, double progress)? downloading,
     TResult? Function(Object? error, StackTrace? stackTrace)? downloadFailed,
     TResult? Function(Book book)? downloaded,
   }) {
-    return initial?.call(book);
+    return downloadRequired?.call(book);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Book book)? initial,
+    TResult Function(Book book)? downloadRequired,
     TResult Function(Book book)? initiateDownload,
     TResult Function(Book book, double progress)? downloading,
     TResult Function(Object? error, StackTrace? stackTrace)? downloadFailed,
     TResult Function(Book book)? downloaded,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial(book);
+    if (downloadRequired != null) {
+      return downloadRequired(book);
     }
     return orElse();
   }
@@ -202,7 +208,8 @@ class _$OfflineBookStateInitial extends OfflineBookStateInitial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OfflineBookStateInitial value) initial,
+    required TResult Function(OfflineBookStateDownloadRequired value)
+        downloadRequired,
     required TResult Function(OfflineBookStateInititateDownload value)
         initiateDownload,
     required TResult Function(OfflineBookStateDownloading value) downloading,
@@ -210,48 +217,49 @@ class _$OfflineBookStateInitial extends OfflineBookStateInitial {
         downloadFailed,
     required TResult Function(OfflineBookStateDownloaded value) downloaded,
   }) {
-    return initial(this);
+    return downloadRequired(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OfflineBookStateInitial value)? initial,
+    TResult? Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult? Function(OfflineBookStateInititateDownload value)?
         initiateDownload,
     TResult? Function(OfflineBookStateDownloading value)? downloading,
     TResult? Function(OfflineBookStateDownloadFailed value)? downloadFailed,
     TResult? Function(OfflineBookStateDownloaded value)? downloaded,
   }) {
-    return initial?.call(this);
+    return downloadRequired?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OfflineBookStateInitial value)? initial,
+    TResult Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult Function(OfflineBookStateInititateDownload value)? initiateDownload,
     TResult Function(OfflineBookStateDownloading value)? downloading,
     TResult Function(OfflineBookStateDownloadFailed value)? downloadFailed,
     TResult Function(OfflineBookStateDownloaded value)? downloaded,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial(this);
+    if (downloadRequired != null) {
+      return downloadRequired(this);
     }
     return orElse();
   }
 }
 
-abstract class OfflineBookStateInitial extends OfflineBookState {
-  const factory OfflineBookStateInitial({required final Book book}) =
-      _$OfflineBookStateInitial;
-  const OfflineBookStateInitial._() : super._();
+abstract class OfflineBookStateDownloadRequired extends OfflineBookState {
+  const factory OfflineBookStateDownloadRequired({required final Book book}) =
+      _$OfflineBookStateDownloadRequired;
+  const OfflineBookStateDownloadRequired._() : super._();
 
   Book get book;
   @JsonKey(ignore: true)
-  _$$OfflineBookStateInitialCopyWith<_$OfflineBookStateInitial> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$OfflineBookStateDownloadRequiredCopyWith<
+          _$OfflineBookStateDownloadRequired>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -324,7 +332,7 @@ class _$OfflineBookStateInititateDownload
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Book book) initial,
+    required TResult Function(Book book) downloadRequired,
     required TResult Function(Book book) initiateDownload,
     required TResult Function(Book book, double progress) downloading,
     required TResult Function(Object? error, StackTrace? stackTrace)
@@ -337,7 +345,7 @@ class _$OfflineBookStateInititateDownload
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Book book)? initial,
+    TResult? Function(Book book)? downloadRequired,
     TResult? Function(Book book)? initiateDownload,
     TResult? Function(Book book, double progress)? downloading,
     TResult? Function(Object? error, StackTrace? stackTrace)? downloadFailed,
@@ -349,7 +357,7 @@ class _$OfflineBookStateInititateDownload
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Book book)? initial,
+    TResult Function(Book book)? downloadRequired,
     TResult Function(Book book)? initiateDownload,
     TResult Function(Book book, double progress)? downloading,
     TResult Function(Object? error, StackTrace? stackTrace)? downloadFailed,
@@ -365,7 +373,8 @@ class _$OfflineBookStateInititateDownload
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OfflineBookStateInitial value) initial,
+    required TResult Function(OfflineBookStateDownloadRequired value)
+        downloadRequired,
     required TResult Function(OfflineBookStateInititateDownload value)
         initiateDownload,
     required TResult Function(OfflineBookStateDownloading value) downloading,
@@ -379,7 +388,7 @@ class _$OfflineBookStateInititateDownload
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OfflineBookStateInitial value)? initial,
+    TResult? Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult? Function(OfflineBookStateInititateDownload value)?
         initiateDownload,
     TResult? Function(OfflineBookStateDownloading value)? downloading,
@@ -392,7 +401,7 @@ class _$OfflineBookStateInititateDownload
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OfflineBookStateInitial value)? initial,
+    TResult Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult Function(OfflineBookStateInititateDownload value)? initiateDownload,
     TResult Function(OfflineBookStateDownloading value)? downloading,
     TResult Function(OfflineBookStateDownloadFailed value)? downloadFailed,
@@ -496,7 +505,7 @@ class _$OfflineBookStateDownloading extends OfflineBookStateDownloading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Book book) initial,
+    required TResult Function(Book book) downloadRequired,
     required TResult Function(Book book) initiateDownload,
     required TResult Function(Book book, double progress) downloading,
     required TResult Function(Object? error, StackTrace? stackTrace)
@@ -509,7 +518,7 @@ class _$OfflineBookStateDownloading extends OfflineBookStateDownloading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Book book)? initial,
+    TResult? Function(Book book)? downloadRequired,
     TResult? Function(Book book)? initiateDownload,
     TResult? Function(Book book, double progress)? downloading,
     TResult? Function(Object? error, StackTrace? stackTrace)? downloadFailed,
@@ -521,7 +530,7 @@ class _$OfflineBookStateDownloading extends OfflineBookStateDownloading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Book book)? initial,
+    TResult Function(Book book)? downloadRequired,
     TResult Function(Book book)? initiateDownload,
     TResult Function(Book book, double progress)? downloading,
     TResult Function(Object? error, StackTrace? stackTrace)? downloadFailed,
@@ -537,7 +546,8 @@ class _$OfflineBookStateDownloading extends OfflineBookStateDownloading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OfflineBookStateInitial value) initial,
+    required TResult Function(OfflineBookStateDownloadRequired value)
+        downloadRequired,
     required TResult Function(OfflineBookStateInititateDownload value)
         initiateDownload,
     required TResult Function(OfflineBookStateDownloading value) downloading,
@@ -551,7 +561,7 @@ class _$OfflineBookStateDownloading extends OfflineBookStateDownloading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OfflineBookStateInitial value)? initial,
+    TResult? Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult? Function(OfflineBookStateInititateDownload value)?
         initiateDownload,
     TResult? Function(OfflineBookStateDownloading value)? downloading,
@@ -564,7 +574,7 @@ class _$OfflineBookStateDownloading extends OfflineBookStateDownloading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OfflineBookStateInitial value)? initial,
+    TResult Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult Function(OfflineBookStateInititateDownload value)? initiateDownload,
     TResult Function(OfflineBookStateDownloading value)? downloading,
     TResult Function(OfflineBookStateDownloadFailed value)? downloadFailed,
@@ -667,7 +677,7 @@ class _$OfflineBookStateDownloadFailed extends OfflineBookStateDownloadFailed {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Book book) initial,
+    required TResult Function(Book book) downloadRequired,
     required TResult Function(Book book) initiateDownload,
     required TResult Function(Book book, double progress) downloading,
     required TResult Function(Object? error, StackTrace? stackTrace)
@@ -680,7 +690,7 @@ class _$OfflineBookStateDownloadFailed extends OfflineBookStateDownloadFailed {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Book book)? initial,
+    TResult? Function(Book book)? downloadRequired,
     TResult? Function(Book book)? initiateDownload,
     TResult? Function(Book book, double progress)? downloading,
     TResult? Function(Object? error, StackTrace? stackTrace)? downloadFailed,
@@ -692,7 +702,7 @@ class _$OfflineBookStateDownloadFailed extends OfflineBookStateDownloadFailed {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Book book)? initial,
+    TResult Function(Book book)? downloadRequired,
     TResult Function(Book book)? initiateDownload,
     TResult Function(Book book, double progress)? downloading,
     TResult Function(Object? error, StackTrace? stackTrace)? downloadFailed,
@@ -708,7 +718,8 @@ class _$OfflineBookStateDownloadFailed extends OfflineBookStateDownloadFailed {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OfflineBookStateInitial value) initial,
+    required TResult Function(OfflineBookStateDownloadRequired value)
+        downloadRequired,
     required TResult Function(OfflineBookStateInititateDownload value)
         initiateDownload,
     required TResult Function(OfflineBookStateDownloading value) downloading,
@@ -722,7 +733,7 @@ class _$OfflineBookStateDownloadFailed extends OfflineBookStateDownloadFailed {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OfflineBookStateInitial value)? initial,
+    TResult? Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult? Function(OfflineBookStateInititateDownload value)?
         initiateDownload,
     TResult? Function(OfflineBookStateDownloading value)? downloading,
@@ -735,7 +746,7 @@ class _$OfflineBookStateDownloadFailed extends OfflineBookStateDownloadFailed {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OfflineBookStateInitial value)? initial,
+    TResult Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult Function(OfflineBookStateInititateDownload value)? initiateDownload,
     TResult Function(OfflineBookStateDownloading value)? downloading,
     TResult Function(OfflineBookStateDownloadFailed value)? downloadFailed,
@@ -829,7 +840,7 @@ class _$OfflineBookStateDownloaded extends OfflineBookStateDownloaded {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Book book) initial,
+    required TResult Function(Book book) downloadRequired,
     required TResult Function(Book book) initiateDownload,
     required TResult Function(Book book, double progress) downloading,
     required TResult Function(Object? error, StackTrace? stackTrace)
@@ -842,7 +853,7 @@ class _$OfflineBookStateDownloaded extends OfflineBookStateDownloaded {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Book book)? initial,
+    TResult? Function(Book book)? downloadRequired,
     TResult? Function(Book book)? initiateDownload,
     TResult? Function(Book book, double progress)? downloading,
     TResult? Function(Object? error, StackTrace? stackTrace)? downloadFailed,
@@ -854,7 +865,7 @@ class _$OfflineBookStateDownloaded extends OfflineBookStateDownloaded {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Book book)? initial,
+    TResult Function(Book book)? downloadRequired,
     TResult Function(Book book)? initiateDownload,
     TResult Function(Book book, double progress)? downloading,
     TResult Function(Object? error, StackTrace? stackTrace)? downloadFailed,
@@ -870,7 +881,8 @@ class _$OfflineBookStateDownloaded extends OfflineBookStateDownloaded {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(OfflineBookStateInitial value) initial,
+    required TResult Function(OfflineBookStateDownloadRequired value)
+        downloadRequired,
     required TResult Function(OfflineBookStateInititateDownload value)
         initiateDownload,
     required TResult Function(OfflineBookStateDownloading value) downloading,
@@ -884,7 +896,7 @@ class _$OfflineBookStateDownloaded extends OfflineBookStateDownloaded {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OfflineBookStateInitial value)? initial,
+    TResult? Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult? Function(OfflineBookStateInititateDownload value)?
         initiateDownload,
     TResult? Function(OfflineBookStateDownloading value)? downloading,
@@ -897,7 +909,7 @@ class _$OfflineBookStateDownloaded extends OfflineBookStateDownloaded {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(OfflineBookStateInitial value)? initial,
+    TResult Function(OfflineBookStateDownloadRequired value)? downloadRequired,
     TResult Function(OfflineBookStateInititateDownload value)? initiateDownload,
     TResult Function(OfflineBookStateDownloading value)? downloading,
     TResult Function(OfflineBookStateDownloadFailed value)? downloadFailed,

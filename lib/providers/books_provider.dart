@@ -87,4 +87,5 @@ final selectedBookStateProvider = StateProvider.autoDispose<Book?>((ref) {
 });
 
 @riverpod
-OfflineBookService offlineBookService(OfflineBookServiceRef ref) => OfflineBookService(ref);
+OfflineBookFileStorageService offlineBookFileStorageService(OfflineBookFileStorageServiceRef ref) =>
+    OfflineBookFileStorageService(ref);

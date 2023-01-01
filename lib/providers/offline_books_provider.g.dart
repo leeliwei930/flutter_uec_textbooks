@@ -30,11 +30,11 @@ class _SystemHash {
 }
 
 String $offlineBookStateNotifierHash() =>
-    r'99fda5ec0aa3f78234b512b3d96e0e3fbea5dc07';
+    r'eb8d2fb913477c32f39aef335a4f0ec87f778031';
 
 /// See also [offlineBookStateNotifier].
 class OfflineBookStateNotifierProvider
-    extends AutoDisposeProvider<OfflineBooksStateNotifier> {
+    extends AutoDisposeProvider<OfflineBookStateNotifier> {
   OfflineBookStateNotifierProvider({
     required this.book,
   }) : super(
@@ -67,12 +67,12 @@ class OfflineBookStateNotifierProvider
 }
 
 typedef OfflineBookStateNotifierRef
-    = AutoDisposeProviderRef<OfflineBooksStateNotifier>;
+    = AutoDisposeProviderRef<OfflineBookStateNotifier>;
 
 /// See also [offlineBookStateNotifier].
 final offlineBookStateNotifierProvider = OfflineBookStateNotifierFamily();
 
-class OfflineBookStateNotifierFamily extends Family<OfflineBooksStateNotifier> {
+class OfflineBookStateNotifierFamily extends Family<OfflineBookStateNotifier> {
   OfflineBookStateNotifierFamily();
 
   OfflineBookStateNotifierProvider call({
@@ -84,7 +84,7 @@ class OfflineBookStateNotifierFamily extends Family<OfflineBooksStateNotifier> {
   }
 
   @override
-  AutoDisposeProvider<OfflineBooksStateNotifier> getProviderOverride(
+  AutoDisposeProvider<OfflineBookStateNotifier> getProviderOverride(
     covariant OfflineBookStateNotifierProvider provider,
   ) {
     return call(

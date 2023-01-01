@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uec_textbooks/models/book.dart';
-import 'package:uec_textbooks/providers/books_provider.dart';
 import 'package:uec_textbooks/providers/saved_library_provider.dart';
 
 class SavedLibraryRepository {
@@ -10,29 +8,21 @@ class SavedLibraryRepository {
   Ref ref;
 
   Future<void> addToLibrary(Book book) async {
-    final offlineBookService = ref.read(offlineBookServiceProvider);
-    final storedFilePath = await offlineBookService.saveFile(book);
-    if (kDebugMode) {
-      print(storedFilePath);
-    }
-    if (storedFilePath != null) {
-      final libraryBox = await ref.read(savedLibraryBoxProvider.future);
-      libraryBox.put(
-        book.path,
-        Book(
-          name: book.name,
-          path: book.path,
-          downloadUrl: book.downloadUrl,
-          offlinePDFPath: storedFilePath,
-          size: book.size,
-        ),
-      );
-    }
+    final libraryBox = await ref.read(savedLibraryBoxProvider.future);
+    await libraryBox.put(book.path, book);
+    ref.invalidate(isBookOfflineSavedProvider(book: book));
+  }
+
+  Future<void> updateLibraryBook({required String key, required Book book}) async {
+    final libraryBox = await ref.read(savedLibraryBoxProvider.future);
+    await libraryBox.put(key, book);
+    ref.invalidate(isBookOfflineSavedProvider(book: book));
   }
 
   Future<void> removeFromLibrary(Book book) async {
     final libraryBox = await ref.read(savedLibraryBoxProvider.future);
-    libraryBox.delete(book.path);
+    await libraryBox.delete(book.path);
+    ref.invalidate(isBookOfflineSavedProvider(book: book));
   }
 
   Future<bool> isSavedInLibrary(Book book) async {

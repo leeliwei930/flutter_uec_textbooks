@@ -6,20 +6,20 @@ import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/providers/file_storage.dart';
 import 'package:uec_textbooks/providers/networking_provider.dart';
 
-class OfflineBookService {
-  OfflineBookService(this.ref);
+class OfflineBookFileStorageService {
+  OfflineBookFileStorageService(this.ref);
   Ref ref;
 
   Future<String?> saveFile(Book book) async {
     final appDirectory = await ref.read(applicationDocumentDirectoryProvider.future);
     final dio = ref.read(dioProvider);
 
-    final isDirectoryExist = await appDirectory.exists() ?? false;
+    final isDirectoryExist = await appDirectory.exists();
 
     if (!isDirectoryExist) {
       return null;
     }
-    final offlineDataDirectory = Directory('${appDirectory?.path}/books');
+    final offlineDataDirectory = Directory('${appDirectory.path}/books');
     final isOfflineDirectoryExisted = await offlineDataDirectory.exists();
     if (!isOfflineDirectoryExisted) {
       await offlineDataDirectory.create(recursive: true);

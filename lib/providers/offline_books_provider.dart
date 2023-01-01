@@ -7,8 +7,15 @@ part 'offline_books_provider.freezed.dart';
 part 'offline_books_provider.g.dart';
 
 @riverpod
-OfflineBookStateNotifier offlineBookStateNotifier(OfflineBookStateNotifierRef ref, {required Book book}) {
-  return OfflineBookStateNotifier(initialState: OfflineBookState.initial(book: book));
+OfflineBookStateNotifier offlineBookStateNotifier(
+  OfflineBookStateNotifierRef ref, {
+  required Book book,
+}) {
+  return OfflineBookStateNotifier(
+    initialState: OfflineBookState.downloadRequired(
+      book: book,
+    ),
+  );
 }
 
 class OfflineBookStateNotifier extends StateNotifier<OfflineBookState> {
@@ -20,9 +27,9 @@ class OfflineBookStateNotifier extends StateNotifier<OfflineBookState> {
 @freezed
 class OfflineBookState with _$OfflineBookState {
   const OfflineBookState._();
-  const factory OfflineBookState.initial({
+  const factory OfflineBookState.downloadRequired({
     required Book book,
-  }) = OfflineBookStateInitial;
+  }) = OfflineBookStateDownloadRequired;
 
   const factory OfflineBookState.initiateDownload({
     required Book book,
@@ -37,5 +44,8 @@ class OfflineBookState with _$OfflineBookState {
     Object? error,
     StackTrace? stackTrace,
   }) = OfflineBookStateDownloadFailed;
-  const factory OfflineBookState.downloaded({required Book book}) = OfflineBookStateDownloaded;
+
+  const factory OfflineBookState.downloaded({
+    required Book book,
+  }) = OfflineBookStateDownloaded;
 }
