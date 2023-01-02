@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uec_textbooks/models/book.dart';
@@ -10,6 +12,11 @@ void runMain({required VoidCallback configInit}) async {
   configInit();
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  // Plugin must be initialized before using
+  await FlutterDownloader.initialize(
+    debug: kDebugMode,
+  );
+
   Hive
     ..initFlutter('db')
     ..registerAdapter<YearGroup>(YearGroupAdapter())

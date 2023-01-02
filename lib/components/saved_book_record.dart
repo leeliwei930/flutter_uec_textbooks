@@ -17,9 +17,6 @@ class SavedBookRecord extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme;
-    final offlineBookStateNotifier = ref.watch(
-      offlineBookDownloadStateNotifierProvider(book),
-    );
 
     return Dismissible(
       key: Key(book.path),
@@ -38,12 +35,40 @@ class SavedBookRecord extends ConsumerWidget {
       ),
       direction: DismissDirection.endToStart,
       onDismissed: onRecordDismiss,
-      child: offlineBookStateNotifier.when(
-        downloadRequired: (book) => const SizedBox.shrink(),
-        initiate: (book) => const SizedBox.shrink(),
-        downloading: (book, downloadProgress) => const SizedBox.shrink(),
-        failed: (error, stackTrace) => const SizedBox.shrink(),
-        completed: (book) => const SizedBox.shrink(),
+      child: _BookListTile(book: book),
+    );
+  }
+}
+
+class _BookListTile extends ConsumerStatefulWidget {
+  const _BookListTile({super.key, required this.book});
+
+  final Book book;
+
+  ConsumerState<_BookListTile> createState() => _BookListTileState();
+}
+
+class _BookListTileState extends ConsumerState<_BookListTile> {
+  @override
+  Widget build(BuildContext context) {
+    final offlineBookStateNotifier = ref.watch(
+      offlineBookDownloadStateNotifierProvider(widget.book),
+    );
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(offlineBookDownloadStateNotifierProvider(widget.book).notifier).checkPreviousDownloadState();
+    });
+
+    return ListTile(
+      title: Text(widget.book.title),
+      trailing: offlineBookStateNotifier.when(
+        checking: (book) => const CircularProgressIndicator(),
+        downloadRequired: (book) => const Icon(Icons.cloud_download_outlined),
+        downloading: (book, downloadProgress) => CircularProgressIndicator(
+          value: downloadProgress,
+        ),
+        failed: (book, error, stackTrace) => const Icon(Icons.cancel),
+        completed: (book) => const Icon(Icons.cloud_done),
+        paused: (Book book, double progress) => const Icon(Icons.pause),
       ),
     );
   }

@@ -44,8 +44,8 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
           final bookPages = ref.watch(
             bookPagesProvider(book: book),
           );
-          final bookOfflineStatus = ref.watch(bookOfflineStatusNotifierProvider(book));
-          ref.read(bookOfflineStatusNotifierProvider(book).notifier).checkAvailability();
+          final bookOfflineStatus = ref.watch(bookInSavedLibraryStatusProvider(book));
+          ref.read(bookInSavedLibraryStatusProvider(book).notifier).checkAvailability();
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingSmall),
@@ -100,7 +100,7 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
                       available: () {
                         return IconButton(
                           onPressed: () {
-                            ref.read(bookOfflineStatusNotifierProvider(book).notifier).unsave();
+                            ref.read(bookInSavedLibraryStatusProvider(book).notifier).unsave();
                           },
                           icon: const Icon(Icons.bookmark),
                         );
@@ -112,7 +112,7 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
                       unavailable: () {
                         return IconButton(
                           onPressed: () {
-                            ref.read(bookOfflineStatusNotifierProvider(book).notifier).save();
+                            ref.read(bookInSavedLibraryStatusProvider(book).notifier).save();
                           },
                           icon: const Icon(Icons.bookmark_outline),
                         );

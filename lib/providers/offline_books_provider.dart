@@ -1,14 +1,16 @@
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uec_textbooks/models/book.dart';
+import 'package:uec_textbooks/providers/books_provider.dart';
 import 'package:uec_textbooks/providers/saved_library_provider.dart';
 
 part 'offline_books_provider.freezed.dart';
 
-final bookOfflineStatusNotifierProvider =
-    StateNotifierProvider.family<BookOfflineStatusNotifier, BookOfflineStatus, Book>(
+final bookInSavedLibraryStatusProvider =
+    StateNotifierProvider.family.autoDispose<BookInSavedLibraryStatusNotifier, BookOfflineStatus, Book>(
   (ref, book) {
-    return BookOfflineStatusNotifier(
+    return BookInSavedLibraryStatusNotifier(
       ref: ref,
       book: book,
       initialState: const BookOfflineStatus.unknown(),
@@ -17,41 +19,88 @@ final bookOfflineStatusNotifierProvider =
 );
 
 final offlineBookDownloadStateNotifierProvider =
-    StateNotifierProvider.family<OfflineBookDownloadStateNotifier, OfflineBookDownloadState, Book>(
+    StateNotifierProvider.family.autoDispose<OfflineBookDownloadStateNotifier, OfflineBookDownloadState, Book>(
   (ref, book) {
-    return OfflineBookDownloadStateNotifier(
-      initialState: OfflineBookDownloadState.downloadRequired(book: book),
-    );
+    return OfflineBookDownloadStateNotifier(ref: ref, book: book);
   },
 );
 
+/// The state notifier that handles the download state for each book in the database.
 class OfflineBookDownloadStateNotifier extends StateNotifier<OfflineBookDownloadState> {
   OfflineBookDownloadStateNotifier({
-    required OfflineBookDownloadState initialState,
-  }) : super(initialState);
+    required this.ref,
+    required Book book,
+  }) : super(OfflineBookDownloadState.checking(book: book)) {
+    checkPreviousDownloadState();
+  }
 
-  void startDownload(Book book) {
-    state = OfflineBookDownloadState.initiate(book: book);
+  Ref ref;
+
+  Future<void> checkPreviousDownloadState() async {
+    final hasOfflinePDFPath = state.book.offlinePDFPath != null;
+    final offlineBookFileStorageService = ref.read(offlineBookFileStorageServiceProvider);
+    if (hasOfflinePDFPath) {
+      final isAvailable = await offlineBookFileStorageService.checkBookAvailability(state.book);
+      if (isAvailable) {
+        state = OfflineBookDownloadState.completed(book: state.book);
+      }
+    } else {
+      state = OfflineBookDownloadState.downloadRequired(book: state.book);
+    }
+  }
+
+  void startDownload(Book book) async {
+    if (state is OfflineBookDownloadStateDownloading) {
+      return;
+    }
+    final offlineBookFileStorageService = ref.read(offlineBookFileStorageServiceProvider);
+
+    final saveFilePath = await offlineBookFileStorageService.getBookSavedDirectory(book);
+    try {
+      final String? taskId = await FlutterDownloader.enqueue(
+        url: book.downloadUrl,
+        savedDir: saveFilePath,
+        fileName: book.name,
+        requiresStorageNotLow: true,
+      );
+
+      final box = ref.read(savedLibraryRepositoryProvider);
+      await box.updateLibraryBook(
+        key: book.path,
+        book: book.copyWith(pdfDownloadTaskId: taskId),
+      );
+    } catch (error, stackTrace) {
+      state = OfflineBookDownloadState.failed(
+        book: book,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 }
 
 @freezed
 class OfflineBookDownloadState with _$OfflineBookDownloadState {
   const OfflineBookDownloadState._();
+  const factory OfflineBookDownloadState.checking({
+    required Book book,
+  }) = OfflineBookDownloadStateDownloadChecking;
   const factory OfflineBookDownloadState.downloadRequired({
     required Book book,
   }) = OfflineBookDownloadStateDownloadRequired;
-
-  const factory OfflineBookDownloadState.initiate({
-    required Book book,
-  }) = OfflineBookDownloadStateInititate;
 
   const factory OfflineBookDownloadState.downloading({
     required Book book,
     required double progress,
   }) = OfflineBookDownloadStateDownloading;
 
+  const factory OfflineBookDownloadState.paused({
+    required Book book,
+    required double progress,
+  }) = OfflineBookDownloadStatePaused;
+
   const factory OfflineBookDownloadState.failed({
+    required Book book,
     Object? error,
     StackTrace? stackTrace,
   }) = OfflineBookDownloadStateFailed;
@@ -61,8 +110,9 @@ class OfflineBookDownloadState with _$OfflineBookDownloadState {
   }) = OfflineBookDownStateCompleted;
 }
 
-class BookOfflineStatusNotifier extends StateNotifier<BookOfflineStatus> {
-  BookOfflineStatusNotifier({
+/// The state notifier that handles the saved in library status.
+class BookInSavedLibraryStatusNotifier extends StateNotifier<BookOfflineStatus> {
+  BookInSavedLibraryStatusNotifier({
     required this.ref,
     required this.book,
     required BookOfflineStatus initialState,

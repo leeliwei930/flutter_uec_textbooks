@@ -24,8 +24,8 @@ class BookAdapter extends TypeAdapter<Book> {
       yearGroup: fields[4] as YearGroup?,
       offlineCoverImage: fields[5] as String?,
       offlinePDFPath: fields[6] as String?,
-      offlineCoverImageDownloadTaskId: fields[8] as String?,
-      pdfDownloadTaskId: fields[7] as String?,
+      offlineCoverImageDownloadTaskId: fields[7] as String?,
+      pdfDownloadTaskId: fields[8] as String?,
     );
   }
 
@@ -48,9 +48,9 @@ class BookAdapter extends TypeAdapter<Book> {
       ..writeByte(6)
       ..write(obj.offlinePDFPath)
       ..writeByte(7)
-      ..write(obj.pdfDownloadTaskId)
+      ..write(obj.offlineCoverImageDownloadTaskId)
       ..writeByte(8)
-      ..write(obj.offlineCoverImageDownloadTaskId);
+      ..write(obj.pdfDownloadTaskId);
   }
 
   @override
@@ -68,14 +68,14 @@ class BookAdapter extends TypeAdapter<Book> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Book _$BookFromJson(Map<String, dynamic> json) => Book(
+_$_Book _$$_BookFromJson(Map<String, dynamic> json) => _$_Book(
       name: json['name'] as String,
       path: json['path'] as String,
       downloadUrl: json['download_url'] as String,
       size: json['size'] as int,
     );
 
-Map<String, dynamic> _$BookToJson(Book instance) => <String, dynamic>{
+Map<String, dynamic> _$$_BookToJson(_$_Book instance) => <String, dynamic>{
       'name': instance.name,
       'path': instance.path,
       'download_url': instance.downloadUrl,
