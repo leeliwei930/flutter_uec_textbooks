@@ -41,10 +41,11 @@ class SavedBookRecord extends ConsumerWidget {
 }
 
 class _BookListTile extends ConsumerStatefulWidget {
-  const _BookListTile({super.key, required this.book});
+  const _BookListTile({required this.book});
 
   final Book book;
 
+  @override
   ConsumerState<_BookListTile> createState() => _BookListTileState();
 }
 

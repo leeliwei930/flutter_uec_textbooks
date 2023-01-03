@@ -21,7 +21,9 @@ final bookInSavedLibraryStatusProvider =
 final offlineBookDownloadStateNotifierProvider =
     StateNotifierProvider.family.autoDispose<OfflineBookDownloadStateNotifier, OfflineBookDownloadState, Book>(
   (ref, book) {
-    return OfflineBookDownloadStateNotifier(ref: ref, book: book);
+    final stateNotifier = OfflineBookDownloadStateNotifier(ref: ref, book: book);
+
+    return stateNotifier;
   },
 );
 
@@ -50,16 +52,16 @@ class OfflineBookDownloadStateNotifier extends StateNotifier<OfflineBookDownload
   }
 
   void startDownload(Book book) async {
-    if (state is OfflineBookDownloadStateDownloading) {
+    if (state is OfflineBookDownloadStateDownloading && !mounted) {
       return;
     }
     final offlineBookFileStorageService = ref.read(offlineBookFileStorageServiceProvider);
 
-    final saveFilePath = await offlineBookFileStorageService.getBookSavedDirectory(book);
+    final saveDir = await offlineBookFileStorageService.getBookSavedDirectory(book);
     try {
       final String? taskId = await FlutterDownloader.enqueue(
         url: book.downloadUrl,
-        savedDir: saveFilePath,
+        savedDir: saveDir,
         fileName: book.name,
         requiresStorageNotLow: true,
       );
@@ -70,6 +72,7 @@ class OfflineBookDownloadStateNotifier extends StateNotifier<OfflineBookDownload
         book: book.copyWith(pdfDownloadTaskId: taskId),
       );
     } catch (error, stackTrace) {
+      print('download failed');
       state = OfflineBookDownloadState.failed(
         book: book,
         error: error,
@@ -116,7 +119,9 @@ class BookInSavedLibraryStatusNotifier extends StateNotifier<BookOfflineStatus> 
     required this.ref,
     required this.book,
     required BookOfflineStatus initialState,
-  }) : super(initialState);
+  }) : super(initialState) {
+    checkAvailability();
+  }
 
   final Ref ref;
   final Book book;
@@ -136,7 +141,7 @@ class BookInSavedLibraryStatusNotifier extends StateNotifier<BookOfflineStatus> 
     }
   }
 
-  Future<void> save() async {
+  Future<void> add() async {
     if (state is _$BookOfflineStatusAvailable || state is _$BookOfflineStatusUpdating) {
       return;
     }
@@ -146,13 +151,14 @@ class BookInSavedLibraryStatusNotifier extends StateNotifier<BookOfflineStatus> 
     state = const BookOfflineStatus.updating(isSaving: true);
     try {
       await savedLibraryRepo.addToLibrary(book);
+      state = const BookOfflineStatus.prepareDownload();
       state = const BookOfflineStatus.available();
     } catch (error) {
       state = rollbackState;
     }
   }
 
-  Future<void> unsave() async {
+  Future<void> remove() async {
     if (state is _$BookOfflineStatusUnavailable || state is _$BookOfflineStatusUpdating) {
       return;
     }
@@ -162,7 +168,7 @@ class BookInSavedLibraryStatusNotifier extends StateNotifier<BookOfflineStatus> 
     state = const BookOfflineStatus.updating(isSaving: false);
     try {
       await savedLibraryRepo.removeFromLibrary(book);
-      state = const BookOfflineStatus.available();
+      state = const BookOfflineStatus.unavailable();
     } catch (error) {
       state = rollbackState;
     }
@@ -173,6 +179,7 @@ class BookInSavedLibraryStatusNotifier extends StateNotifier<BookOfflineStatus> 
 class BookOfflineStatus with _$BookOfflineStatus {
   const BookOfflineStatus._();
   const factory BookOfflineStatus.unknown() = _$BookOfflineStatusUnknown;
+  const factory BookOfflineStatus.prepareDownload() = _$BookOfflineStatusPrepareDownload;
   const factory BookOfflineStatus.available() = _$BookOfflineStatusAvailable;
   const factory BookOfflineStatus.updating({required bool isSaving}) = _$BookOfflineStatusUpdating;
   const factory BookOfflineStatus.unavailable() = _$BookOfflineStatusUnavailable;

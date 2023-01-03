@@ -16,12 +16,12 @@ class OfflineBookFileStorageService {
 
   Future<String> getBookSavedDirectory(Book book) async {
     final appDirectory = await ref.read(applicationDocumentDirectoryProvider.future);
-    final offlineDataDirectory = Directory('${appDirectory.path}/books');
+    final offlineDataDirectory = Directory('${appDirectory.path}/books/${book.yearGroup!.name}');
     final isOfflineDirectoryExisted = await offlineDataDirectory.exists();
     if (!isOfflineDirectoryExisted) {
       await offlineDataDirectory.create(recursive: true);
     }
 
-    return '${appDirectory.path}/books/${book.yearGroup!.name}';
+    return offlineDataDirectory.path;
   }
 }

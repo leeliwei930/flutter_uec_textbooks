@@ -13,7 +13,6 @@ import 'package:uec_textbooks/constants/lottie_assets.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/book_group.dart';
-import 'package:uec_textbooks/models/download_task_record.dart';
 import 'package:uec_textbooks/providers/offline_books_provider.dart';
 import 'package:uec_textbooks/providers/saved_library_provider.dart';
 
@@ -32,28 +31,14 @@ class _SavedViewConsumerState extends ConsumerState<SavedView> {
     super.initState();
     IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
     _port.listen((data) {
-      if (data is DownloadTask) {
-      }
+      if (data is DownloadTask) {}
     });
-    FlutterDownloader.registerCallback(downloadCallback);
   }
 
   @override
   void dispose() {
     IsolateNameServer.removePortNameMapping('downloader_send_port');
     super.dispose();
-  }
-
-  @pragma('vm:entry-point')
-  static void downloadCallback(String id, DownloadTaskStatus status, int progress) {
-    final send = IsolateNameServer.lookupPortByName('downloader_send_port');
-    send?.send(
-      DownloadTaskRecord(
-        id: id,
-        status: status,
-        progress: progress.toDouble(),
-      ),
-    );
   }
 
   @override
@@ -120,7 +105,7 @@ class _SavedLibraryLoadedState extends ConsumerState<_SavedLibraryLoaded> {
                     book: book,
                     onRecordDismiss: (dismissDirection) async {
                       if (dismissDirection == DismissDirection.endToStart) {
-                        await ref.read(bookInSavedLibraryStatusProvider(book).notifier).unsave();
+                        await ref.read(bookInSavedLibraryStatusProvider(book).notifier).remove();
                         ref.invalidate(savedLibraryBoxProvider);
                       }
                     },
