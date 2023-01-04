@@ -6,3 +6,5 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 final applicationDocumentDirectoryProvider = FutureProvider.autoDispose<Directory>((ref) {
   return getApplicationDocumentsDirectory();
 });
+
+

@@ -51,7 +51,7 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
             _ref.listen<BookOfflineStatus>(bookInSavedLibraryStatusProvider(book), (previous, next) {
               next.maybeWhen(
                 prepareDownload: () {
-                  ref.read(offlineBookDownloadStateNotifierProvider(book).notifier).startDownload(book);
+                  ref.read(offlineBookDownloadStateNotifierProvider(book).notifier).startDownload();
                 },
                 orElse: () => null,
               );

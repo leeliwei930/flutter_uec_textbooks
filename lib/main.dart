@@ -48,7 +48,7 @@ void downloadCallback(String id, DownloadTaskStatus status, int progress) {
     DownloadTaskRecord(
       id: id,
       status: status,
-      progress: progress.toDouble(),
+      progress: progress / 100,
     ),
   );
 }

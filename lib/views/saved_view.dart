@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -13,6 +12,7 @@ import 'package:uec_textbooks/constants/lottie_assets.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/book_group.dart';
+import 'package:uec_textbooks/models/download_task_record.dart';
 import 'package:uec_textbooks/providers/offline_books_provider.dart';
 import 'package:uec_textbooks/providers/saved_library_provider.dart';
 
@@ -30,8 +30,14 @@ class _SavedViewConsumerState extends ConsumerState<SavedView> {
   void initState() {
     super.initState();
     IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
-    _port.listen((data) {
-      if (data is DownloadTask) {}
+    _port.listen((data) async {
+      if (data is DownloadTaskRecord) {
+        final libraryBox = await ref.read(savedLibraryBoxProvider.future);
+        final downloadedBook = libraryBox.values.firstWhere((book) => book.pdfDownloadTaskId == data.id);
+        ref
+            .read(offlineBookDownloadStateNotifierProvider(downloadedBook).notifier)
+            .updateDownloadProgress(data.progress);
+      }
     });
   }
 

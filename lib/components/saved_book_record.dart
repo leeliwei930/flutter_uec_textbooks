@@ -55,10 +55,6 @@ class _BookListTileState extends ConsumerState<_BookListTile> {
     final offlineBookStateNotifier = ref.watch(
       offlineBookDownloadStateNotifierProvider(widget.book),
     );
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(offlineBookDownloadStateNotifierProvider(widget.book).notifier).checkPreviousDownloadState();
-    });
-
     return ListTile(
       title: Text(widget.book.title),
       trailing: offlineBookStateNotifier.when(

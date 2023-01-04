@@ -8,7 +8,7 @@ import 'package:uec_textbooks/providers/saved_library_provider.dart';
 part 'offline_books_provider.freezed.dart';
 
 final bookInSavedLibraryStatusProvider =
-    StateNotifierProvider.family.autoDispose<BookInSavedLibraryStatusNotifier, BookOfflineStatus, Book>(
+    StateNotifierProvider.family<BookInSavedLibraryStatusNotifier, BookOfflineStatus, Book>(
   (ref, book) {
     return BookInSavedLibraryStatusNotifier(
       ref: ref,
@@ -19,7 +19,7 @@ final bookInSavedLibraryStatusProvider =
 );
 
 final offlineBookDownloadStateNotifierProvider =
-    StateNotifierProvider.family.autoDispose<OfflineBookDownloadStateNotifier, OfflineBookDownloadState, Book>(
+    StateNotifierProvider.family<OfflineBookDownloadStateNotifier, OfflineBookDownloadState, Book>(
   (ref, book) {
     final stateNotifier = OfflineBookDownloadStateNotifier(ref: ref, book: book);
 
@@ -39,6 +39,9 @@ class OfflineBookDownloadStateNotifier extends StateNotifier<OfflineBookDownload
   Ref ref;
 
   Future<void> checkPreviousDownloadState() async {
+    if (!mounted) {
+      return;
+    }
     final hasOfflinePDFPath = state.book.offlinePDFPath != null;
     final offlineBookFileStorageService = ref.read(offlineBookFileStorageServiceProvider);
     if (hasOfflinePDFPath) {
@@ -51,30 +54,40 @@ class OfflineBookDownloadStateNotifier extends StateNotifier<OfflineBookDownload
     }
   }
 
-  void startDownload(Book book) async {
-    if (state is OfflineBookDownloadStateDownloading && !mounted) {
+  void updateDownloadProgress(double progress) {
+    if (progress >= 1) {
+      state = OfflineBookDownloadState.completed(book: state.book);
+      return;
+    }
+    state = OfflineBookDownloadState.downloading(book: state.book, progress: progress);
+  }
+
+  void startDownload() async {
+    if (state is OfflineBookDownloadStateDownloading) {
       return;
     }
     final offlineBookFileStorageService = ref.read(offlineBookFileStorageServiceProvider);
 
-    final saveDir = await offlineBookFileStorageService.getBookSavedDirectory(book);
+    final saveDir = await offlineBookFileStorageService.getBookSavedDirectory(state.book);
     try {
       final String? taskId = await FlutterDownloader.enqueue(
-        url: book.downloadUrl,
+        url: state.book.downloadUrl,
         savedDir: saveDir,
-        fileName: book.name,
+        fileName: state.book.name,
         requiresStorageNotLow: true,
       );
 
       final box = ref.read(savedLibraryRepositoryProvider);
       await box.updateLibraryBook(
-        key: book.path,
-        book: book.copyWith(pdfDownloadTaskId: taskId),
+        key: state.book.path,
+        book: state.book.copyWith(
+          pdfDownloadTaskId: taskId,
+          offlinePDFPath: '$saveDir/${state.book.name}',
+        ),
       );
     } catch (error, stackTrace) {
-      print('download failed');
       state = OfflineBookDownloadState.failed(
-        book: book,
+        book: state.book,
         error: error,
         stackTrace: stackTrace,
       );
