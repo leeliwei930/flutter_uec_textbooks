@@ -57,13 +57,13 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
                   onTap: () {
                     ref.read(selectedBookStateProvider.notifier).state = book;
                   },
-                  child: Image.network(
-                    TextBookCoverImage.url(
+                  child: CachedNetworkImage(
+                    
+                    imageUrl: TextBookCoverImage.url(
                       yearGroup: ref.read(yearGroupStateProvider),
                       filename: book.imageName,
                     ),
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
+                    progressIndicatorBuilder: (context, child, loadingProgress) {
                       return Shimmer.fromColors(
                         baseColor: Colors.grey[300]!,
                         highlightColor: Colors.grey[100]!,
