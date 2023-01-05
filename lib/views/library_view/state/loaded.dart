@@ -47,92 +47,82 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
           );
           final bookOfflineStatus = ref.watch(bookInSavedLibraryStatusProvider(book));
 
-          return Consumer(builder: (context, _ref, _) {
-            _ref.listen<BookOfflineStatus>(bookInSavedLibraryStatusProvider(book), (previous, next) {
-              next.maybeWhen(
-                prepareDownload: () {
-                  ref.read(offlineBookDownloadStateNotifierProvider(book).notifier).startDownload();
-                },
-                orElse: () => null,
-              );
-            });
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingSmall),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      _ref.read(selectedBookStateProvider.notifier).state = book;
-                    },
-                    child: Image.network(
-                      TextBookCoverImage.url(
-                        yearGroup: _ref.read(yearGroupStateProvider),
-                        filename: book.imageName,
-                      ),
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: AspectRatio(
-                            aspectRatio: imagePlaceholderAspectRatio,
-                            child: Container(
-                              color: Colors.white,
-                            ),
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingSmall),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    ref.read(selectedBookStateProvider.notifier).state = book;
+                  },
+                  child: Image.network(
+                    TextBookCoverImage.url(
+                      yearGroup: ref.read(yearGroupStateProvider),
+                      filename: book.imageName,
+                    ),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: AspectRatio(
+                          aspectRatio: imagePlaceholderAspectRatio,
+                          child: Container(
+                            color: Colors.white,
                           ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: kSpacingXSmall,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(book.title),
+                          Text(book.fileSizeForHuman),
+                          bookPages.maybeWhen(
+                            data: (pages) => Text("$pages ${plural("page", pages)}"),
+                            orElse: () => const SizedBox.shrink(),
+                          )
+                        ],
+                      ),
+                    ),
+                    bookOfflineStatus.maybeWhen(
+                      orElse: () => const SizedBox.shrink(),
+                      available: () {
+                        return IconButton(
+                          onPressed: () {
+                            ref.read(bookInSavedLibraryStatusProvider(book).notifier).remove();
+                          },
+                          icon: const Icon(Icons.bookmark),
+                        );
+                      },
+                      updating: (isSaving) => Opacity(
+                        opacity: 0.85,
+                        child: isSaving ? const Icon(Icons.bookmark) : const Icon(Icons.bookmark_outline),
+                      ),
+                      unavailable: () {
+                        return IconButton(
+                          onPressed: () {
+                            ref.read(bookInSavedLibraryStatusProvider(book).notifier).add();
+                          },
+                          icon: const Icon(Icons.bookmark_outline),
                         );
                       },
                     ),
-                  ),
-                  const SizedBox(
-                    height: kSpacingXSmall,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(book.title),
-                            Text(book.fileSizeForHuman),
-                            bookPages.maybeWhen(
-                              data: (pages) => Text("$pages ${plural("page", pages)}"),
-                              orElse: () => const SizedBox.shrink(),
-                            )
-                          ],
-                        ),
-                      ),
-                      bookOfflineStatus.maybeWhen(
-                        orElse: () => const SizedBox.shrink(),
-                        available: () {
-                          return IconButton(
-                            onPressed: () {
-                              _ref.read(bookInSavedLibraryStatusProvider(book).notifier).remove();
-                            },
-                            icon: const Icon(Icons.bookmark),
-                          );
-                        },
-                        updating: (isSaving) => Opacity(
-                          opacity: 0.85,
-                          child: isSaving ? const Icon(Icons.bookmark) : const Icon(Icons.bookmark_outline),
-                        ),
-                        unavailable: () {
-                          return IconButton(
-                            onPressed: () {
-                              _ref.read(bookInSavedLibraryStatusProvider(book).notifier).add();
-                            },
-                            icon: const Icon(Icons.bookmark_outline),
-                          );
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            );
-          });
+                  ],
+                )
+              ],
+            ),
+          );
         },
       ),
     );

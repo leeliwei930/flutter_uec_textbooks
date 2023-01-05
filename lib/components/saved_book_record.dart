@@ -59,6 +59,7 @@ class _BookListTileState extends ConsumerState<_BookListTile> {
       title: Text(widget.book.title),
       trailing: offlineBookStateNotifier.when(
         checking: (book) => const CircularProgressIndicator(),
+        downloadStarted: (book) => const CircularProgressIndicator(),
         downloadRequired: (book) => const Icon(Icons.cloud_download_outlined),
         downloading: (book, downloadProgress) => CircularProgressIndicator(
           value: downloadProgress,

@@ -8,7 +8,7 @@ import 'package:uec_textbooks/providers/saved_library_provider.dart';
 part 'offline_books_provider.freezed.dart';
 
 final bookInSavedLibraryStatusProvider =
-    StateNotifierProvider.family<BookInSavedLibraryStatusNotifier, BookOfflineStatus, Book>(
+    StateNotifierProvider.family.autoDispose<BookInSavedLibraryStatusNotifier, BookOfflineStatus, Book>(
   (ref, book) {
     return BookInSavedLibraryStatusNotifier(
       ref: ref,
@@ -19,7 +19,7 @@ final bookInSavedLibraryStatusProvider =
 );
 
 final offlineBookDownloadStateNotifierProvider =
-    StateNotifierProvider.family<OfflineBookDownloadStateNotifier, OfflineBookDownloadState, Book>(
+    StateNotifierProvider.family.autoDispose<OfflineBookDownloadStateNotifier, OfflineBookDownloadState, Book>(
   (ref, book) {
     final stateNotifier = OfflineBookDownloadStateNotifier(ref: ref, book: book);
 
@@ -48,9 +48,34 @@ class OfflineBookDownloadStateNotifier extends StateNotifier<OfflineBookDownload
       final isAvailable = await offlineBookFileStorageService.checkBookAvailability(state.book);
       if (isAvailable) {
         state = OfflineBookDownloadState.completed(book: state.book);
+      } else {
+        state = OfflineBookDownloadState.downloadRequired(book: state.book);
       }
     } else {
-      state = OfflineBookDownloadState.downloadRequired(book: state.book);
+      // look for download queue
+      final downloadTasks = await FlutterDownloader.loadTasksWithRawQuery(
+          query: 'SELECT * FROM task WHERE task_id = ${state.book.pdfDownloadTaskId}');
+
+      if (downloadTasks != null && downloadTasks.isNotEmpty) {
+        final lastDownloadTask = downloadTasks.first;
+        if (lastDownloadTask.status == DownloadTaskStatus.paused) {
+          state = OfflineBookDownloadState.paused(book: state.book, progress: lastDownloadTask.progress / 100);
+          return;
+        } else if (lastDownloadTask.status == DownloadTaskStatus.running) {
+          state = OfflineBookDownloadState.downloading(book: state.book, progress: lastDownloadTask.progress / 100);
+          return;
+        } else if (lastDownloadTask.status == DownloadTaskStatus.failed) {
+          state = OfflineBookDownloadState.failed(book: state.book);
+          return;
+        } else if (lastDownloadTask.status == DownloadTaskStatus.enqueued) {
+          state = OfflineBookDownloadState.downloadStarted(book: state.book);
+          return;
+        } else {
+          state = OfflineBookDownloadState.downloadRequired(book: state.book);
+        }
+      } else {
+        state = OfflineBookDownloadState.downloadRequired(book: state.book);
+      }
     }
   }
 
@@ -63,20 +88,19 @@ class OfflineBookDownloadStateNotifier extends StateNotifier<OfflineBookDownload
   }
 
   void startDownload() async {
-    if (state is OfflineBookDownloadStateDownloading) {
+    if (state is OfflineBookDownloadStateDownloading || !mounted) {
       return;
     }
-    final offlineBookFileStorageService = ref.read(offlineBookFileStorageServiceProvider);
 
-    final saveDir = await offlineBookFileStorageService.getBookSavedDirectory(state.book);
     try {
+      final offlineBookFileStorageService = ref.read(offlineBookFileStorageServiceProvider);
+      final saveDir = await offlineBookFileStorageService.getBookSavedDirectory(state.book);
       final String? taskId = await FlutterDownloader.enqueue(
         url: state.book.downloadUrl,
         savedDir: saveDir,
         fileName: state.book.name,
         requiresStorageNotLow: true,
       );
-
       final box = ref.read(savedLibraryRepositoryProvider);
       await box.updateLibraryBook(
         key: state.book.path,
@@ -85,6 +109,7 @@ class OfflineBookDownloadStateNotifier extends StateNotifier<OfflineBookDownload
           offlinePDFPath: '$saveDir/${state.book.name}',
         ),
       );
+      state = OfflineBookDownloadState.downloadStarted(book: state.book);
     } catch (error, stackTrace) {
       state = OfflineBookDownloadState.failed(
         book: state.book,
@@ -104,6 +129,9 @@ class OfflineBookDownloadState with _$OfflineBookDownloadState {
   const factory OfflineBookDownloadState.downloadRequired({
     required Book book,
   }) = OfflineBookDownloadStateDownloadRequired;
+  const factory OfflineBookDownloadState.downloadStarted({
+    required Book book,
+  }) = OfflineBookDownloadStateDownloadStarted;
 
   const factory OfflineBookDownloadState.downloading({
     required Book book,
@@ -164,7 +192,26 @@ class BookInSavedLibraryStatusNotifier extends StateNotifier<BookOfflineStatus> 
     state = const BookOfflineStatus.updating(isSaving: true);
     try {
       await savedLibraryRepo.addToLibrary(book);
-      state = const BookOfflineStatus.prepareDownload();
+
+      final offlineBookFileStorageService = ref.read(offlineBookFileStorageServiceProvider);
+
+      final saveDir = await offlineBookFileStorageService.getBookSavedDirectory(book);
+      final String? taskId = await FlutterDownloader.enqueue(
+        url: book.downloadUrl,
+        savedDir: saveDir,
+        fileName: book.name,
+        requiresStorageNotLow: true,
+      );
+
+      final box = ref.read(savedLibraryRepositoryProvider);
+      await box.updateLibraryBook(
+        key: book.path,
+        book: book.copyWith(
+          pdfDownloadTaskId: taskId,
+          offlinePDFPath: '$saveDir/${book.name}',
+        ),
+      );
+
       state = const BookOfflineStatus.available();
     } catch (error) {
       state = rollbackState;
@@ -192,8 +239,8 @@ class BookInSavedLibraryStatusNotifier extends StateNotifier<BookOfflineStatus> 
 class BookOfflineStatus with _$BookOfflineStatus {
   const BookOfflineStatus._();
   const factory BookOfflineStatus.unknown() = _$BookOfflineStatusUnknown;
-  const factory BookOfflineStatus.prepareDownload() = _$BookOfflineStatusPrepareDownload;
   const factory BookOfflineStatus.available() = _$BookOfflineStatusAvailable;
+  const factory BookOfflineStatus.unableToDownload() = _$BookOfflineStatusUnableToDownload;
   const factory BookOfflineStatus.updating({required bool isSaving}) = _$BookOfflineStatusUpdating;
   const factory BookOfflineStatus.unavailable() = _$BookOfflineStatusUnavailable;
 }

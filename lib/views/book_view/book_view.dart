@@ -44,6 +44,7 @@ class BookView extends ConsumerWidget {
                   ),
                 );
               }
+              return null;
             },
             loading: () => Lottie.asset(LottieAssets.fileLoading),
             orElse: () => const SizedBox.shrink(),
