@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:filesize/filesize.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:uec_textbooks/models/year_group.dart';
 
 part 'book.freezed.dart';
