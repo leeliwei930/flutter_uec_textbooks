@@ -64,7 +64,10 @@ GoRouter router(ref) {
           name: 'view-book',
           parentNavigatorKey: rootNavigatorKey,
           builder: (_, state) {
-            return const BookView();
+            final isViewingOffline = state.queryParams.containsKey('offline');
+            return BookView(
+              isViewingOffline: isViewingOffline,
+            );
           }),
     ],
   );

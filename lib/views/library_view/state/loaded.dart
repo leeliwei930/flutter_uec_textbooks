@@ -15,9 +15,9 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
   double get crossAxisSpacing;
   double get mainAxisSpacing;
 
-  void _pushToBookViewPage(BuildContext context, {Book? book}) {
+  void _pushToBookViewPage({required WidgetRef ref, Book? book}) {
     if (book != null) {
-      context.pushNamed('view-book');
+      ref.read(routerProvider).pushNamed('view-book');
     }
   }
 
@@ -26,7 +26,7 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
     ref.listen<Book?>(
       selectedBookStateProvider,
       (_, book) => _pushToBookViewPage(
-        context,
+        ref: ref,
         book: book,
       ),
     );

@@ -7,12 +7,16 @@ import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/providers/books_provider.dart';
 
 class BookView extends ConsumerWidget {
-  const BookView({super.key});
+  const BookView({
+    super.key,
+    this.isViewingOffline = false,
+  });
 
+  final bool isViewingOffline;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final book = ref.watch(viewBookProvider);
-    final pdfFile = ref.watch(viewBookPDFViewerProvider);
+    final pdfFile = ref.watch(viewBookPDFViewerProvider(isViewingOffline: isViewingOffline));
     final expandedHeight = (MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.vertical) * 0.15;
     final collapsedHeight = expandedHeight - (expandedHeight * 0.1);
 

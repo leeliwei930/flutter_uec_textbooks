@@ -118,7 +118,7 @@ class _BookListTileState extends ConsumerState<_BookListTile> {
             // TODO(leeliwei930): enqueue another download tasks
           },
           completed: (book) {
-            // TODO(leeliwei930): open pdf using offline path.
+            ref.read(selectedBookStateProvider.notifier).state = book;
           },
           paused: (Book book, double progress) {
             // TODO(leeliwei930): check for existing download task, if existing one is available in download queue

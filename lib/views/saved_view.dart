@@ -13,6 +13,7 @@ import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/book_group.dart';
 import 'package:uec_textbooks/models/download_task_record.dart';
+import 'package:uec_textbooks/providers/books_provider.dart';
 import 'package:uec_textbooks/providers/navigation_providers.dart';
 import 'package:uec_textbooks/providers/offline_books_provider.dart';
 import 'package:uec_textbooks/providers/saved_library_provider.dart';
@@ -57,7 +58,6 @@ class _SavedViewConsumerState extends ConsumerState<SavedView> {
     final selectedBooks = ref.watch(selectedBooksStateProvider);
     final numberOfBookSelected = selectedBooks.length;
 
-    final colorScheme = Theme.of(context).colorScheme;
     ref.listen<List<Book>>(selectedBooksStateProvider, (_, nextSelectedBooks) {
       if (nextSelectedBooks.isEmpty) {
         ref.invalidate(isBookSelectionModeProvider);
@@ -182,10 +182,25 @@ class _SavedLibraryLoadedState extends ConsumerState<_SavedLibraryLoaded> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<Book?>(
+      selectedBookStateProvider,
+      (_, book) => _pushToBookViewPage(
+        ref: ref,
+        book: book,
+      ),
+    );
     return CustomScrollView(
       slivers: _buildSliverWidgets(
         bookGroups: widget.bookGroups,
       ),
     );
+  }
+
+  void _pushToBookViewPage({required WidgetRef ref, Book? book}) {
+    if (book != null) {
+      ref.read(routerProvider).pushNamed('view-book', queryParams: <String, String>{
+        "offline": '',
+      });
+    }
   }
 }

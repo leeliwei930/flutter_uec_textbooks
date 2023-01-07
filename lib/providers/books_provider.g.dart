@@ -129,17 +129,78 @@ final viewBookProvider = AutoDisposeProvider<Book?>(
       const bool.fromEnvironment('dart.vm.product') ? null : $viewBookHash,
 );
 typedef ViewBookRef = AutoDisposeProviderRef<Book?>;
-String $viewBookPDFViewerHash() => r'e07b8c79e11a7dcc68e481ff837b8a1ba15be538';
+String $viewBookPDFViewerHash() => r'88f97b012704bbd52f659790da86b9f200ee90aa';
 
 /// See also [viewBookPDFViewer].
-final viewBookPDFViewerProvider = AutoDisposeFutureProvider<PDFDocument?>(
-  viewBookPDFViewer,
-  name: r'viewBookPDFViewerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : $viewBookPDFViewerHash,
-);
+class ViewBookPDFViewerProvider
+    extends AutoDisposeFutureProvider<PDFDocument?> {
+  ViewBookPDFViewerProvider({
+    this.isViewingOffline = false,
+  }) : super(
+          (ref) => viewBookPDFViewer(
+            ref,
+            isViewingOffline: isViewingOffline,
+          ),
+          from: viewBookPDFViewerProvider,
+          name: r'viewBookPDFViewerProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : $viewBookPDFViewerHash,
+        );
+
+  final bool isViewingOffline;
+
+  @override
+  bool operator ==(Object other) {
+    return other is ViewBookPDFViewerProvider &&
+        other.isViewingOffline == isViewingOffline;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, isViewingOffline.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
 typedef ViewBookPDFViewerRef = AutoDisposeFutureProviderRef<PDFDocument?>;
+
+/// See also [viewBookPDFViewer].
+final viewBookPDFViewerProvider = ViewBookPDFViewerFamily();
+
+class ViewBookPDFViewerFamily extends Family<AsyncValue<PDFDocument?>> {
+  ViewBookPDFViewerFamily();
+
+  ViewBookPDFViewerProvider call({
+    bool isViewingOffline = false,
+  }) {
+    return ViewBookPDFViewerProvider(
+      isViewingOffline: isViewingOffline,
+    );
+  }
+
+  @override
+  AutoDisposeFutureProvider<PDFDocument?> getProviderOverride(
+    covariant ViewBookPDFViewerProvider provider,
+  ) {
+    return call(
+      isViewingOffline: provider.isViewingOffline,
+    );
+  }
+
+  @override
+  List<ProviderOrFamily>? get allTransitiveDependencies => null;
+
+  @override
+  List<ProviderOrFamily>? get dependencies => null;
+
+  @override
+  String? get name => r'viewBookPDFViewerProvider';
+}
+
 String $offlineBookFileStorageServiceHash() =>
     r'20926b9c9c9218617a46d903d7430776c4630d7d';
 

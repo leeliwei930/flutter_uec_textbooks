@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -74,10 +76,14 @@ Book? viewBook(ViewBookRef ref) {
 }
 
 @riverpod
-Future<PDFDocument?> viewBookPDFViewer(ViewBookPDFViewerRef ref) async {
+Future<PDFDocument?> viewBookPDFViewer(ViewBookPDFViewerRef ref, {bool isViewingOffline = false}) async {
   final selectedBook = ref.watch(viewBookProvider);
   if (selectedBook != null) {
-    return PDFDocument.fromURL(selectedBook.downloadUrl);
+    if (isViewingOffline) {
+      return PDFDocument.fromFile(File(selectedBook.offlinePDFPath!));
+    } else {
+      return PDFDocument.fromURL(selectedBook.downloadUrl);
+    }
   }
   return null;
 }
