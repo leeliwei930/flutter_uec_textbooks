@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:lottie/lottie.dart';
@@ -11,6 +10,7 @@ import 'package:uec_textbooks/components/empty_state_view.dart';
 import 'package:uec_textbooks/components/saved_book_record.dart';
 import 'package:uec_textbooks/constants/lottie_assets.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
+import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/book_group.dart';
 import 'package:uec_textbooks/models/download_task_record.dart';
 import 'package:uec_textbooks/providers/navigation_providers.dart';
@@ -53,73 +53,78 @@ class _SavedViewConsumerState extends ConsumerState<SavedView> {
   Widget build(BuildContext context) {
     final offlineBooks = ref.watch(offlineBooksNotifierProvider);
     final router = ref.read(routerProvider);
+    final isBookSelectionMode = ref.watch(isBookSelectionModeProvider);
+    final selectedBooks = ref.watch(selectedBooksStateProvider);
+    final numberOfBookSelected = selectedBooks.length;
+
+    final colorScheme = Theme.of(context).colorScheme;
+    ref.listen<List<Book>>(selectedBooksStateProvider, (_, nextSelectedBooks) {
+      if (nextSelectedBooks.isEmpty) {
+        ref.invalidate(isBookSelectionModeProvider);
+      }
+    });
     return Scaffold(
-      body: SafeArea(
-        child: offlineBooks.when(
-          initial: () => const SizedBox.shrink(),
-          loading: () => const Center(
-            child: CircularProgressIndicator.adaptive(),
-          ),
-          empty: () => EmptyStateView(
-            primaryView: Lottie.asset(LottieAssets.emptyData),
-            headline: 'savedLibrary.empty'.tr(),
-            description: 'savedLibrary.emptySupport'.tr(),
-            actions: [
-              TextButton(
-                onPressed: () => router.go(
-                  router.namedLocation('library'),
-                ),
-                child: Text(
-                  'savedLibrary.emptyAction'.tr().toUpperCase(),
-                ),
+      appBar: AppBar(
+        title: isBookSelectionMode && selectedBooks.isNotEmpty
+            ? Text(
+                "$numberOfBookSelected ${plural("selected_books", numberOfBookSelected)}",
               )
-            ],
-          ),
-          loaded: (bookGroups) => _SavedLibraryLoaded(
-            bookGroups: bookGroups,
-          ),
-          removed: (bookGroups) => _SavedLibraryLoaded(
-            bookGroups: bookGroups,
-          ),
-          loadError: (error, stackTrace) => EmptyStateView(
-            primaryView: Lottie.asset(LottieAssets.emptyData),
-            headline: 'savedLibrary.error'.tr(),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  ref.read(offlineBooksNotifierProvider.notifier).fetchReadingList();
-                },
-                child: Text(
-                  'savedLibrary.retry'.tr().toUpperCase(),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
-        onOpen: () {
-          ref.read(isBookSelectionModeProvider.notifier).state = true;
-        },
-        onClose: () {
-          ref.read(isBookSelectionModeProvider.notifier).state = false;
-        },
-        afterClose: () {
-          ref.read(selectedBooksStateProvider).clear();
-        },
-        type: ExpandableFabType.up,
-        child: const Icon(Icons.edit),
-        closeButtonStyle: const ExpandableFabCloseButtonStyle(
-          child: Icon(Icons.done),
-        ),
-        children: [
-          FloatingActionButton(
-            backgroundColor: Theme.of(context).colorScheme.error,
-            child: const Icon(Icons.delete),
-            onPressed: () {},
-          ),
+            : Text("reading_list".tr()),
+        actions: [
+          if (isBookSelectionMode && selectedBooks.isNotEmpty) ...[
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.clear_all),
+              onPressed: () {
+                ref.invalidate(selectedBooksStateProvider);
+              },
+            ),
+          ]
         ],
+      ),
+      body: offlineBooks.when(
+        initial: () => const SizedBox.shrink(),
+        loading: () => const Center(
+          child: CircularProgressIndicator.adaptive(),
+        ),
+        empty: () => EmptyStateView(
+          primaryView: Lottie.asset(LottieAssets.emptyData),
+          headline: 'savedLibrary.empty'.tr(),
+          description: 'savedLibrary.emptySupport'.tr(),
+          actions: [
+            TextButton(
+              onPressed: () => router.go(
+                router.namedLocation('library'),
+              ),
+              child: Text(
+                'savedLibrary.emptyAction'.tr().toUpperCase(),
+              ),
+            )
+          ],
+        ),
+        loaded: (bookGroups) => _SavedLibraryLoaded(
+          bookGroups: bookGroups,
+        ),
+        removed: (bookGroups) => _SavedLibraryLoaded(
+          bookGroups: bookGroups,
+        ),
+        loadError: (error, stackTrace) => EmptyStateView(
+          primaryView: Lottie.asset(LottieAssets.emptyData),
+          headline: 'savedLibrary.error'.tr(),
+          actions: [
+            TextButton(
+              onPressed: () {
+                ref.read(offlineBooksNotifierProvider.notifier).fetchReadingList();
+              },
+              child: Text(
+                'savedLibrary.retry'.tr().toUpperCase(),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

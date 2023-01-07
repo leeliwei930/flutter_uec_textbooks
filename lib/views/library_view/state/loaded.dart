@@ -58,7 +58,6 @@ abstract class _LibraryViewLoadedBase extends ConsumerWidget {
                     ref.read(selectedBookStateProvider.notifier).state = book;
                   },
                   child: CachedNetworkImage(
-                    
                     imageUrl: TextBookCoverImage.url(
                       yearGroup: ref.read(yearGroupStateProvider),
                       filename: book.imageName,

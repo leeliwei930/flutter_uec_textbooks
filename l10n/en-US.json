@@ -150,5 +150,11 @@
 		"errorDescription": "Please ensure you have the internet connected",
 		"retry": "Retry",
 		"viewOfflineBooks": "View Offline Books"
+	},
+	"reading_list": "Reading List",
+	"selected_books": {
+		"zero":"book selected",
+		"one": "book selected",
+		"other": "books selected"
 	}
 }

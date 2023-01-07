@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/book.dart';
+import 'package:uec_textbooks/providers/books_provider.dart';
 import 'package:uec_textbooks/providers/offline_books_provider.dart';
 import 'package:uec_textbooks/providers/saved_library_provider.dart';
 import 'package:uec_textbooks/utils/textbook_cover_image.dart';
@@ -36,83 +37,107 @@ class _BookListTileState extends ConsumerState<_BookListTile> {
     final offlineBookStateNotifier = ref.watch(
       offlineBookDownloadStateNotifierProvider(widget.book),
     );
-    final isBookSelectionMode = ref.watch(isBookSelectionModeProvider);
+    final bookPages = ref.watch(
+      bookPagesProvider(book: widget.book),
+    );
+    final isBookSelected = ref.watch(isBookSelectionModeProvider);
     final selectedBooks = ref.watch(selectedBooksStateProvider);
-    if (isBookSelectionMode) {
-      return CheckboxListTile(
-        value: selectedBooks.contains(widget.book),
-        title: Text(widget.book.title),
-        onChanged: (bool? value) {
-          if (value ?? false) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return ListTile(
+      isThreeLine: true,
+      selected: selectedBooks.contains(widget.book),
+      selectedTileColor: colorScheme.tertiary.withOpacity(0.25),
+      leading: SizedBox(
+        width: 80,
+        child: CachedNetworkImage(
+          fit: BoxFit.contain,
+          imageUrl: TextBookCoverImage.url(
+            yearGroup: widget.book.yearGroup!,
+            filename: widget.book.imageName,
+          ),
+          progressIndicatorBuilder: (context, child, loadingProgress) {
+            return Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                color: Colors.white,
+              ),
+            );
+          },
+        ),
+      ),
+      title: Text(widget.book.title),
+      subtitle: bookPages.maybeWhen(
+        data: (pages) => Text("$pages ${plural("page", pages)}"),
+        orElse: () => const SizedBox.shrink(),
+      ),
+      onLongPress: () {
+        ref.read(isBookSelectionModeProvider.notifier).state = true;
+        if (!selectedBooks.contains(widget.book)) {
+          ref.read(selectedBooksStateProvider.notifier).state = [
+            ...selectedBooks,
+            widget.book,
+          ];
+        } else {
+          ref.read(selectedBooksStateProvider.notifier).state = selectedBooks
+              .where(
+                (book) => book != widget.book,
+              )
+              .toList();
+        }
+      },
+      onTap: () {
+        if (isBookSelected) {
+          if (!selectedBooks.contains(widget.book)) {
             ref.read(selectedBooksStateProvider.notifier).state = [
+              ...selectedBooks,
               widget.book,
-              ...ref.read(selectedBooksStateProvider.notifier).state,
             ];
           } else {
-            ref.read(selectedBooksStateProvider.notifier).state =
-                selectedBooks.where((book) => book != widget.book).toList();
+            ref.read(selectedBooksStateProvider.notifier).state = selectedBooks
+                .where(
+                  (book) => book != widget.book,
+                )
+                .toList();
           }
-        },
-      );
-    } else {
-      return ListTile(
-        contentPadding: const EdgeInsets.all(kSpacingMedium),
-        leading: SizedBox(
-          height: 320,
-          child: CachedNetworkImage(
-            imageUrl: TextBookCoverImage.url(
-              yearGroup: widget.book.yearGroup!,
-              filename: widget.book.imageName,
-            ),
-            progressIndicatorBuilder: (context, child, loadingProgress) {
-              return Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  color: Colors.white,
-                ),
-              );
-            },
-          ),
-        ),
-        title: Text(widget.book.title),
-        onTap: () {
-          offlineBookStateNotifier.maybeWhen(
-            checking: (book) => const CircularProgressIndicator(),
-            downloadStarted: (book) {
-              // TODO(leeliwei930): paused download tasks
-            },
-            downloadRequired: (book) {
-              // TODO(leeliwei930): enqueue the download tasks
-            },
-            downloading: (book, downloadProgress) {
-              // TODO(leeliwei930): paused download tasks
-            },
-            failed: (book, error, stackTrace) {
-              // TODO(leeliwei930): enqueue another download tasks
-            },
-            completed: (book) {
-              // TODO(leeliwei930): open pdf using offline path.
-            },
-            paused: (Book book, double progress) {
-              // TODO(leeliwei930): check for existing download task, if existing one is available in download queue
-              // use the resume the download task, else start a new task
-            },
-            orElse: () => null,
-          );
-        },
-        trailing: offlineBookStateNotifier.when(
+          return;
+        }
+        offlineBookStateNotifier.maybeWhen(
           checking: (book) => const CircularProgressIndicator(),
-          downloadStarted: (book) => const CircularProgressIndicator(),
-          downloadRequired: (book) => const Icon(Icons.cloud_download_outlined),
-          downloading: (book, downloadProgress) => CircularProgressIndicator(
-            value: downloadProgress,
-          ),
-          failed: (book, error, stackTrace) => const Icon(Icons.cloud_off),
-          completed: (book) => const Icon(Icons.cloud_done),
-          paused: (Book book, double progress) => const Icon(Icons.pause),
+          downloadStarted: (book) {
+            // TODO(leeliwei930): paused download tasks
+          },
+          downloadRequired: (book) {
+            // TODO(leeliwei930): enqueue the download tasks
+          },
+          downloading: (book, downloadProgress) {
+            // TODO(leeliwei930): paused download tasks
+          },
+          failed: (book, error, stackTrace) {
+            // TODO(leeliwei930): enqueue another download tasks
+          },
+          completed: (book) {
+            // TODO(leeliwei930): open pdf using offline path.
+          },
+          paused: (Book book, double progress) {
+            // TODO(leeliwei930): check for existing download task, if existing one is available in download queue
+            // use the resume the download task, else start a new task
+          },
+          orElse: () => null,
+        );
+      },
+      trailing: offlineBookStateNotifier.when(
+        checking: (book) => const CircularProgressIndicator(),
+        downloadStarted: (book) => const CircularProgressIndicator(),
+        downloadRequired: (book) => const Icon(Icons.cloud_download_outlined),
+        downloading: (book, downloadProgress) => CircularProgressIndicator(
+          value: downloadProgress,
         ),
-      );
-    }
+        failed: (book, error, stackTrace) => const Icon(Icons.cloud_off),
+        completed: (book) => const Icon(Icons.cloud_done),
+        paused: (Book book, double progress) => const Icon(Icons.pause),
+      ),
+    );
   }
 }
