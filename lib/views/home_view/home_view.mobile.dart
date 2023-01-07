@@ -29,10 +29,6 @@ class _HomeViewMobileState extends HomeViewState {
             label: "saved".tr(),
             icon: const Icon(Icons.bookmarks),
           ),
-          BottomNavigationBarItem(
-            label: "settings".tr(),
-            icon: const Icon(Icons.settings),
-          )
         ],
       ),
     );

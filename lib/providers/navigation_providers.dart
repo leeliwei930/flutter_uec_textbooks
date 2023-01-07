@@ -6,7 +6,6 @@ import 'package:uec_textbooks/views/book_view/book_view.dart';
 import 'package:uec_textbooks/views/home_view/home_view.dart';
 import 'package:uec_textbooks/views/library_view/library_view.dart';
 import 'package:uec_textbooks/views/saved_view.dart';
-import 'package:uec_textbooks/views/settings_view.dart';
 
 part 'navigation_providers.g.dart';
 
@@ -26,13 +25,6 @@ final _routes = [
     path: '/saved',
     pageBuilder: (context, state) => const NoTransitionPage(
       child: SavedView(),
-    ),
-  ),
-  GoRoute(
-    name: 'settings',
-    path: '/settings',
-    pageBuilder: (context, state) => const NoTransitionPage(
-      child: SettingsView(),
     ),
   ),
 ];
@@ -68,13 +60,12 @@ GoRouter router(ref) {
     routes: [
       homeViewRoute,
       GoRoute(
-        path: '/book',
-        name: 'view-book',
-        parentNavigatorKey: rootNavigatorKey,
-        builder: (_, state) {
-          return const BookView();
-        }
-      ),
+          path: '/book',
+          name: 'view-book',
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (_, state) {
+            return const BookView();
+          }),
     ],
   );
 }

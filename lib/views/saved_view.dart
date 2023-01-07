@@ -5,14 +5,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:uec_textbooks/components/empty_state_view.dart';
 import 'package:uec_textbooks/components/saved_book_record.dart';
 import 'package:uec_textbooks/constants/lottie_assets.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
-import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/book_group.dart';
 import 'package:uec_textbooks/models/download_task_record.dart';
+import 'package:uec_textbooks/providers/navigation_providers.dart';
 import 'package:uec_textbooks/providers/offline_books_provider.dart';
 import 'package:uec_textbooks/providers/saved_library_provider.dart';
 
@@ -29,6 +29,7 @@ class _SavedViewConsumerState extends ConsumerState<SavedView> {
   @override
   void initState() {
     super.initState();
+
     IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
     _port.listen((data) async {
       if (data is DownloadTaskRecord) {
@@ -49,31 +50,60 @@ class _SavedViewConsumerState extends ConsumerState<SavedView> {
 
   @override
   Widget build(BuildContext context) {
-    final savedLibraryBox = ref.watch(savedLibraryBoxProvider);
+    final offlineBooks = ref.watch(offlineBooksNotifierProvider);
+    final router = ref.read(routerProvider);
     return Scaffold(
-      body: savedLibraryBox.maybeWhen(
-        data: (bookCollection) {
-          if (bookCollection.isEmpty) {
-            return _EmptySavedLibrary();
-          } else {
-            return _SavedLibraryLoaded(
-              bookCollection: bookCollection,
-            );
-          }
-        },
-        error: (error, stackTrace) {
-          return const SizedBox.shrink();
-        },
-        orElse: () => const SizedBox.shrink(),
+      body: SafeArea(
+        child: offlineBooks.when(
+          initial: () => const SizedBox.shrink(),
+          loading: () => const Center(
+            child: CircularProgressIndicator.adaptive(),
+          ),
+          empty: () => EmptyStateView(
+            primaryView: Lottie.asset(LottieAssets.emptyData),
+            headline: 'savedLibrary.empty'.tr(),
+            description: 'savedLibrary.emptySupport'.tr(),
+            actions: [
+              TextButton(
+                onPressed: () => router.go(
+                  router.namedLocation('library'),
+                ),
+                child: Text(
+                  'savedLibrary.emptyAction'.tr().toUpperCase(),
+                ),
+              )
+            ],
+          ),
+          loaded: (bookGroups) => _SavedLibraryLoaded(
+            bookGroups: bookGroups,
+          ),
+          removed: (bookGroups) => _SavedLibraryLoaded(
+            bookGroups: bookGroups,
+          ),
+          loadError: (error, stackTrace) => EmptyStateView(
+            primaryView: Lottie.asset(LottieAssets.emptyData),
+            headline: 'savedLibrary.error'.tr(),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  ref.read(offlineBooksNotifierProvider.notifier).fetchReadingList();
+                },
+                child: Text(
+                  'savedLibrary.retry'.tr().toUpperCase(),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
 class _SavedLibraryLoaded extends ConsumerStatefulWidget {
-  const _SavedLibraryLoaded({required this.bookCollection});
+  const _SavedLibraryLoaded({required this.bookGroups});
 
-  final Box<Book> bookCollection;
+  final List<BookGroup> bookGroups;
 
   @override
   ConsumerState<_SavedLibraryLoaded> createState() => _SavedLibraryLoadedState();
@@ -111,7 +141,6 @@ class _SavedLibraryLoadedState extends ConsumerState<_SavedLibraryLoaded> {
                     book: book,
                     onRecordDismiss: (dismissDirection) async {
                       if (dismissDirection == DismissDirection.endToStart) {
-                        await ref.read(bookInSavedLibraryStatusProvider(book).notifier).remove();
                         ref.invalidate(savedLibraryBoxProvider);
                       }
                     },
@@ -128,46 +157,10 @@ class _SavedLibraryLoadedState extends ConsumerState<_SavedLibraryLoaded> {
 
   @override
   Widget build(BuildContext context) {
-    final bookGroups = BookGroup.fromBoxCollection(widget.bookCollection);
     return CustomScrollView(
       clipBehavior: Clip.hardEdge,
       slivers: _buildSliverWidgets(
-        bookGroups: bookGroups,
-      ),
-    );
-  }
-}
-
-class _EmptySavedLibrary extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme;
-    final color = Theme.of(context).colorScheme;
-    return Center(
-      child: Column(
-        children: [
-          Lottie.asset(LottieAssets.emptyData),
-          Text(
-            'savedLibrary.empty'.tr(),
-            style: textStyle.titleLarge,
-          ),
-          const SizedBox(
-            height: kSpacingMedium,
-          ),
-          Icon(
-            size: 32,
-            Icons.bookmark,
-            color: color.error,
-          ),
-          const SizedBox(
-            height: kSpacingSmall,
-          ),
-          Text(
-            'savedLibrary.emptySupport'.tr(),
-            style: textStyle.titleMedium,
-            textAlign: TextAlign.center,
-          ),
-        ],
+        bookGroups: widget.bookGroups,
       ),
     );
   }

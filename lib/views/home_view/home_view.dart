@@ -35,7 +35,6 @@ abstract class HomeViewState extends ConsumerState<HomeView> {
     _routeNames.addAll([
       _router.namedLocation('library'),
       _router.namedLocation('saved-books'),
-      _router.namedLocation('settings'),
     ]);
   }
 

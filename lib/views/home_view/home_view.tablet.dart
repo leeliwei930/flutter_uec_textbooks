@@ -33,7 +33,6 @@ class _HomeViewTabletState extends HomeViewState with SingleTickerProviderStateM
     expandableController = ExpandableController(
       initialExpanded: true,
     );
-
     menuItems.addAll([
       _MenuItem(
           label: "library".tr(),
@@ -45,12 +44,6 @@ class _HomeViewTabletState extends HomeViewState with SingleTickerProviderStateM
         label: "saved".tr(),
         icon: const Icon(
           Icons.bookmarks,
-        ),
-      ),
-      _MenuItem(
-        label: "settings".tr(),
-        icon: const Icon(
-          Icons.settings,
         ),
       ),
     ]);
@@ -70,6 +63,9 @@ class _HomeViewTabletState extends HomeViewState with SingleTickerProviderStateM
                   (menuItem) {
                     final index = menuItems.indexWhere((element) => element == menuItem);
                     if (menuItem.subItems.isNotEmpty) {
+                      if (routeIndex == index) {
+                        expandableController.expanded = true;
+                      }
                       return ExpandableTheme(
                         data: const ExpandableThemeData(
                           hasIcon: false,
@@ -81,7 +77,6 @@ class _HomeViewTabletState extends HomeViewState with SingleTickerProviderStateM
                             leading: menuItem.icon,
                             title: Text(menuItem.label ?? ''),
                             onTap: () {
-                              expandableController.expanded = true;
                               _router.go(_routeNames.elementAt(index));
                             },
                           ),
