@@ -48,9 +48,15 @@ class _LibraryViewMobileState extends LibraryViewState {
                     yearGroup: selectedYearGroup,
                     books: ebooks,
                   ),
-                  error: (error, __) {
-                    return const SliverFillRemaining(child: Text('Something Error'));
-                  },
+                  error: (error, __) => SliverToBoxAdapter(
+                    child: LibraryErrorStateView(
+                      actionAlignmentAxis: Axis.vertical,
+                      onRefreshBooks: refreshBooks,
+                      onViewOfflineBooks: () {
+                        ref.read(routerProvider).goNamed('saved-books');
+                      },
+                    ),
+                  ),
                   loading: () => _LibraryViewMobileLoading(),
                 ),
               ],

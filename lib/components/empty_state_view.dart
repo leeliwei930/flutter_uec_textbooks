@@ -22,45 +22,46 @@ class EmptyStateView extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
     return Center(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Column(
-            children: [
-              primaryView,
-              Text(
-                headline,
-                style: textStyle.titleLarge,
-              ),
-              const SizedBox(
-                height: kSpacingMedium,
-              ),
-              if (description?.isNotEmpty ?? false)
-                SizedBox(
-                  width: constraints.maxWidth * 0.85,
-                  child: Text(
+      child: Padding(
+        padding: const EdgeInsets.all(kSpacingMedium),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Column(
+              children: [
+                primaryView,
+                Text(
+                  headline,
+                  style: textStyle.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: kSpacingMedium,
+                ),
+                if (description?.isNotEmpty ?? false)
+                  Text(
                     description!,
-                    style: textStyle.titleMedium,
+                    style: textStyle.subtitle1,
                     textAlign: TextAlign.center,
                   ),
-                ),
-              if (actions.isNotEmpty) ...[
-                const SizedBox(
-                  height: kSpacingSmall,
-                ),
-                if (actionAlignmentAxis == Axis.vertical)
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: actions,
-                  )
-                else
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: actions,
-                  )
-              ]
-            ],
-          );
-        },
+                if (actions.isNotEmpty) ...[
+                  const SizedBox(
+                    height: kSpacingSmall,
+                  ),
+                  if (actionAlignmentAxis == Axis.vertical)
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: actions,
+                    )
+                  else
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: actions,
+                    )
+                ]
+              ],
+            );
+          },
+        ),
       ),
     );
   }

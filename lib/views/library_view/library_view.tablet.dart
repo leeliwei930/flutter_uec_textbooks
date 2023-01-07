@@ -41,34 +41,13 @@ class _LibraryViewTabletState extends LibraryViewState {
                     books: books,
                   ),
                   error: (_, __) => SliverToBoxAdapter(
-                    child: LayoutBuilder(builder: (context, constraints) {
-                      return EmptyStateView(
-                        primaryView: LottieBuilder.asset(
-                          LottieAssets.noConnection,
-                          width: constraints.maxWidth * 0.4,
-                        ),
-                        headline: 'libraryView.errorTitle'.tr(),
-                        description: 'libraryView.errorDescription'.tr(),
-                        actionAlignmentAxis: Axis.horizontal,
-                        actions: [
-                          TextButton.icon(
-                            icon: const Icon(Icons.refresh),
-                            label: Text("libraryView.retry".tr().toUpperCase()),
-                            onPressed: refreshBooks,
-                          ),
-                          const SizedBox(
-                            width: kSpacingMedium,
-                          ),
-                          ElevatedButton.icon(
-                            icon: const Icon(Icons.offline_bolt),
-                            label: Text("libraryView.viewOfflineBooks".tr().toUpperCase()),
-                            onPressed: () {
-                              ref.read(routerProvider).goNamed('saved-books');
-                            },
-                          )
-                        ],
-                      );
-                    }),
+                    child: LibraryErrorStateView(
+                      actionAlignmentAxis: Axis.horizontal,
+                      onRefreshBooks: refreshBooks,
+                      onViewOfflineBooks: () {
+                        ref.read(routerProvider).goNamed('saved-books');
+                      },
+                    ),
                   ),
                 ),
               ],
