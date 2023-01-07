@@ -144,5 +144,11 @@
 		"error": "Oops there is an error, when loading your reading list",
 		"retry": "Retry",
 		"remove": "Remove from reading list"
+	},
+	"libraryView": {
+		"errorTitle": "Oops we're unable to load the library, please try again later.",
+		"errorDescription": "Please ensure you have the internet connected",
+		"retry": "Retry",
+		"viewOfflineBooks": "View Offline Books"
 	}
 }

@@ -3,13 +3,17 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:uec_textbooks/components/empty_state_view.dart';
 import 'package:uec_textbooks/components/year_groups_chips.dart';
 import 'package:uec_textbooks/constants/image_assets.dart';
+import 'package:uec_textbooks/constants/lottie_assets.dart';
 import 'package:uec_textbooks/constants/spacing.dart';
 import 'package:uec_textbooks/models/book.dart';
 import 'package:uec_textbooks/models/year_group.dart';
 import 'package:uec_textbooks/providers/books_provider.dart';
+import 'package:uec_textbooks/providers/navigation_providers.dart';
 import 'package:uec_textbooks/providers/offline_books_provider.dart';
 import 'package:uec_textbooks/utils/textbook_cover_image.dart';
 

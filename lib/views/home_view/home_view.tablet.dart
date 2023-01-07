@@ -65,6 +65,8 @@ class _HomeViewTabletState extends HomeViewState with SingleTickerProviderStateM
                     if (menuItem.subItems.isNotEmpty) {
                       if (routeIndex == index) {
                         expandableController.expanded = true;
+                      } else {
+                        expandableController.expanded = false;
                       }
                       return ExpandableTheme(
                         data: const ExpandableThemeData(

@@ -43,15 +43,21 @@ class EmptyStateView extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              if (actions.isNotEmpty)
+              if (actions.isNotEmpty) ...[
+                const SizedBox(
+                  height: kSpacingSmall,
+                ),
                 if (actionAlignmentAxis == Axis.vertical)
                   Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: actions,
                   )
                 else
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: actions,
                   )
+              ]
             ],
           );
         },

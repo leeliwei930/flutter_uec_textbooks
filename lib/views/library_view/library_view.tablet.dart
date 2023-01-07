@@ -15,37 +15,66 @@ class _LibraryViewTabletState extends LibraryViewState {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: refreshBooks,
-        child: LayoutBuilder(builder: (context, constraints) {
-          return CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                pinned: true,
-                expandedHeight: constraints.maxHeight * 0.25,
-                floating: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Image.asset(
-                    ImageAssets.bookPages,
-                    fit: BoxFit.cover,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  pinned: true,
+                  expandedHeight: constraints.maxHeight * 0.25,
+                  floating: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Image.asset(
+                      ImageAssets.bookPages,
+                      fit: BoxFit.cover,
+                    ),
+                    collapseMode: CollapseMode.pin,
+                    centerTitle: false,
+                    titlePadding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingMedium),
+                    title: Text("yearGroup.${selectedYearGroup.name}".tr()),
                   ),
-                  collapseMode: CollapseMode.pin,
-                  centerTitle: false,
-                  titlePadding: const EdgeInsets.symmetric(vertical: kSpacingMedium, horizontal: kSpacingMedium),
-                  title: Text("yearGroup.${selectedYearGroup.name}".tr()),
                 ),
-              ),
-              books.when(
-                data: (books) => _LibraryViewTabletLoaded(
-                  yearGroup: selectedYearGroup,
-                  books: books,
+                books.when(
+                  loading: () => _LibraryViewTabletLoading(),
+                  data: (books) => _LibraryViewTabletLoaded(
+                    yearGroup: selectedYearGroup,
+                    books: books,
+                  ),
+                  error: (_, __) => SliverToBoxAdapter(
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      return EmptyStateView(
+                        primaryView: LottieBuilder.asset(
+                          LottieAssets.noConnection,
+                          width: constraints.maxWidth * 0.4,
+                        ),
+                        headline: 'libraryView.errorTitle'.tr(),
+                        description: 'libraryView.errorDescription'.tr(),
+                        actionAlignmentAxis: Axis.horizontal,
+                        actions: [
+                          TextButton.icon(
+                            icon: const Icon(Icons.refresh),
+                            label: Text("libraryView.retry".tr().toUpperCase()),
+                            onPressed: refreshBooks,
+                          ),
+                          const SizedBox(
+                            width: kSpacingMedium,
+                          ),
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.offline_bolt),
+                            label: Text("libraryView.viewOfflineBooks".tr().toUpperCase()),
+                            onPressed: () {
+                              ref.read(routerProvider).goNamed('saved-books');
+                            },
+                          )
+                        ],
+                      );
+                    }),
+                  ),
                 ),
-                error: (_, __) => const SliverFillRemaining(
-                  child: Text('error'),
-                ),
-                loading: () => _LibraryViewTabletLoading(),
-              ),
-            ],
-          );
-        }),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
