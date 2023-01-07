@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:lottie/lottie.dart';
@@ -96,6 +97,30 @@ class _SavedViewConsumerState extends ConsumerState<SavedView> {
           ),
         ),
       ),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        onOpen: () {
+          ref.read(isBookSelectionModeProvider.notifier).state = true;
+        },
+        onClose: () {
+          ref.read(isBookSelectionModeProvider.notifier).state = false;
+        },
+        afterClose: () {
+          ref.read(selectedBooksStateProvider).clear();
+        },
+        type: ExpandableFabType.up,
+        child: const Icon(Icons.edit),
+        closeButtonStyle: const ExpandableFabCloseButtonStyle(
+          child: Icon(Icons.done),
+        ),
+        children: [
+          FloatingActionButton(
+            backgroundColor: Theme.of(context).colorScheme.error,
+            child: const Icon(Icons.delete),
+            onPressed: () {},
+          ),
+        ],
+      ),
     );
   }
 }
@@ -139,11 +164,6 @@ class _SavedLibraryLoadedState extends ConsumerState<_SavedLibraryLoaded> {
 
                   return SavedBookRecord(
                     book: book,
-                    onRecordDismiss: (dismissDirection) async {
-                      if (dismissDirection == DismissDirection.endToStart) {
-                        ref.invalidate(savedLibraryBoxProvider);
-                      }
-                    },
                   );
                 },
               ),
@@ -158,7 +178,6 @@ class _SavedLibraryLoadedState extends ConsumerState<_SavedLibraryLoaded> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      clipBehavior: Clip.hardEdge,
       slivers: _buildSliverWidgets(
         bookGroups: widget.bookGroups,
       ),

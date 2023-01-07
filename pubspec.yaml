@@ -55,6 +55,7 @@ dependencies:
   riverpod_annotation: ^1.0.6
   flutter_downloader: ^1.9.1
   cached_network_image: ^3.2.3
+  flutter_expandable_fab: ^1.6.1
 
 
 dev_dependencies:

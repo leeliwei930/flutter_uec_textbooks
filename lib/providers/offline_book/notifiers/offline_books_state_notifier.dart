@@ -20,8 +20,6 @@ class OfflineBooksStateNotifier extends StateNotifier<OfflineBooksState> {
 
     try {
       state = OfflineBooksState.loading();
-      print('loading');
-
       final bookCollection = await ref.read(savedLibraryBoxProvider.future);
       if (bookCollection.isEmpty) {
         state = OfflineBooksState.empty();

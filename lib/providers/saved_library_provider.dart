@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uec_textbooks/models/book.dart';
@@ -15,3 +16,6 @@ Future<Box<Book>> savedLibraryBox(SavedLibraryBoxRef ref) async {
 OfflineLibraryRepository savedLibraryRepository(SavedLibraryRepositoryRef ref) {
   return OfflineLibraryRepository(ref: ref);
 }
+
+final selectedBooksStateProvider = StateProvider((ref) => <Book>[]);
+final isBookSelectionModeProvider = StateProvider((ref) => false);
