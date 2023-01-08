@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uec_textbooks/networking/books_client.dart';
-import 'package:uec_textbooks/utils/flavor_config.dart';
+import 'package:uec_textbooks_app/networking/books_client.dart';
+import 'package:uec_textbooks_app/utils/flavor_config.dart';
 
 part 'networking_provider.g.dart';
 

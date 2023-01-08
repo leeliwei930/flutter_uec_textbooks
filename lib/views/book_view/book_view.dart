@@ -2,9 +2,9 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:uec_textbooks/constants/lottie_assets.dart';
-import 'package:uec_textbooks/constants/spacing.dart';
-import 'package:uec_textbooks/providers/books_provider.dart';
+import 'package:uec_textbooks_app/constants/lottie_assets.dart';
+import 'package:uec_textbooks_app/constants/spacing.dart';
+import 'package:uec_textbooks_app/providers/books_provider.dart';
 
 class BookView extends ConsumerWidget {
   const BookView({

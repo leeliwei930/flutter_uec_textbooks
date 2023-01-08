@@ -1,9 +1,9 @@
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uec_textbooks/models/book.dart';
-import 'package:uec_textbooks/providers/books_provider.dart';
-import 'package:uec_textbooks/providers/offline_book/states/book_offline_status_state.dart';
-import 'package:uec_textbooks/providers/saved_library_provider.dart';
+import 'package:uec_textbooks_app/models/book.dart';
+import 'package:uec_textbooks_app/providers/books_provider.dart';
+import 'package:uec_textbooks_app/providers/offline_book/states/book_offline_status_state.dart';
+import 'package:uec_textbooks_app/providers/saved_library_provider.dart';
 
 /// The state notifier that handles the saved in library status.
 class BookOfflineStatusStateNotifier extends StateNotifier<BookOfflineStatus> {

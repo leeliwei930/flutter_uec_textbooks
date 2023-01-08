@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uec_textbooks/views/book_view/book_view.dart';
-import 'package:uec_textbooks/views/home_view/home_view.dart';
-import 'package:uec_textbooks/views/library_view/library_view.dart';
-import 'package:uec_textbooks/views/saved_view.dart';
+import 'package:uec_textbooks_app/views/book_view/book_view.dart';
+import 'package:uec_textbooks_app/views/home_view/home_view.dart';
+import 'package:uec_textbooks_app/views/library_view/library_view.dart';
+import 'package:uec_textbooks_app/views/saved_view.dart';
 
 part 'navigation_providers.g.dart';
 

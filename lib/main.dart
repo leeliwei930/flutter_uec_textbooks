@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:uec_textbooks/models/book.dart';
-import 'package:uec_textbooks/models/download_task_record.dart';
-import 'package:uec_textbooks/models/year_group.dart';
-import 'package:uec_textbooks/views/uec_main_app.dart';
+import 'package:uec_textbooks_app/models/book.dart';
+import 'package:uec_textbooks_app/models/download_task_record.dart';
+import 'package:uec_textbooks_app/models/year_group.dart';
+import 'package:uec_textbooks_app/views/uec_main_app.dart';
 
 void runMain({required VoidCallback configInit}) async {
   configInit();

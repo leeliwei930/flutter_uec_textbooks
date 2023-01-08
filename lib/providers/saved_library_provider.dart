@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uec_textbooks/models/book.dart';
-import 'package:uec_textbooks/repositories/saved_library_repository.dart';
+import 'package:uec_textbooks_app/models/book.dart';
+import 'package:uec_textbooks_app/repositories/saved_library_repository.dart';
 
 part 'saved_library_provider.g.dart';
 

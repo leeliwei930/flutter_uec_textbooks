@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:uec_textbooks/models/book.dart';
-import 'package:uec_textbooks/models/year_group.dart';
-import 'package:uec_textbooks/networking/books_client.dart';
+import 'package:uec_textbooks_app/models/book.dart';
+import 'package:uec_textbooks_app/models/year_group.dart';
+import 'package:uec_textbooks_app/networking/books_client.dart';
 
 class BooksRepository {
   const BooksRepository({required this.client});

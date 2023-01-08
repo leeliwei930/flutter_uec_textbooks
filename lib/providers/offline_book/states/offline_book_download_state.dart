@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:uec_textbooks/models/book.dart';
+import 'package:uec_textbooks_app/models/book.dart';
 
 part 'offline_book_download_state.freezed.dart';
 

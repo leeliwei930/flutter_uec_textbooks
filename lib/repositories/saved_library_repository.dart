@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uec_textbooks/models/book.dart';
-import 'package:uec_textbooks/providers/saved_library_provider.dart';
+import 'package:uec_textbooks_app/models/book.dart';
+import 'package:uec_textbooks_app/providers/saved_library_provider.dart';
 
 class OfflineLibraryRepository {
   OfflineLibraryRepository({required this.ref});

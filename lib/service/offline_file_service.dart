@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uec_textbooks/models/book.dart';
-import 'package:uec_textbooks/providers/file_storage.dart';
+import 'package:uec_textbooks_app/models/book.dart';
+import 'package:uec_textbooks_app/providers/file_storage.dart';
 
 class OfflineBookFileStorageService {
   OfflineBookFileStorageService(this.ref);

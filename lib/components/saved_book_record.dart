@@ -3,11 +3,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:uec_textbooks/models/book.dart';
-import 'package:uec_textbooks/providers/books_provider.dart';
-import 'package:uec_textbooks/providers/offline_books_provider.dart';
-import 'package:uec_textbooks/providers/saved_library_provider.dart';
-import 'package:uec_textbooks/utils/textbook_cover_image.dart';
+import 'package:uec_textbooks_app/models/book.dart';
+import 'package:uec_textbooks_app/providers/books_provider.dart';
+import 'package:uec_textbooks_app/providers/offline_books_provider.dart';
+import 'package:uec_textbooks_app/providers/saved_library_provider.dart';
+import 'package:uec_textbooks_app/utils/textbook_cover_image.dart';
 
 class SavedBookRecord extends ConsumerWidget {
   const SavedBookRecord({

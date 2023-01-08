@@ -4,12 +4,12 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uec_textbooks/constants/books_meta.dart';
-import 'package:uec_textbooks/models/book.dart';
-import 'package:uec_textbooks/models/book_pages.dart';
-import 'package:uec_textbooks/models/year_group.dart';
-import 'package:uec_textbooks/providers/repository_provider.dart';
-import 'package:uec_textbooks/service/offline_file_service.dart';
+import 'package:uec_textbooks_app/constants/books_meta.dart';
+import 'package:uec_textbooks_app/models/book.dart';
+import 'package:uec_textbooks_app/models/book_pages.dart';
+import 'package:uec_textbooks_app/models/year_group.dart';
+import 'package:uec_textbooks_app/providers/repository_provider.dart';
+import 'package:uec_textbooks_app/service/offline_file_service.dart';
 
 part 'books_provider.g.dart';
 

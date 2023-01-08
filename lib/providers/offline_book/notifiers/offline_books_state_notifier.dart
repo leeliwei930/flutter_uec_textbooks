@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uec_textbooks/models/book_group.dart';
-import 'package:uec_textbooks/providers/offline_book/states/offline_books_state.dart';
-import 'package:uec_textbooks/providers/saved_library_provider.dart';
+import 'package:uec_textbooks_app/models/book_group.dart';
+import 'package:uec_textbooks_app/providers/offline_book/states/offline_books_state.dart';
+import 'package:uec_textbooks_app/providers/saved_library_provider.dart';
 
 class OfflineBooksStateNotifier extends StateNotifier<OfflineBooksState> {
   OfflineBooksStateNotifier({

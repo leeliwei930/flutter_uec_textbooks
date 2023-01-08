@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:uec_textbooks/models/year_group.dart';
+import 'package:uec_textbooks_app/models/year_group.dart';
 
 import 'book.dart';
 

@@ -1,4 +1,4 @@
-package com.example.uec_textbooks
+package net.techrino.uec_textbooks_app
 
 import io.flutter.embedding.android.FlutterActivity
 

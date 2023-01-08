@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.uec_textbooks"
+        applicationId "net.techrino.uec_textbooks_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion 21
@@ -53,15 +53,15 @@ android {
         versionName flutterVersionName
     }
 
-    flavorDimensions "app"
+    flavorDimensions "uec_textbooks_app"
     productFlavors {
         staging {
-            dimension "app"
+            dimension "uec_textbooks_app"
             applicationIdSuffix ".staging"
-            resValue "string", "app_name", "UEC Textbooks (Stg)"
+            resValue "string", "app_name", "UEC Textbooks (STG)"
         }
         prod {
-            dimension "app"
+            dimension "uec_textbooks_app"
             resValue "string", "app_name", "UEC Textbooks"
         }
     }

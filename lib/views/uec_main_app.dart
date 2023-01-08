@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uec_textbooks/providers/navigation_providers.dart';
+import 'package:uec_textbooks_app/providers/navigation_providers.dart';
 
 class UECMainApp extends ConsumerWidget {
   const UECMainApp({super.key});

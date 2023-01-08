@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:uec_textbooks/constants/spacing.dart';
+import 'package:uec_textbooks_app/constants/spacing.dart';
 
 class EmptyStateView extends StatelessWidget {
   const EmptyStateView({

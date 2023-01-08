@@ -1,5 +1,5 @@
-import 'package:uec_textbooks/models/year_group.dart';
-import 'package:uec_textbooks/utils/flavor_config.dart';
+import 'package:uec_textbooks_app/models/year_group.dart';
+import 'package:uec_textbooks_app/utils/flavor_config.dart';
 
 class TextBookCoverImage {
   static String url({

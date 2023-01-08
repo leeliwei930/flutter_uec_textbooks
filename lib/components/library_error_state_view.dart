@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:uec_textbooks/components/empty_state_view.dart';
-import 'package:uec_textbooks/constants/lottie_assets.dart';
-import 'package:uec_textbooks/constants/spacing.dart';
+import 'package:uec_textbooks_app/components/empty_state_view.dart';
+import 'package:uec_textbooks_app/constants/lottie_assets.dart';
+import 'package:uec_textbooks_app/constants/spacing.dart';
 
 class LibraryErrorStateView extends ConsumerWidget {
   const LibraryErrorStateView({

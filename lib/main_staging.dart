@@ -1,5 +1,5 @@
-import 'package:uec_textbooks/main.dart';
-import 'package:uec_textbooks/utils/flavor_config.dart';
+import 'package:uec_textbooks_app/main.dart';
+import 'package:uec_textbooks_app/utils/flavor_config.dart';
 
 void main() {
   runMain(

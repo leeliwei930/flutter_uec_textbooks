@@ -6,17 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:lottie/lottie.dart';
-import 'package:uec_textbooks/components/empty_state_view.dart';
-import 'package:uec_textbooks/components/saved_book_record.dart';
-import 'package:uec_textbooks/constants/lottie_assets.dart';
-import 'package:uec_textbooks/constants/spacing.dart';
-import 'package:uec_textbooks/models/book.dart';
-import 'package:uec_textbooks/models/book_group.dart';
-import 'package:uec_textbooks/models/download_task_record.dart';
-import 'package:uec_textbooks/providers/books_provider.dart';
-import 'package:uec_textbooks/providers/navigation_providers.dart';
-import 'package:uec_textbooks/providers/offline_books_provider.dart';
-import 'package:uec_textbooks/providers/saved_library_provider.dart';
+import 'package:uec_textbooks_app/components/empty_state_view.dart';
+import 'package:uec_textbooks_app/components/saved_book_record.dart';
+import 'package:uec_textbooks_app/constants/lottie_assets.dart';
+import 'package:uec_textbooks_app/constants/spacing.dart';
+import 'package:uec_textbooks_app/models/book.dart';
+import 'package:uec_textbooks_app/models/book_group.dart';
+import 'package:uec_textbooks_app/models/download_task_record.dart';
+import 'package:uec_textbooks_app/providers/books_provider.dart';
+import 'package:uec_textbooks_app/providers/navigation_providers.dart';
+import 'package:uec_textbooks_app/providers/offline_books_provider.dart';
+import 'package:uec_textbooks_app/providers/saved_library_provider.dart';
 
 class SavedView extends ConsumerStatefulWidget {
   const SavedView({super.key});

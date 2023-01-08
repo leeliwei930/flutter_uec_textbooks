@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:uec_textbooks/constants/spacing.dart';
-import 'package:uec_textbooks/models/year_group.dart';
+import 'package:uec_textbooks_app/constants/spacing.dart';
+import 'package:uec_textbooks_app/models/year_group.dart';
 
 class YearGroupsChips extends StatelessWidget {
   const YearGroupsChips({
