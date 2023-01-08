@@ -7,7 +7,6 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uec_textbooks_app/models/book.dart';
-import 'package:uec_textbooks_app/models/download_task_record.dart';
 import 'package:uec_textbooks_app/models/year_group.dart';
 import 'package:uec_textbooks_app/views/uec_main_app.dart';
 
@@ -44,11 +43,9 @@ void runMain({required VoidCallback configInit}) async {
 @pragma('vm:entry-point')
 void downloadCallback(String id, DownloadTaskStatus status, int progress) {
   final send = IsolateNameServer.lookupPortByName('downloader_send_port');
-  send?.send(
-    DownloadTaskRecord(
-      id: id,
-      status: status,
-      progress: progress / 100,
-    ),
-  );
+  send?.send([
+    id,
+    status,
+    progress,
+  ]);
 }

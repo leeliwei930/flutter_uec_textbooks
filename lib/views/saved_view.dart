@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:lottie/lottie.dart';
@@ -31,22 +32,38 @@ class _SavedViewConsumerState extends ConsumerState<SavedView> {
   @override
   void initState() {
     super.initState();
+    _bindBackgroundIsolate();
+  }
 
-    IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
+  void _bindBackgroundIsolate() {
+    final isBind = IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
+    if (!isBind) {
+      _unbindBackgroundIsolate();
+      _bindBackgroundIsolate();
+      return;
+    }
+
     _port.listen((data) async {
-      if (data is DownloadTaskRecord) {
-        final libraryBox = await ref.read(savedLibraryBoxProvider.future);
-        final downloadedBook = libraryBox.values.firstWhere((book) => book.pdfDownloadTaskId == data.id);
-        ref
-            .read(offlineBookDownloadStateNotifierProvider(downloadedBook).notifier)
-            .updateDownloadProgress(data.progress);
-      }
+      final downloadTask = DownloadTaskRecord(
+        id: data[0] as String,
+        status: data[1] as DownloadTaskStatus,
+        progress: (data[2] as int) / 100,
+      );
+      final libraryBox = await ref.read(savedLibraryBoxProvider.future);
+      final downloadedBook = libraryBox.values.firstWhere((book) => book.pdfDownloadTaskId == downloadTask.id);
+      ref
+          .read(offlineBookDownloadStateNotifierProvider(downloadedBook).notifier)
+          .updateDownloadProgress(downloadTask.progress);
     });
+  }
+
+  void _unbindBackgroundIsolate() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
   }
 
   @override
   void dispose() {
-    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    _unbindBackgroundIsolate();
     super.dispose();
   }
 
