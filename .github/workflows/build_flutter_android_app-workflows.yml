@@ -14,7 +14,7 @@ jobs:
       - name: "Run Flutter CI Workflow"
         uses: ./.github/actions/flutter_test
       - name: "Build Staging APK"
-        run: "flutter build -v apk --flavor staging -t lib/main_staging.dart"
+        run: "flutter -v build  apk --release --flavor staging -t lib/main_staging.dart"
       - name: "Transfer built APK to artifact"
         uses: actions/upload-artifact@v3
         with:
