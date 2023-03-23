@@ -28,7 +28,7 @@ class BookOfflineStatusStateNotifier extends StateNotifier<BookOfflineStatus> {
       } else {
         state = const BookOfflineStatus.unavailable();
       }
-    } catch (error, exception) {
+    } catch (error, _) {
       state = const BookOfflineStatus.unknown();
     }
   }

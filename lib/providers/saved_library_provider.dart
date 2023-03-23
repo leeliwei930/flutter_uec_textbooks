@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uec_textbooks_app/models/book.dart';
 import 'package:uec_textbooks_app/repositories/saved_library_repository.dart';

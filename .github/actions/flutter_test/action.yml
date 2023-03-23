@@ -7,9 +7,12 @@ description: |
 runs:
   using: composite
   steps:
-    - run: flutter analyze
+    - name: "flutter analyze"
+      run: flutter analyze
       shell: bash
-    - run: find . -name "*.dart" ! -name "*.freezed.dart" ! -name "generated_plugin_registrant.dart" ! -name "app_router.gr.dart" ! -name "*.g.dart" | tr '\n' ' ' | xargs flutter format --line-length 120 --set-exit-if-changed
+    - name: "code formatting check"
+      run: find . -name "*.dart" ! -name "*.freezed.dart" ! -name "generated_plugin_registrant.dart" ! -name "app_router.gr.dart" ! -name "*.g.dart" | tr '\n' ' ' | xargs flutter format --line-length 120 --set-exit-if-changed
       shell: bash
-    - run: flutter test
+    - name: "flutter test"
+      run: flutter test
       shell: bash
