@@ -1,0 +1,15 @@
+name: "Flutter CI"
+description: |
+  Flutter CI which include general workflows
+  - flutter analyze
+  - find . -name "*.dart" ! -name "*.freezed.dart" ! -name "generated_plugin_registrant.dart" ! -name "app_router.gr.dart" ! -name "*.g.dart" | tr '\n' ' ' | xargs flutter format --line-length 120 --set-exit-if-changed
+  - flutter test
+runs:
+  using: composite
+  steps:
+    - run: flutter analyze
+      shell: bash
+    - run: find . -name "*.dart" ! -name "*.freezed.dart" ! -name "generated_plugin_registrant.dart" ! -name "app_router.gr.dart" ! -name "*.g.dart" | tr '\n' ' ' | xargs flutter format --line-length 120 --set-exit-if-changed
+      shell: bash
+    - run: flutter test
+      shell: bash
