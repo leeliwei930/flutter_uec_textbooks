@@ -8,9 +8,11 @@ on:
 jobs:
   test_flutter_app:
     runs-on: ubuntu-latest
-    container:
-      image: cirrusci/flutter:3.3.10
     steps:
       - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.7.x'
+          channel: 'stable'
       - name: "Run Flutter CI Workflow"
         uses: ./.github/actions/flutter_test
