@@ -4,7 +4,7 @@ import 'package:uec_textbooks_app/models/book_group.dart';
 part 'offline_books_state.freezed.dart';
 
 @freezed
-abstract class OfflineBooksState with _$OfflineBooksState {
+class OfflineBooksState with _$OfflineBooksState {
   const OfflineBooksState._();
 
   factory OfflineBooksState.initial() = OfflineBooksInitial;

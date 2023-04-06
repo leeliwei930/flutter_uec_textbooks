@@ -7,9 +7,9 @@ part 'networking_provider.g.dart';
 
 @riverpod
 Dio dio(_) => Dio(BaseOptions(
-      sendTimeout: 10000,
-      connectTimeout: 10000,
-      receiveTimeout: 10000,
+      sendTimeout: const Duration(seconds: 20),
+      connectTimeout: const Duration(seconds: 20),
+      receiveTimeout: const Duration(seconds: 20),
     ));
 
 @riverpod

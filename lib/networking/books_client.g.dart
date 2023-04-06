@@ -27,7 +27,7 @@ class _BooksApiClient implements BooksApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'ref': ref};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<List<dynamic>>(_setStreamType<List<Book>>(Options(
       method: 'GET',

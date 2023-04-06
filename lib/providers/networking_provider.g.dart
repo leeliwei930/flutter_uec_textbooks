@@ -29,7 +29,7 @@ class _SystemHash {
   }
 }
 
-String $dioHash() => r'1bc269edb43e951604be0f198e03615e34d55480';
+String $dioHash() => r'c0307602149453fb62745d14f7c9a2b5cdc2b860';
 
 /// See also [dio].
 final dioProvider = AutoDisposeProvider<Dio>(

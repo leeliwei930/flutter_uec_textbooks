@@ -10,7 +10,7 @@ part 'book.g.dart';
 @JsonSerializable(createFactory: false, createToJson: false)
 @unfreezed
 @HiveType(typeId: 0, adapterName: 'BookAdapter')
-abstract class Book extends HiveObject with _$Book {
+class Book extends HiveObject with _$Book {
   Book._();
   factory Book({
     @HiveField(0) required String name,

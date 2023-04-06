@@ -39,7 +39,7 @@ class EmptyStateView extends StatelessWidget {
                 if (description?.isNotEmpty ?? false)
                   Text(
                     description!,
-                    style: textStyle.subtitle1,
+                    style: textStyle.titleMedium,
                     textAlign: TextAlign.center,
                   ),
                 if (actions.isNotEmpty) ...[

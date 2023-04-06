@@ -14,9 +14,9 @@ final _routes = [
     name: 'library',
     path: '/library',
     pageBuilder: (context, state) => NoTransitionPage(
-      child: ScreenTypeLayout(
-        mobile: LibraryView.mobile(),
-        tablet: LibraryView.tablet(),
+      child: ScreenTypeLayout.builder(
+        mobile: (_) => LibraryView.mobile(),
+        tablet: (_) => LibraryView.tablet(),
       ),
     ),
   ),
@@ -43,9 +43,9 @@ ShellRoute homeViewRoute(ref) {
   return ShellRoute(
     navigatorKey: ref.read(homeViewNavigatorKeyProvider),
     routes: ref.read(routesProvider),
-    builder: (context, state, child) => ScreenTypeLayout(
-      mobile: HomeView.mobile(child: child),
-      tablet: HomeView.tablet(child: child),
+    builder: (context, state, child) => ScreenTypeLayout.builder(
+      mobile: (_) => HomeView.mobile(child: child),
+      tablet: (_) => HomeView.tablet(child: child),
     ),
   );
 }
