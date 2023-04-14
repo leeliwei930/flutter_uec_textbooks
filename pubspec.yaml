@@ -43,9 +43,6 @@ dependencies:
   shimmer: ^2.0.0
   easy_localization: ^3.0.1
   filesize: ^2.0.1
-  advance_pdf_viewer:
-    git:
-      url: https://github.com/enveraltin/pdf_viewer
   responsive_builder: ^0.6.4
   expandable: ^5.0.1
   lottie: ^2.3.2
@@ -58,6 +55,8 @@ dependencies:
   cached_network_image: ^3.2.3
   flutter_expandable_fab: ^1.7.1
   json_annotation: ^4.8.0
+  pdfx: ^2.3.0
+  internet_file: ^1.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

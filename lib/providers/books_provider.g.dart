@@ -49,7 +49,7 @@ final _bookPagesProvider = Provider<YearGroupEbookPages>(
       const bool.fromEnvironment('dart.vm.product') ? null : $_bookPagesHash,
 );
 typedef _BookPagesRef = ProviderRef<YearGroupEbookPages>;
-String $bookPagesHash() => r'86166db2b467452db7cb4d5a17277559e0110f62';
+String $bookPagesHash() => r'709e221766fc3ee769369afc9288106697384386';
 
 /// See also [bookPages].
 class BookPagesProvider extends FutureProvider<int> {
@@ -129,11 +129,10 @@ final viewBookProvider = AutoDisposeProvider<Book?>(
       const bool.fromEnvironment('dart.vm.product') ? null : $viewBookHash,
 );
 typedef ViewBookRef = AutoDisposeProviderRef<Book?>;
-String $viewBookPDFViewerHash() => r'88f97b012704bbd52f659790da86b9f200ee90aa';
+String $viewBookPDFViewerHash() => r'0f6d3d430bdb4b1c3563d2f545875c7e279efc51';
 
 /// See also [viewBookPDFViewer].
-class ViewBookPDFViewerProvider
-    extends AutoDisposeFutureProvider<PDFDocument?> {
+class ViewBookPDFViewerProvider extends AutoDisposeFutureProvider<PdfDocument> {
   ViewBookPDFViewerProvider({
     this.isViewingOffline = false,
   }) : super(
@@ -166,12 +165,12 @@ class ViewBookPDFViewerProvider
   }
 }
 
-typedef ViewBookPDFViewerRef = AutoDisposeFutureProviderRef<PDFDocument?>;
+typedef ViewBookPDFViewerRef = AutoDisposeFutureProviderRef<PdfDocument>;
 
 /// See also [viewBookPDFViewer].
 final viewBookPDFViewerProvider = ViewBookPDFViewerFamily();
 
-class ViewBookPDFViewerFamily extends Family<AsyncValue<PDFDocument?>> {
+class ViewBookPDFViewerFamily extends Family<AsyncValue<PdfDocument>> {
   ViewBookPDFViewerFamily();
 
   ViewBookPDFViewerProvider call({
@@ -183,7 +182,7 @@ class ViewBookPDFViewerFamily extends Family<AsyncValue<PDFDocument?>> {
   }
 
   @override
-  AutoDisposeFutureProvider<PDFDocument?> getProviderOverride(
+  AutoDisposeFutureProvider<PdfDocument> getProviderOverride(
     covariant ViewBookPDFViewerProvider provider,
   ) {
     return call(

@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:internet_file/internet_file.dart';
+import 'package:pdfx/pdfx.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uec_textbooks_app/constants/books_meta.dart';
 import 'package:uec_textbooks_app/models/book.dart';
@@ -57,8 +58,8 @@ Future<int> bookPages(
     return pageCount;
   }
 
-  final doc = await PDFDocument.fromURL(book.downloadUrl);
-  return doc.count;
+  final doc = await PdfDocument.openData(InternetFile.get(book.downloadUrl));
+  return doc.pagesCount;
 }
 
 final yearGroupStateProvider = StateProvider(
@@ -76,16 +77,17 @@ Book? viewBook(ViewBookRef ref) {
 }
 
 @riverpod
-Future<PDFDocument?> viewBookPDFViewer(ViewBookPDFViewerRef ref, {bool isViewingOffline = false}) async {
+Future<PdfDocument> viewBookPDFViewer(ViewBookPDFViewerRef ref, {bool isViewingOffline = false}) async {
   final selectedBook = ref.watch(viewBookProvider);
-  if (selectedBook != null) {
-    if (isViewingOffline) {
-      return PDFDocument.fromFile(File(selectedBook.offlinePDFPath!));
-    } else {
-      return PDFDocument.fromURL(selectedBook.downloadUrl);
-    }
+  if (selectedBook == null) {
+    throw Exception('invalid state');
   }
-  return null;
+
+  if (isViewingOffline) {
+    return PdfDocument.openFile(selectedBook.offlinePDFPath!);
+  } else {
+    return PdfDocument.openData(InternetFile.get(selectedBook.downloadUrl));
+  }
 }
 
 final selectedBookStateProvider = StateProvider.autoDispose<Book?>((ref) {
