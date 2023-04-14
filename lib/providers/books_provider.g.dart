@@ -6,7 +6,36 @@ part of 'books_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// ignore_for_file: avoid_private_typedef_functions, non_constant_identifier_names, subtype_of_sealed_class, invalid_use_of_internal_member, unused_element, constant_identifier_names, unnecessary_raw_strings, library_private_types_in_public_api
+String _$booksHash() => r'218dec9773b727a9515c3cf31cb2d335192a854f';
+
+/// See also [books].
+@ProviderFor(books)
+final booksProvider = FutureProvider<List<Book>>.internal(
+  books,
+  name: r'booksProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$booksHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef BooksRef = FutureProviderRef<List<Book>>;
+String _$bookPagesCacheHash() => r'e89f76dde11011e51688bf23d502acba1bdcfb28';
+
+/// See also [bookPagesCache].
+@ProviderFor(bookPagesCache)
+final bookPagesCacheProvider = Provider<YearGroupEbookPages>.internal(
+  bookPagesCache,
+  name: r'bookPagesCacheProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$bookPagesCacheHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef BookPagesCacheRef = ProviderRef<YearGroupEbookPages>;
+String _$bookPagesHash() => r'28535aac387bfbe86c87815d9e9a49d7e37f1106';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,33 +58,56 @@ class _SystemHash {
   }
 }
 
-String $booksHash() => r'218dec9773b727a9515c3cf31cb2d335192a854f';
+typedef BookPagesRef = FutureProviderRef<int>;
 
-/// See also [books].
-final booksProvider = FutureProvider<List<Book>>(
-  books,
-  name: r'booksProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : $booksHash,
-);
-typedef BooksRef = FutureProviderRef<List<Book>>;
-String $_bookPagesHash() => r'aa32a60ba2973558b6037c7f3d6f0c984a5918ed';
+/// See also [bookPages].
+@ProviderFor(bookPages)
+const bookPagesProvider = BookPagesFamily();
 
-/// See also [_bookPages].
-final _bookPagesProvider = Provider<YearGroupEbookPages>(
-  _bookPages,
-  name: r'_bookPagesProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : $_bookPagesHash,
-);
-typedef _BookPagesRef = ProviderRef<YearGroupEbookPages>;
-String $bookPagesHash() => r'709e221766fc3ee769369afc9288106697384386';
+/// See also [bookPages].
+class BookPagesFamily extends Family<AsyncValue<int>> {
+  /// See also [bookPages].
+  const BookPagesFamily();
+
+  /// See also [bookPages].
+  BookPagesProvider call({
+    required Book book,
+  }) {
+    return BookPagesProvider(
+      book: book,
+    );
+  }
+
+  @override
+  BookPagesProvider getProviderOverride(
+    covariant BookPagesProvider provider,
+  ) {
+    return call(
+      book: provider.book,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'bookPagesProvider';
+}
 
 /// See also [bookPages].
 class BookPagesProvider extends FutureProvider<int> {
+  /// See also [bookPages].
   BookPagesProvider({
     required this.book,
-  }) : super(
+  }) : super.internal(
           (ref) => bookPages(
             ref,
             book: book,
@@ -65,7 +117,9 @@ class BookPagesProvider extends FutureProvider<int> {
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : $bookPagesHash,
+                  : _$bookPagesHash,
+          dependencies: BookPagesFamily._dependencies,
+          allTransitiveDependencies: BookPagesFamily._allTransitiveDependencies,
         );
 
   final Book book;
@@ -84,58 +138,71 @@ class BookPagesProvider extends FutureProvider<int> {
   }
 }
 
-typedef BookPagesRef = FutureProviderRef<int>;
-
-/// See also [bookPages].
-final bookPagesProvider = BookPagesFamily();
-
-class BookPagesFamily extends Family<AsyncValue<int>> {
-  BookPagesFamily();
-
-  BookPagesProvider call({
-    required Book book,
-  }) {
-    return BookPagesProvider(
-      book: book,
-    );
-  }
-
-  @override
-  FutureProvider<int> getProviderOverride(
-    covariant BookPagesProvider provider,
-  ) {
-    return call(
-      book: provider.book,
-    );
-  }
-
-  @override
-  List<ProviderOrFamily>? get allTransitiveDependencies => null;
-
-  @override
-  List<ProviderOrFamily>? get dependencies => null;
-
-  @override
-  String? get name => r'bookPagesProvider';
-}
-
-String $viewBookHash() => r'a2512fb95c96359fce8de9507ea6fb6d3d830d22';
+String _$viewBookHash() => r'a2512fb95c96359fce8de9507ea6fb6d3d830d22';
 
 /// See also [viewBook].
-final viewBookProvider = AutoDisposeProvider<Book?>(
+@ProviderFor(viewBook)
+final viewBookProvider = AutoDisposeProvider<Book?>.internal(
   viewBook,
   name: r'viewBookProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : $viewBookHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$viewBookHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
+
 typedef ViewBookRef = AutoDisposeProviderRef<Book?>;
-String $viewBookPDFViewerHash() => r'0f6d3d430bdb4b1c3563d2f545875c7e279efc51';
+String _$viewBookPDFViewerHash() => r'0f6d3d430bdb4b1c3563d2f545875c7e279efc51';
+typedef ViewBookPDFViewerRef = AutoDisposeFutureProviderRef<PdfDocument>;
+
+/// See also [viewBookPDFViewer].
+@ProviderFor(viewBookPDFViewer)
+const viewBookPDFViewerProvider = ViewBookPDFViewerFamily();
+
+/// See also [viewBookPDFViewer].
+class ViewBookPDFViewerFamily extends Family<AsyncValue<PdfDocument>> {
+  /// See also [viewBookPDFViewer].
+  const ViewBookPDFViewerFamily();
+
+  /// See also [viewBookPDFViewer].
+  ViewBookPDFViewerProvider call({
+    bool isViewingOffline = false,
+  }) {
+    return ViewBookPDFViewerProvider(
+      isViewingOffline: isViewingOffline,
+    );
+  }
+
+  @override
+  ViewBookPDFViewerProvider getProviderOverride(
+    covariant ViewBookPDFViewerProvider provider,
+  ) {
+    return call(
+      isViewingOffline: provider.isViewingOffline,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'viewBookPDFViewerProvider';
+}
 
 /// See also [viewBookPDFViewer].
 class ViewBookPDFViewerProvider extends AutoDisposeFutureProvider<PdfDocument> {
+  /// See also [viewBookPDFViewer].
   ViewBookPDFViewerProvider({
     this.isViewingOffline = false,
-  }) : super(
+  }) : super.internal(
           (ref) => viewBookPDFViewer(
             ref,
             isViewingOffline: isViewingOffline,
@@ -145,7 +212,10 @@ class ViewBookPDFViewerProvider extends AutoDisposeFutureProvider<PdfDocument> {
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : $viewBookPDFViewerHash,
+                  : _$viewBookPDFViewerHash,
+          dependencies: ViewBookPDFViewerFamily._dependencies,
+          allTransitiveDependencies:
+              ViewBookPDFViewerFamily._allTransitiveDependencies,
         );
 
   final bool isViewingOffline;
@@ -165,52 +235,22 @@ class ViewBookPDFViewerProvider extends AutoDisposeFutureProvider<PdfDocument> {
   }
 }
 
-typedef ViewBookPDFViewerRef = AutoDisposeFutureProviderRef<PdfDocument>;
-
-/// See also [viewBookPDFViewer].
-final viewBookPDFViewerProvider = ViewBookPDFViewerFamily();
-
-class ViewBookPDFViewerFamily extends Family<AsyncValue<PdfDocument>> {
-  ViewBookPDFViewerFamily();
-
-  ViewBookPDFViewerProvider call({
-    bool isViewingOffline = false,
-  }) {
-    return ViewBookPDFViewerProvider(
-      isViewingOffline: isViewingOffline,
-    );
-  }
-
-  @override
-  AutoDisposeFutureProvider<PdfDocument> getProviderOverride(
-    covariant ViewBookPDFViewerProvider provider,
-  ) {
-    return call(
-      isViewingOffline: provider.isViewingOffline,
-    );
-  }
-
-  @override
-  List<ProviderOrFamily>? get allTransitiveDependencies => null;
-
-  @override
-  List<ProviderOrFamily>? get dependencies => null;
-
-  @override
-  String? get name => r'viewBookPDFViewerProvider';
-}
-
-String $offlineBookFileStorageServiceHash() =>
+String _$offlineBookFileStorageServiceHash() =>
     r'20926b9c9c9218617a46d903d7430776c4630d7d';
 
 /// See also [offlineBookFileStorageService].
+@ProviderFor(offlineBookFileStorageService)
 final offlineBookFileStorageServiceProvider =
-    AutoDisposeProvider<OfflineBookFileStorageService>(
+    AutoDisposeProvider<OfflineBookFileStorageService>.internal(
   offlineBookFileStorageService,
   name: r'offlineBookFileStorageServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : $offlineBookFileStorageServiceHash,
+      : _$offlineBookFileStorageServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
+
 typedef OfflineBookFileStorageServiceRef
     = AutoDisposeProviderRef<OfflineBookFileStorageService>;
+// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

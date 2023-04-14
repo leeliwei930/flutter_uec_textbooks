@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:internet_file/internet_file.dart';
@@ -32,7 +30,7 @@ Future<List<Book>> books(BooksRef ref) async {
 }
 
 @Riverpod(keepAlive: true)
-YearGroupEbookPages _bookPages(_BookPagesRef ref) {
+YearGroupEbookPages bookPagesCache(BookPagesCacheRef ref) {
   final pageCountDatasets = <YearGroup, Map<String, int>>{};
 
   BooksMeta.getPages().forEach(
@@ -50,7 +48,7 @@ Future<int> bookPages(
   BookPagesRef ref, {
   required Book book,
 }) async {
-  final yearGroupEbookPages = ref.watch(_bookPagesProvider);
+  final yearGroupEbookPages = ref.watch(bookPagesCacheProvider);
 
   final pageCount = yearGroupEbookPages.getPageCountByEBook(book);
 
